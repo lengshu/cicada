@@ -54,7 +54,8 @@ Generally, videos that cannot be downloaded will have an error message. You can 
 
 #### Why do some browser warning windows pop up sometimes?
 
-1. Under Windows, please open the Internet option. In the "Advanced" tab window, there is a "Do not match the certificate address" in the security sub-item. Just uncheck it.
+1. Under Windows, please open the Internet options, in the "Advanced" tab window, the security sub-item has a "does not match the certificate address" and uncheck it.
+2. Sometimes some web pages contain both https and http content. For IE browser, you need to define the current security mode in security. There is a "mixed mode", please select "enable", if you confirm the access information If the page does not need to be mixed, you can also try "disable", but please don't choose the default "prompt", which will cause the dialog box to pop up constantly.
 
 #### What is the specific core of the browser used, and the compatibility when writing JS?
 
@@ -90,10 +91,10 @@ Generally, videos that cannot be downloaded will have an error message. You can 
 
 1. Each setting of the preferences has a "restore default value" function, click to restore the initial value.
 
-#### Why some websites, such as Youtube, have pictures when viewed in the browser, but the normal pictures are not displayed in the properties view?
+#### Why do some websites have pictures when viewed in the browser, but do not display normal pictures in the property view?
 
-1. Because Youtube uses images in webp format developed by Google, and Java has not officially supported images in this format, it can only be displayed through the browser, and cannot be displayed in the view.
-2. We will consider adding this function later.
+1. Because some websites may use pictures in a special format, and Java has not officially supported pictures in this format, it can only be displayed through the browser, but cannot be displayed in the view.
+2. A variety of common formats such as Webp have been supported. If this is still the case, you can send the address and make corrections.
 
 #### How to use proxy?
 
@@ -110,9 +111,10 @@ Generally, videos that cannot be downloaded will have an error message. You can 
 
 Sorry, as a programmer, I am extremely unfamiliar with the front-end of HTML+JS, so any programmer who is familiar with the front-end can try to modify the contents of the Workspace/config/site directory under the Cicada directory to customize the display interface. [Detailed instructions can be found here. ](siteDefine.html)
 
-#### Why is multi-threaded downloading set up, but only one or two threads are still used for downloading?
+#### Why is multi-threaded download set up, but only one or two threads are used for downloading?
 
-When downloading, the file will be segmented. If the size of a download segment exceeds the length of the entire file, only one thread will be used for downloading. For example, the default size of the download segment is 200M. If the file to be downloaded is only 100M, the program will only enable one thread. If you want to use more threads, you can set the download segment to 50M or less, but this is not recommended.
+1. While downloading, the file will be segmented. If the size of one download segment exceeds the length of the entire file, only one thread will be used to download. For example, the default size of the download segment is 200M. If the file to be downloaded is only 100M, the program will only enable one thread. If you want to use more threads, you can set the download segment to 50M or even less, but this is not recommended.
+2. When the program downloads, if it finds that some websites do not allow multi-threaded download, it will automatically switch to single-threaded.
 
 #### How to switch the interface language?
 
