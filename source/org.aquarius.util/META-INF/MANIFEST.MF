@@ -1,0 +1,26 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Aquarius Util
+Bundle-SymbolicName: org.aquarius.util
+Bundle-Version: 0.1
+Bundle-Vendor: aquarius.github@gmail.com
+Automatic-Module-Name: org.aquarius.util
+Export-Package: org.aquarius.util,
+ org.aquarius.util.base,
+ org.aquarius.util.collection,
+ org.aquarius.util.exception,
+ org.aquarius.util.io,
+ org.aquarius.util.jdbc,
+ org.aquarius.util.js,
+ org.aquarius.util.mark,
+ org.aquarius.util.net,
+ org.aquarius.util.nls,
+ org.aquarius.util.security,
+ org.aquarius.util.sort,
+ org.aquarius.util.spi,
+ org.aquarius.util.validator,
+ org.aquarius.util.validator.base,
+ org.aquarius.util.validator.impl
+Require-Bundle: org.aquarius.library,
+ org.aquarius.log
+Bundle-ClassPath: .

@@ -1,0 +1,718 @@
+﻿<！DOCTYPE HTML PUBLIC "-// W3C // DTD HTML 4.0 Transitional // EN">
+<HTML xmlns：o =
+"urn：schemas-microsoft-com：office：office"> <HEAD> <TITLE>詳細な説明</ TITLE>
+<META content = "text / html; charset = unicode" http-equiv = Content-Type>
+<META name = GENERATOR content = "MSHTML 11.00.10570.1001"> </ HEAD>
+<BODY>
+<H3>詳細な説明</ H3>
+<P>このソフトウェアは、主にビデオサイト分析（ビデオリストのインポートとビデオのダウンロード）の機能を提供します。次に、図と併せて詳細に展開する方法を説明します。 </ P>
+<P>ユーザーが自分で拡張機能を開発するために、このソフトウェアはエディターを提供します。[操作]-> [ビデオパーサーの作成]エントリから新しいビデオパーサーを作成して、新しいビデオサイトをサポートできます。既存のビデオサイトの場合は、編集できます。 「操作->ビデオパーサーの編集」のエントリを介してそれを行います。 </ P>
+<P>エディタには3つの基本的なタブがあります。つまり、基本情報/ビデオリストのインポート/ビデオのダウンロード分析です。これについては、以下で順番に説明します。 </ P>
+<H4>基本情報：</ H4>
+<OL>
+  <LI>複数のエピソードのサポート：多くのビデオサイトはシリーズを1つのビデオとして扱っているため、ダウンロードするときは1つのファイルだけでなく、複数のファイルになります。
+  <LI>待機時間：多くのビデオWebサイトでは、クロールや攻撃を回避するために、1秒間にアクセスできる回数など、指定された時間内に時間を制限します。写真などのリソースがあるため、待機時間は通常は5秒に設定されます。特定のWebサイトにこの制限がないことをユーザーが確認した場合は、2〜3秒に設定できます（ブラウザーはリソースの読み込みとスクリプトの実行にも長い時間がかかるため、2秒未満はお勧めしません）。
+
+  <LI>動的リンク：多くのビデオWebサイトは、ダウンロードを回避したり、視聴者が広告を視聴できるようにするために動的リンクを使用します。つまり、リンクは指定された時間内に指定されたアドレス（または指定されたユーザー）に対してのみ有効であり、指定された時間の後に再解析されます。この時間はサイトごとに異なりますが、通常のダウンロードでは、映画をダウンロードするには3時間で十分なので、デフォルト値は180分に設定されています。
+
+  <LI>ページ付けのサポート：Youtubeなどの一部のWebサイトは動的読み込みを使用するため、すべてのビデオリストが1つのページに読み込まれますが、一部のWebサイトはページ付けを使用します。実際の状況に応じて選択してください。
+  <LI>チャネル管理：ビデオを個別にダウンロードするだけの場合は無視できます。ただし、クエリまたは管理のためにビデオをローカルにインポートする場合は、このアイテムが必要です。チャネルは、名前とリンクで構成されます。名前はユーザーが見られるようにするため、繰り返さずに好きな名前を付けることができます。リンクはより複雑で、<Aに似ている可能性があります
+  href = "https://www.youtube.com/playlist?list=PLBWhfR_7BXduiTdH-9sM5c6z7p3n8hll8"> https://www.youtube.com/playlist?list=PLBWhfR_7BXduiTdH-9sM5c6z7p3n8hll8 </A>（ページ付けはサポートされていません）または<A
+  href = "https://www.pornhub.com/channels/vixen/videos?o=da&page={0"> https://www.pornhub.com/channels/vixen/videos?o=da&page={0 < / A>}（ページングをサポート）
+
+  <LI> Cookie：通常のユーザーがこれを設定する必要はありません。言語の選択やログインが必要になる場合があります。通常のユーザーがそのようなニーズを持っている場合は、それらを保存して、[ブラウザの更新]-> [指定されたサイト]メニューを直接使用することをお勧めします。ユーザーがログインまたは言語を選択するためのブラウザが直接ポップアップ表示されます。上級ユーザーは、自分のJSコードで直接さまざまな設定を行うこともできます。
+  </ LI> </ OL>
+<H4>
+<Pクラス= l0
+style = "MARGIN：0cm 0cm 0cm 36pt; TEXT-INDENT：-18pt; mso-list：l0 level1 lfo1; tab-stops：list 36.0pt"> <SPAN
+class = pun> <SPAN class = pun> <SPAN lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃666600; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box"> </ SPAN> </ SPAN> </ SPAN> <SPAN lang = EN-US
+style = "FONT-FAMILY：Consolas; COLOR：＃999999"> <o：p> </ o：p> </ SPAN> </ P>
+<P class = MsoNormal style = "MARGIN：0cm"> <SPAN lang = EN-US
+style = "FONT-SIZE：12pt"> <o：p> <FONT face = equal line> <IMG style = "WIDTH：100％"
+border = 0 hspace = 0 alt = "" src = "../../ images / editSiteParser.png" width = 1917
+align = baseline height = 1019> </ FONT> </ o：p> </ SPAN> </ P> </ SPAN> </ H4>
+<H4> </ H4>
+<H4>インポートリスト：</ H4>
+<OL>
+  <LI>中央のブラウザ：開発中は、まずブラウザでテストしたいビデオリストのウェブサイトを開く必要があります。左側のスクリプトが完了したら、[実行]ボタンを直接クリックすると、スクリプトが左側はブラウザの現在の実行に表示され、右側のデータビューに結果が表示されます。
+
+  <LI>の左側にあるスクリプトは、現在のページのビデオリストをクエリするために使用されます。正しく実行されると、JSONデータ構造が返されます。このデータ構造については、以下のJSONの例を参照してください。
+  <LI>の右側のデータビュー：スクリプトの実行結果を表示するために使用されます。戻り値が正当なJSONデータ構造である場合、見やすいようにツリー構造で表示されます。戻り値が有効なJSONデータ構造でない場合、エラーメッセージがテキストボックスに表示されます。
+
+  <LI>個人の能力が限られているため、開発中にコードのデバッグやプロンプト機能を提供することはできません。Chromeなどのブラウザでスクリプトを正常にテストした直後にスクリプトをコピーすることをお勧めします。プログラムはデフォルトでChromiumカーネルを使用してJSを実行しますが、ユーザーはデフォルトのブラウザーカーネルを閉じて、SWT独自のブラウザー（WindowsではIE、LinuxではWebKit）を使用できるため、JS構文の違いに注意してください（可能な場合は、互換性があることをお勧めします）。 </ LI> </ OL>
+<Pクラス= l0
+style = "MARGIN：0cm 0cm 0cm 36pt; TEXT-INDENT：-18pt; mso-list：l0 level1 lfo1; tab-stops：list 36.0pt"> <SPAN
+lang = EN-US
+style = "FONT-FAMILY：Consolas; COLOR：＃999999; mso-fareast-font-family：Consolas; mso-bidi-font-family：Consolas"> <SPAN
+style = "mso-list：Ignore"> 1. <SPAN style = "FONT：7pt" Times New Roman "">
+</ SPAN> </ SPAN> </ SPAN> <SPAN class = pun> <SPAN lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃666600; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> {</ SPAN> </ SPAN> </ SPAN> <SPAN
+lang = EN-US style = "FONT-FAMILY：Consolas; COLOR：＃999999"> <o：p> </ o：p> </ SPAN> </ P>
+<Pクラス= l1
+style = "BACKGROUND：#eeeeee; MARGIN：0cm 0cm 0cm 36pt; TEXT-INDENT：-18pt; mso-list：l0 level1 lfo1; tab-stops：list 36.0pt"> <SPAN
+lang = EN-US
+style = "FONT-FAMILY：Consolas; COLOR：＃999999; mso-fareast-font-family：Consolas; mso-bidi-font-family：Consolas"> </ SPAN> <SPAN
+style = "mso-list：Ignore"> <FONTface =宋体> 2。</ FONT> <SPAN
+style = "FONT：7pt" Times New Roman ""> </ SPAN> </ SPAN> </ SPAN> <SPAN
+class = str> <SPAN lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃008800; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box "> <SPAN
+style = "BOX-SIZING：border-box"> "lastPageUrl" </ SPAN> </ SPAN> </ SPAN> <SPAN
+class = pun> <SPAN lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃666600; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box">：</ SPAN> </ SPAN> </ SPAN> <SPAN class = pln> <SPAN
+lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：black; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING- LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box"> </ SPAN> </ SPAN> <SPAN class = str> </ SPAN> <SPAN
+lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃008800; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box"> "https://www.pornhub.com/channels/vixen/videos?page=10" </ SPAN> </ SPAN> </ SPAN> <SPAN
+class = pun> <SPAN lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃666600; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box">、</ SPAN> </ SPAN> </ SPAN> <SPAN lang = EN-US
+style = "FONT-FAMILY：Consolas; COLOR：＃999999"> <o：p> </ o：p> </ SPAN> </ P>
+<Pクラス= l2
+style = "MARGIN：0cm 0cm 0cm 36pt; TEXT-INDENT：-18pt; mso-list：l0 level1 lfo1; tab-stops：list 36.0pt"> <SPAN
+lang = EN-US
+style = "FONT-FAMILY：Consolas; COLOR：＃999999; mso-fareast-font-family：Consolas; mso-bidi-font-family：Consolas"> </ SPAN> <SPAN
+style = "mso-list：Ignore"> <FONTface =宋体> 3。</ FONT> <SPAN
+style = "FONT：7pt" Times New Roman ""> </ SPAN> </ SPAN> </ SPAN> <SPAN
+class = str> <SPAN lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃008800; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box"> <SPAN
+style = "BOX-SIZING：border-box"> "nextPageUrl" </ SPAN> </ SPAN> </ SPAN> <SPAN
+class = pun> <SPAN lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃666600; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box">：</ SPAN> </ SPAN> </ SPAN> <SPAN class = pln> <SPAN
+lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：black; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING- LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box"> </ SPAN> </ SPAN> <SPAN class = str> </ SPAN> <SPAN
+lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃008800; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box"> "https://www.pornhub.com/channels/vixen/videos?page=3" </ SPAN> </ SPAN> </ SPAN> <SPAN
+class = pun> <SPAN lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃666600; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box">、</ SPAN> </ SPAN> </ SPAN> <SPAN lang = EN-US
+style = "FONT-FAMILY：Consolas; COLOR：＃999999"> <o：p> </ o：p> </ SPAN> </ P>
+<Pクラス= l3
+style = "BACKGROUND：#eeeeee; MARGIN：0cm 0cm 0cm 36pt; TEXT-INDENT：-18pt; mso-list：l0 level1 lfo1; tab-stops：list 36.0pt"> <SPAN
+lang = EN-US
+style = "FONT-FAMILY：Consolas; COLOR：＃999999; mso-fareast-font-family：Consolas; mso-bidi-font-family：Consolas"> </ SPAN> <SPAN
+style = "mso-list：無視 "> <FONTface =宋体> 4。</ FONT> <SPAN
+style = "FONT：7pt" Times New Roman ""> </ SPAN> </ SPAN> </ SPAN> <SPAN
+class = str> <SPAN lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃008800; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box"> <SPAN
+style = "BOX-SIZING：border-box"> "previousPageUrl" </ SPAN> </ SPAN> </ SPAN> <SPAN
+class = pun> <SPAN lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃666600; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box">：</ SPAN> </ SPAN> </ SPAN> <SPAN class = pln> <SPAN
+lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：black; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING- LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box"> </ SPAN> </ SPAN> <SPAN class = str> </ SPAN> <SPAN
+lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃008800; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box"> "https://www.pornhub.com/channels/vixen/videos" </ SPAN> </ SPAN> </ SPAN> <SPAN
+class = pun> <SPAN lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃666600; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box">、</ SPAN> </ SPAN> </ SPAN> <SPAN lang = EN-US
+style = "FONT-FAMILY：Consolas; COLOR：＃999999"> <o：p> </ o：p> </ SPAN> </ P>
+<Pクラス= l4
+style = "MARGIN：0cm 0cm 0cm 36pt; TEXT-INDENT：-18pt; mso-list：l0 level1 lfo1; tab-stops：list 36.0pt"> <SPAN
+lang = EN-US
+style = "FONT-FAMILY：Consolas; COLOR：＃999999; mso-fareast-font-family：Consolas; mso-bidi-font-family：Consolas"> </ SPAN> <SPAN
+style = "mso-list：Ignore"> <FONTface =宋体> 5。</ FONT> <SPAN
+style = "FONT：7pt" Times New Roman ""> </ SPAN> </ SPAN> </ SPAN> <SPAN
+class = str> <SPAN lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃008800; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box"> <SPAN
+style = "BOX-SIZING：border-box"> "totalPageCount" </ SPAN> </ SPAN> </ SPAN> <SPAN
+class = pun> <SPAN lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃666600; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box">：</ SPAN> </ SPAN> </ SPAN> <SPAN class = pln> <SPAN
+lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：black; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING- LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box"> </ SPAN> </ SPAN> <SPAN class = lit> </ SPAN> <SPAN
+lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃006666; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box"> 10 </ SPAN> </ SPAN> </ SPAN> <SPAN class = pun> <SPAN
+lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃666600; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box ">、</ SPAN> </ SPAN> </ SPAN> <SPAN lang = EN-US
+style = "FONT-FAMILY：Consolas; COLOR：＃999999"> <o：p> </ o：p> </ SPAN> </ P>
+<Pクラス= l5
+style = "BACKGROUND：#eeeeee; MARGIN：0cm 0cm 0cm 36pt; TEXT-INDENT：-18pt; mso-list：l0 level1 lfo1; tab-stops：list 36.0pt"> <SPAN
+lang = EN-US
+style = "FONT-FAMILY：Consolas; COLOR：＃999999; mso-fareast-font-family：Consolas; mso-bidi-font-family：Consolas"> </ SPAN> <SPAN
+style = "mso-list：Ignore"> <FONTface =宋体> 6。</ FONT> <SPAN
+style = "FONT：7pt" Times New Roman ""> </ SPAN> </ SPAN> </ SPAN> <SPAN
+class = str> <SPAN lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃008800; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box"> <SPAN
+style = "BOX-SIZING：border-box"> "totalMovieCount" </ SPAN> </ SPAN> </ SPAN> <SPAN
+class = pun> <SPAN lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃666600; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box">：</ SPAN> </ SPAN> </ SPAN> <SPAN class = pln> <SPAN
+lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：black; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING- LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box"> </ SPAN> </ SPAN> <SPAN class = str> </ SPAN> <SPAN
+lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃008800; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box"> "344" </ SPAN> </ SPAN> </ SPAN> <SPAN class = pun> <SPAN
+lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃666600; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box">、</ SPAN> </ SPAN> </ SPAN> <SPAN lang = EN-US
+style = "FONT-FAMILY：Consolas; COLOR：＃999999"> <o：p> </ o：p> </ SPAN> </ P>
+<Pクラス= l6
+style = "MARGIN：0cm 0cm 0cm 36pt; TEXT-INDENT：-18pt; mso-list：l0 level1 lfo1; tab-stops：list 36.0pt"> <SPAN
+lang = EN-US
+style = "FONT-FAMILY：Consolas; COLOR：＃999999; mso-fareast-font-family：Consolas; mso-bidi-font-family：Consolas"> </ SPAN> <SPAN
+style = "mso-list：Ignore"> <FONTface =宋体> 7。</ FONT> <SPAN
+style = "FONT：7pt" Times New Roman ""> </ SPAN> </ SPAN> </ SPAN> <SPAN
+class = str> <SPAN lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃008800; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box"> <SPAN
+style = "BOX-SIZING：border-box"> "movieList" </ SPAN> </ SPAN> </ SPAN> <SPAN
+class = pun> <SPAN lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃666600; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box">：</ SPAN> </ SPAN> </ SPAN> <SPAN class = pln> <SPAN
+lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：black; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING- LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box"> </ SPAN> </ SPAN> <SPAN class = pun> </ SPAN> <SPAN
+lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃666600; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box"> [{</ SPAN> </ SPAN> </ SPAN> <SPAN lang = EN-US
+style = "FONT-FAMILY：Consolas; COLOR：＃999999"> <o：p> </ o：p> </ SPAN> </ P>
+<Pクラス= l7
+style = "BACKGROUND：#eeeeee; MARGIN：0cm 0cm 0cm 36pt; TEXT-INDENT：-18pt; mso-list：l0 level1 lfo1; tab-stops：list 36.0pt"> <SPAN
+lang = EN-US
+style = "FONT-FAMILY：Consolas; COLOR：＃999999; mso-fareast-font-family：Consolas; mso-bidi-font-family：Consolas"> </ SPAN> <SPAN
+style = "mso-list：Ignore"> <FONTface =宋体> 8。</ FONT> <SPAN
+style = "FONT：7pt" Times New Roman ""> </ SPAN> </ SPAN> </ SPAN> <SPAN
+class = str> <SPAN lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃008800; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box"> <SPAN
+style = "BOX-SIZING：border-box"> "期間" </ SPAN> </ SPAN> </ SPAN> <SPAN
+class = pun> <SPAN lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃666600; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box">：</ SPAN> </ SPAN> </ SPAN> <SPAN class = pln> <SPAN
+lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：black; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING- LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box"> </ SPAN> </ SPAN> <SPAN class = str> </ SPAN> <SPAN
+lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃008800; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box"> "00:12:35" </ SPAN> </ SPAN> </ SPAN> <SPAN
+class = pun> <SPAN lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃666600; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box">、</ SPAN> </ SPAN> </ SPAN> <SPAN lang = EN-US
+style = "FONT-FAMILY：Consolas; COLOR：＃999999"> <o：p> </ o：p> </ SPAN> </ P>
+<Pクラス= l8
+style = "MARGIN：0cm 0cm 0cm 36pt; TEXT-INDENT：-18pt; mso-list：l0 level1 lfo1; tab-stops：list 36.0pt"> <SPAN
+lang = EN-US
+style = "FONT-FAMILY：Consolas; COLOR：＃999999; mso-fareast-font-family：Consolas; mso-bidi-font-family：Consolas"> </ SPAN> <SPAN
+style = "mso-list：Ignore"> <FONTface =宋体> 9。</ FONT> <SPAN
+style = "FONT：7pt" Times New Roman ""> </ SPAN> </ SPAN> </ SPAN> <SPAN
+class = str> <SPAN lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃008800; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box"> <SPAN
+style = "BOX-SIZING：border-box"> "imageUrl" </ SPAN> </ SPAN> </ SPAN> <SPAN
+class = pun> <SPAN lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃666600; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box">：</ SPAN> </ SPAN> </ SPAN> <SPAN class = pln> <SPAN
+lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：black; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING- LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box"> </ SPAN> </ SPAN> <SPAN class = str> </ SPAN> <SPAN
+lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃008800; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box"> "https://di.phncdn.com/videos/202103/29/385839441/original/(m=eafTGgaaaa)(mh=tJZIlUcJe1Us4N4e)12.jpg "</ SPAN> </ SPAN> </ SPAN> <SPAN
+class = pun> <SPAN lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃666600; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box">、</ SPAN> </ SPAN> </ SPAN> <SPAN lang = EN-US
+style = "FONT-FAMILY：Consolas; COLOR：＃999999"> <o：p> </ o：p> </ SPAN> </ P>
+<Pクラス= l9
+style = "BACKGROUND：#eeeeee; MARGIN：0cm 0cm 0cm 36pt; TEXT-INDENT：-18pt; mso-list：l0 level1 lfo1; tab-stops：list 36.0pt"> <SPAN
+lang = EN-US
+style = "FONT-FAMILY：Consolas; COLOR：＃999999; mso-fareast-font-family：Consolas; mso-bidi-font-family：Consolas"> </ SPAN> <SPAN
+style = "mso-list：Ignore"> <FONTface =宋体> 10。</ FONT> <SPAN
+style = "FONT：7pt" Times New Roman ""> </ SPAN> </ SPAN> </ SPAN> <SPAN class = str> <SPAN
+lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃008800; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box"> <SPAN
+style = "BOX-SIZING：border-box"> "pageUrl" </ SPAN> </ SPAN> </ SPAN> <SPAN
+class = pun> <SPAN lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃666600; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box">：</ SPAN> </ SPAN> </ SPAN> <SPAN class = pln> <SPAN
+lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：black; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING- LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box"> </ SPAN> </ SPAN> <SPAN class = str> </ SPAN> <SPAN
+lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃008800; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box"> "https://www.pornhub.com/view_video.php?viewkey=ph60617f5f88f3c" </ SPAN> </ SPAN> </ SPAN> <SPAN
+class = pun> <SPAN lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃666600; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box">、</ SPAN> </ SPAN> </ SPAN> <SPAN lang = EN-US
+style = "FONT-FAMILY：Consolas; COLOR：＃999999"> <o：p> </ o：p> </ SPAN> </ P>
+<Pクラス= l0
+style = "MARGIN：0cm 0cm 0cm 36pt; TEXT-INDENT：-18pt; mso-list：l0 level1 lfo1; tab-stops：list 36.0pt"> <SPAN
+lang = EN-US
+style = "FONT-FAMILY：Consolas; COLOR：＃999999; mso-fareast-font-family：Consolas; mso-bidi-font-family：Consolas"> </ SPAN> <SPAN
+style = "mso-list：Ignore"> <FONTface =宋体> 11。</ FONT> <SPAN
+style = "FONT：7pt" Times New Roman ""> </ SPAN> </ SPAN> </ SPAN> <SPAN class = str> <SPAN
+lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃008800; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box"> <SPAN
+style = "BOX-SIZING：border-box"> "title" </ SPAN> </ SPAN> </ SPAN> <SPAN class = pun> <SPAN
+lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃666600; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box">：</ SPAN> </ SPAN> </ SPAN> <SPAN class = pln> <SPAN
+lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：black; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING-左：0cm;ボーダー-左：ウィンドウテキスト1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box"> </ SPAN> </ SPAN> <SPAN class = str> </ SPAN> <SPAN
+lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃008800; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box"> "VIXENアルベルトには2人のゴージャスな愛人エメリーがいます
+＆Eveline "</ SPAN> </ SPAN> </ SPAN> <SPAN lang = EN-US
+style = "FONT-FAMILY：Consolas; COLOR：＃999999"> <o：p> </ o：p> </ SPAN> </ P>
+<Pクラス= l1
+style = "BACKGROUND：#eeeeee; MARGIN：0cm 0cm 0cm 36pt; TEXT-INDENT：-18pt; mso-list：l0 level1 lfo1; tab-stops：list 36.0pt"> <SPAN
+lang = EN-US
+style = "FONT-FAMILY：Consolas; COLOR：＃999999; mso-fareast-font-family：Consolas; mso-bidi-font-family：Consolas"> </ SPAN> <SPAN
+style = "mso-list：Ignore"> <FONTface =宋体> 12。</ FONT> <SPAN
+style = "FONT：7pt" Times New Roman ""> </ SPAN> </ SPAN> </ SPAN> <SPAN class = pun> <SPAN
+lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃666600; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box"> <SPAN
+style = "BOX-SIZING：border-box">}、</ SPAN> </ SPAN> </ SPAN> <SPAN class = pln> <SPAN
+lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：black; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING- LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box"> </ SPAN> </ SPAN> <SPAN class = pun> </ SPAN> <SPAN
+lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃666600; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box"> {</ SPAN> </ SPAN> </ SPAN> <SPAN lang = EN-US
+style = "FONT-FAMILY：Consolas; COLOR：＃999999"> <o：p> </ o：p> </ SPAN> </ P>
+<Pクラス= l2
+style = "MARGIN：0cm 0cm 0cm 36pt; TEXT-INDENT：-18pt; mso-list：l0 level1 lfo1; tab-stops：list 36.0pt"> <SPAN
+lang = EN-US
+style = "FONT-FAMILY：Consolas; COLOR：＃999999; mso-fareast-font-family：Consolas; mso-bidi-font-family：Consolas"> </ SPAN> <SPAN
+style = "mso-list：Ignore"> <FONTface =宋体> 13。</ FONT> <SPAN
+style = "FONT：7pt" Times New Roman ""> </ SPAN> </ SPAN> </ SPAN> <SPAN class = str> <SPAN
+lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃008800; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box"> <SPAN
+style = "BOX-SIZING：border-box"> "期間" </ SPAN> </ SPAN> </ SPAN> <SPAN
+class = pun> <SPAN lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃666600; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box">：</ SPAN> </ SPAN> </ SPAN> <SPAN class = pln> <SPAN
+lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：black; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING- LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box"> </ SPAN> </ SPAN> <SPAN class = str> </ SPAN> <SPAN
+lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃008800; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box"> "00:12:38" </ SPAN> </ SPAN> </ SPAN> <SPAN
+class = pun> <SPAN lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃666600; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -左：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box">、</ SPAN> </ SPAN> </ SPAN> <SPAN lang = EN-US
+style = "FONT-FAMILY：Consolas; COLOR：＃999999"> <o：p> </ o：p> </ SPAN> </ P>
+<Pクラス= l3
+style = "BACKGROUND：#eeeeee; MARGIN：0cm 0cm 0cm 36pt; TEXT-INDENT：-18pt; mso-list：l0 level1 lfo1; tab-stops：list 36.0pt"> <SPAN
+lang = EN-US
+style = "FONT-FAMILY：Consolas; COLOR：＃999999; mso-fareast-font-family：Consolas; mso-bidi-font-family：Consolas"> </ SPAN> <SPAN
+style = "mso-list：Ignore"> <FONTface =宋体> 14。</ FONT> <SPAN
+style = "FONT：7pt" Times New Roman ""> </ SPAN> </ SPAN> </ SPAN> <SPAN class = str> <SPAN
+lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃008800; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box"> <SPAN
+style = "BOX-SIZING：border-box"> "imageUrl" </ SPAN> </ SPAN> </ SPAN> <SPAN
+class = pun> <SPAN lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃666600; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box">：</ SPAN> </ SPAN> </ SPAN> <SPAN class = pln> <SPAN
+lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：black; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING- LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box"> </ SPAN> </ SPAN> <SPAN class = str> </ SPAN> <SPAN
+lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃008800; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box"> "https://di.phncdn.com/videos/202103/19/385357081/original/(m=eafTGgaaaa)(mh=cCztdW7mG_FFzyx4)11.jpg" </ SPAN > </ SPAN> </ SPAN> <SPAN
+class = pun> <SPAN lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃666600; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box">、</ SPAN> </ SPAN> </ SPAN> <SPAN lang = EN-US
+style = "FONT-FAMILY：Consolas; COLOR：＃999999"> <o：p> </ o：p> </ SPAN> </ P>
+<Pクラス= l4
+style = "MARGIN：0cm 0cm 0cm 36pt; TEXT-INDENT：-18pt; mso-list：l0 level1 lfo1; tab-stops：list 36.0pt"> <SPAN
+lang = EN-US
+style = "FONT-FAMILY：Consolas; COLOR：＃999999; mso-fareast-font-family：Consolas; mso-bidi-font-family：Consolas"> </ SPAN> <SPAN
+style = "mso-list：Ignore"> <FONTface =宋体> 15。</ FONT> <SPAN
+style = "FONT：7pt" Times New Roman ""> </ SPAN> </ SPAN> </ SPAN> <SPAN class = str> <SPAN
+lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃008800; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box"> <SPAN
+style = "BOX-SIZING：border-box"> "pageUrl" </ SPAN> </ SPAN> </ SPAN> <SPAN
+class = pun> <SPAN lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃666600; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box">：</ SPAN> </ SPAN> </ SPAN> <SPAN class = pln> <SPAN
+lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：black; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING- LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box"> </ SPAN> </ SPAN> <SPAN class = str> </ SPAN> <SPAN
+lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃008800; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING-LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box"> "https://www.pornhub.com/view_video.php?viewkey=ph60546afb3605f" </ SPAN> </ SPAN> </ SPAN> <SPAN
+class = pun> <SPAN lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃666600; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box">、</ SPAN> </ SPAN> </ SPAN> <SPAN lang = EN-US
+style = "FONT-FAMILY：Consolas; COLOR：＃999999"> <o：p> </ o：p> </ SPAN> </ P>
+<Pクラス= l5
+style = "BACKGROUND：#eeeeee; MARGIN：0cm 0cm 0cm 36pt; TEXT-INDENT：-18pt; mso-list：l0 level1 lfo1; tab-stops：list 36.0pt"> <SPAN
+lang = EN-US
+style = "FONT-FAMILY：Consolas; COLOR：＃999999; mso-fareast-font-family：Consolas; mso-bidi-font-family：Consolas"> </ SPAN> <SPAN
+style = "mso-list：Ignore"> <FONTface =宋体> 16。</ FONT> <SPAN
+style = "FONT：7pt" Times New Roman ""> </ SPAN> </ SPAN> </ SPAN> <SPAN class = str> <SPAN
+lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃008800; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box"> <SPAN
+style = "BOX-SIZING：border-box"> "title" </ SPAN> </ SPAN> </ SPAN> <SPAN class = pun> <SPAN
+lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃666600; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box">：</ SPAN> </ SPAN> </ SPAN> <SPAN class = pln> <SPAN
+lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：black; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING- LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box"> </ SPAN> </ SPAN> <SPAN class = str> </ SPAN> <SPAN
+lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃008800; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box"> "VIXEN魅惑的なチェス-プロVannaには
+勝利の動き」</ SPAN> </ SPAN> </ SPAN> <SPANlang = EN-US
+style = "FONT-FAMILY：Consolas; COLOR：＃999999"> <o：p> </ o：p> </ SPAN> </ P>
+<Pクラス= l6
+style = "MARGIN：0cm 0cm 0cm 36pt; TEXT-INDENT：-18pt; mso-list：l0 level1 lfo1; tab-stops：list 36.0pt"> <SPAN
+lang = EN-US
+style = "FONT-FAMILY：Consolas; COLOR：＃999999; mso-fareast-font-family：Consolas; mso-bidi-font-family：Consolas"> </ SPAN> <SPAN
+style = "mso-list：Ignore"> <FONTface =宋体> 17。</ FONT> <SPAN
+style = "FONT：7pt" Times New Roman ""> </ SPAN> </ SPAN> </ SPAN> <SPAN class = pun> <SPAN
+lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃666600; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box"> <SPAN
+style = "BOX-SIZING：border-box">}] </ SPAN> </ SPAN> </ SPAN> <SPAN lang = EN-US
+style = "FONT-FAMILY：Consolas; COLOR：＃999999"> <o：p> </ o：p> </ SPAN> </ P>
+<Pクラス= l7
+style = "BACKGROUND：#eeeeee; MARGIN：0cm 0cm 0cm 36pt; TEXT-INDENT：-18pt; mso-list：l0 level1 lfo1; tab-stops：list 36.0pt"> <SPAN
+lang = EN-US
+style = "FONT-FAMILY：Consolas; COLOR：＃999999; mso-fareast-font-family：Consolas; mso-bidi-font-family：Consolas"> <SPAN
+style = "mso-list：Ignore"> 18. <SPAN style = "FONT：7pt" Times New Roman "">
+</ SPAN> </ SPAN> </ SPAN> <SPAN class = pun> <SPAN lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃666600; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box">} </ SPAN> </ SPAN> </ SPAN> </ P> </ SPAN>
+<H4> <IMG style = "WIDTH：100％" border = 0 hspace = 0 alt = ""
+src = "../../ images / editSiteParserList.png" width = 1917 align = baseline
+height = 1019> </ H4>
+<H4>ビデオ情報抽出：</ H4>
+<P>この関数は上記の「インポートリスト」に似ています。最大の違いは、返されるJSONデータ構造が異なることです。以下のJSONの例を参照してください。 </ P>
+<Pクラス= l0
+style = "MARGIN：0cm 0cm 0cm 36pt; TEXT-INDENT：-18pt; mso-list：l0 level1 lfo1; tab-stops：list 36.0pt"> <SPAN
+lang = EN-US
+style = "FONT-FAMILY：Consolas; COLOR：＃999999; mso-fareast-font-family：Consolas; mso-bidi-font-family：Consolas"> <SPAN
+style = "mso-list：Ignore"> 1. <SPAN style = "FONT：7pt" Times New Roman "">
+</ SPAN> </ SPAN> </ SPAN> <SPAN class = pun> <SPAN lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃666600; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> {</ SPAN> </ SPAN> </ SPAN> <SPAN
+lang = EN-US style = "FONT-FAMILY：Consolas; COLOR：＃999999"> <o：p> </ o：p> </ SPAN> </ P>
+<Pクラス= l1
+style = "BACKGROUND：#eeeeee; MARGIN：0cm 0cm 0cm 36pt; TEXT-INDENT：-18pt; mso-list：l0 level1 lfo1; tab-stops：list 36.0pt"> <SPAN
+lang = EN-US
+style = "FONT-FAMILY：Consolas; COLOR：＃999999; mso-fareast-font-family：Consolas; mso-bidi-font-family：Consolas"> </ SPAN> <SPAN
+style = "mso-list：Ignore"> <FONTface =宋体> 2。</ FONT> <SPAN
+style = "FONT：7pt" Times New Roman ""> </ SPAN> </ SPAN> </ SPAN> <SPAN
+class = str> <SPAN lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃008800; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box"> <SPAN
+style = "BOX-SIZING：border-box"> "映画" </ SPAN> </ SPAN> </ SPAN> <SPAN class = pun> <SPAN
+lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃666600; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box">：{</ SPAN> </ SPAN> </ SPAN> <SPAN lang = EN-US
+style = "FONT-FAMILY：Consolas; COLOR：＃999999"> <o：p> </ o：p> </ SPAN> </ P>
+<Pクラス= l2
+style = "MARGIN：0cm 0cm 0cm 36pt; TEXT-INDENT：-18pt; mso-list：l0 level1 lfo1; tab-stops：list 36.0pt"> <SPAN
+lang = EN-US
+style = "FONT-FAMILY：Consolas; COLOR：＃999999; mso-fareast-font-family：Consolas; mso-bidi-font-family：Consolas"> </ SPAN> <SPAN
+style = "mso-list：Ignore"> <FONTface =宋体> 3。</ FONT> <SPAN
+style = "FONT：7pt" Times New Roman ""> </ SPAN> </ SPAN> </ SPAN> <SPAN
+class = str> <SPAN lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃008800; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box"> <SPAN
+style = "BOX-SIZING：border-box"> "アクター" </ SPAN> </ SPAN> </ SPAN> <SPAN class = pun> <SPAN
+lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃666600; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box">：</ SPAN> </ SPAN> </ SPAN> <SPAN class = str> <SPAN
+lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃008800; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box"> "Alberto-Blanco、Eveline-Dellai、Emelie-Ekstrom" </ SPAN> </ SPAN> </ SPAN> <SPAN
+class = pun> <SPAN lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃666600; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box">、</ SPAN> </ SPAN> </ SPAN> <SPAN lang = EN-US
+style = "FONT-FAMILY：Consolas; COLOR：＃999999"> <o：p> </ o：p> </ SPAN> </ P>
+<Pクラス= l3
+style = "BACKGROUND：#eeeeee; MARGIN：0cm 0cm 0cm 36pt; TEXT-INDENT：-18pt; mso-list：l0 level1 lfo1;タブストップ：リスト36.0pt "> <SPAN
+lang = EN-US
+style = "FONT-FAMILY：Consolas; COLOR：＃999999; mso-fareast-font-family：Consolas; mso-bidi-font-family：Consolas"> </ SPAN> <SPAN
+style = "mso-list：Ignore"> <FONTface =宋体> 4。</ FONT> <SPAN
+style = "FONT：7pt" Times New Roman ""> </ SPAN> </ SPAN> </ SPAN> <SPAN
+class = str> <SPAN lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃008800; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box"> <SPAN
+style = "BOX-SIZING：border-box"> "imageUrl" </ SPAN> </ SPAN> </ SPAN> <SPAN
+class = pun> <SPAN lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃666600; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box">：</ SPAN> </ SPAN> </ SPAN> <SPAN class = str> <SPAN
+lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃008800; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box"> "https://ei.phncdn.com/videos/202103/29/385839441/original/(m=eafTGgaaaa)(mh=tJZIlUcJe1Us4N4e)12.jpg?cache=2021120302 "</ SPAN> </ SPAN> </ SPAN> <SPAN
+class = pun> <SPAN lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃666600; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box">、</ SPAN> </ SPAN> </ SPAN> <SPAN lang = EN-US
+style = "FONT-FAMILY：Consolas; COLOR：＃999999"> <o：p> </ o：p> </ SPAN> </ P>
+<Pクラス= l4
+style = "MARGIN：0cm 0cm 0cm 36pt; TEXT-INDENT：-18pt; mso-list：l0 level1 lfo1; tab-stops：list 36.0pt"> <SPAN
+lang = EN-US
+style = "FONT-FAMILY：Consolas; COLOR：＃999999; mso-fareast-font-family：Consolas; mso-bidi-font-family：Consolas"> </ SPAN> <SPAN
+style = "mso-list：Ignore"> <FONTface =宋体> 5。</ FONT> <SPAN
+style = "FONT：7pt" Times New Roman ""> </ SPAN> </ SPAN> </ SPAN> <SPAN
+class = str> <SPAN lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃008800; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box"> <SPAN
+style = "BOX-SIZING：border-box"> "publishDate" </ SPAN> </ SPAN> </ SPAN> <SPAN
+class = pun> <SPAN lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃666600; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box">：</ SPAN> </ SPAN> </ SPAN> <SPAN class = str> <SPAN
+lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃008800; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box"> "2021-03-29T07：21：20 + 00：00" </ SPAN> </ SPAN> </ SPAN> <SPAN
+class = pun> <SPAN lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃666600; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box">、</ SPAN> </ SPAN> </ SPAN> <SPAN lang = EN-US
+style = "FONT-FAMILY：Consolas; COLOR：＃999999"> <o：p> </ o：p> </ SPAN> </ P>
+<Pクラス= l5
+style = "BACKGROUND：#eeeeee; MARGIN：0cm 0cm 0cm 36pt; TEXT-INDENT：-18pt; mso-list：l0 level1 lfo1; tab-stops：list 36.0pt"> <SPAN
+lang = EN-US
+style = "FONT-FAMILY：Consolas; COLOR：＃999999; mso-fareast-font-family：Consolas; mso-bidi-font-family：Consolas"> </ SPAN> <SPAN
+style = "mso-list：Ignore"> <FONTface =宋体> 6。</ FONT> <SPAN
+style = "FONT：7pt "Times New Roman" "> </ SPAN> </ SPAN> </ SPAN> <SPAN
+class = str> <SPAN lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃008800; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box"> <SPAN
+style = "BOX-SIZING：border-box"> "downloadInfoList" </ SPAN> </ SPAN> </ SPAN> <SPAN
+class = pun> <SPAN lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃666600; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box">：[</ SPAN> </ SPAN> </ SPAN> <SPAN lang = EN-US
+style = "FONT-FAMILY：Consolas; COLOR：＃999999"> <o：p> </ o：p> </ SPAN> </ P>
+<Pクラス= l6
+style = "MARGIN：0cm 0cm 0cm 36pt; TEXT-INDENT：-18pt; mso-list：l0 level1 lfo1; tab-stops：list 36.0pt"> <SPAN
+lang = EN-US
+style = "FONT-FAMILY：Consolas; COLOR：＃999999; mso-fareast-font-family：Consolas; mso-bidi-font-family：Consolas"> </ SPAN> <SPAN
+style = "mso-list：Ignore"> <FONTface =宋体> 7。</ FONT> <SPAN
+style = "FONT：7pt" Times New Roman ""> </ SPAN> </ SPAN> </ SPAN> <SPAN
+class = pun> <SPAN lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃666600; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box"> <SPAN
+style = "BOX-SIZING：border-box"> {</ SPAN> </ SPAN> </ SPAN> <SPAN lang = EN-US
+style = "FONT-FAMILY：Consolas; COLOR：＃999999"> <o：p> </ o：p> </ SPAN> </ P>
+<Pクラス= l7
+style = "BACKGROUND：#eeeeee; MARGIN：0cm 0cm 0cm 36pt; TEXT-INDENT：-18pt; mso-list：l0 level1 lfo1; tab-stops：list 36.0pt"> <SPAN
+lang = EN-US
+style = "FONT-FAMILY：Consolas; COLOR：＃999999; mso-fareast-font-family：Consolas; mso-bidi-font-family：Consolas"> </ SPAN> <SPAN
+style = "mso-list：Ignore"> <FONTface =宋体> 8。</ FONT> <SPAN
+style = "FONT：7pt" Times New Roman ""> </ SPAN> </ SPAN> </ SPAN> <SPAN
+class = str> <SPAN lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃008800; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box"> <SPAN
+style = "BOX-SIZING：border-box"> "downloadLinks" </ SPAN> </ SPAN> </ SPAN> <SPAN
+class = pun> <SPAN lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃666600; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box">：[]、</ SPAN> </ SPAN> </ SPAN> <SPAN lang = EN-US
+style = "FONT-FAMILY：Consolas; COLOR：＃999999"> <o：p> </ o：p> </ SPAN> </ P>
+<Pクラス= l8
+style = "MARGIN：0cm 0cm 0cm 36pt; TEXT-INDENT：-18pt; mso-list：l0 level1 lfo1; tab-stops：list 36.0pt"> <SPAN
+lang = EN-US
+style = "FONT-FAMILY：Consolas; COLOR：＃999999; mso-fareast-font-family：Consolas; mso-bidi-font-family：Consolas"> </ SPAN> <SPAN
+style = "mso-list：Ignore"> <FONTface =宋体> 9。</ FONT> <SPAN
+style = "FONT：7pt" Times New Roman ""> </ SPAN> </ SPAN> </ SPAN> <SPAN
+class = str> <SPAN lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃008800; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box"> <SPAN
+style = "BOX-SIZING：border-box"> "mp4File" </ SPAN> </ SPAN> </ SPAN> <SPAN
+class = pun> <SPAN lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃666600; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box">：</ SPAN> </ SPAN> </ SPAN> <SPAN class = str> <SPAN
+lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext1pt;色：＃008800; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING-LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <スパン
+style = "BOX-SIZING：border-box"> "VIXENアルベルトには2人のゴージャスな愛人エメリーがいます
+＆Eveline.mp4 "</ SPAN> </ SPAN> </ SPAN> <SPAN lang = EN-US
+style = "FONT-FAMILY：Consolas; COLOR：＃999999"> <o：p> </ o：p> </ SPAN> </ P>
+<Pクラス= l9
+style = "BACKGROUND：#eeeeee; MARGIN：0cm 0cm 0cm 36pt; TEXT-INDENT：-18pt; mso-list：l0 level1 lfo1; tab-stops：list 36.0pt"> <SPAN
+lang = EN-US
+style = "FONT-FAMILY：Consolas; COLOR：＃999999; mso-fareast-font-family：Consolas; mso-bidi-font-family：Consolas"> </ SPAN> <SPAN
+style = "mso-list：Ignore"> <FONTface =宋体> 10。</ FONT> <SPAN
+style = "FONT：7pt" Times New Roman ""> </ SPAN> </ SPAN> </ SPAN> <SPAN class = pun> <SPAN
+lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃666600; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box"> <SPAN
+style = "BOX-SIZING：border-box">} </ SPAN> </ SPAN> </ SPAN> <SPAN lang = EN-US
+style = "FONT-FAMILY：Consolas; COLOR：＃999999"> <o：p> </ o：p> </ SPAN> </ P>
+<Pクラス= l0
+style = "MARGIN：0cm 0cm 0cm 36pt; TEXT-INDENT：-18pt; mso-list：l0 level1 lfo1; tab-stops：list 36.0pt"> <SPAN
+lang = EN-US
+style = "FONT-FAMILY：Consolas; COLOR：＃999999; mso-fareast-font-family：Consolas; mso-bidi-font-family：Consolas"> </ SPAN> <SPAN
+style = "mso-list：Ignore"> <FONTface =宋体> 11。</ FONT> <SPAN
+style = "FONT：7pt" Times New Roman ""> </ SPAN> </ SPAN> </ SPAN> <SPAN class = pun> <SPAN
+lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃666600; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box"> <SPAN
+style = "BOX-SIZING：border-box">]、</ SPAN> </ SPAN> </ SPAN> <SPAN lang = EN-US
+style = "FONT-FAMILY：Consolas; COLOR：＃999999"> <o：p> </ o：p> </ SPAN> </ P>
+<Pクラス= l1
+style = "BACKGROUND：#eeeeee; MARGIN：0cm 0cm 0cm 36pt; TEXT-INDENT：-18pt; mso-list：l0 level1 lfo1; tab-stops：list 36.0pt"> <SPAN
+lang = EN-US
+style = "FONT-FAMILY：Consolas; COLOR：＃999999; mso-fareast-font-family：Consolas; mso-bidi-font-family：Consolas"> </ SPAN> <SPAN
+style = "mso-list：Ignore"> <FONTface =宋体> 12。</ FONT> <SPAN
+style = "FONT：7pt" Times New Roman ""> </ SPAN> </ SPAN> </ SPAN> <SPAN class = str> <SPAN
+lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃008800; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box"> <SPAN
+style = "BOX-SIZING：border-box"> "タグ" </ SPAN> </ SPAN> </ SPAN> <SPAN class = pun> <SPAN
+lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃666600; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box">：</ SPAN> </ SPAN> </ SPAN> <SPAN class = str> <SPAN
+lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃008800; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box"> "vixen、threesome、brunette、blowjob、riding、reverse-cowgirl、missionary、doggystyle、facial、cum-in-mouth、cum-swapping、deepthroat、double-blowjob、3some "</ SPAN> </ SPAN> </ SPAN> <SPAN
+class = pun> <SPAN lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃666600; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box">、</ SPAN> </ SPAN> </ SPAN> <SPAN lang = EN-US
+style = "FONT-FAMILY：Consolas; COLOR：＃999999"> <o：p> </ o：p> </ SPAN> </ P>
+<Pクラス= l2
+style = "MARGIN：0cm 0cm 0cm 36pt; TEXT-INDENT：-18pt; mso-list：l0 level1 lfo1; tab-stops：list 36.0pt"> <SPANlang = EN-US
+style = "FONT-FAMILY：Consolas; COLOR：＃999999; mso-fareast-font-family：Consolas; mso-bidi-font-family：Consolas"> </ SPAN> <SPAN
+style = "mso-list：Ignore"> <FONTface =宋体> 13。</ FONT> <SPAN
+style = "FONT：7pt" Times New Roman ""> </ SPAN> </ SPAN> </ SPAN> <SPAN class = str> <SPAN
+lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃008800; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box"> <SPAN
+style = "BOX-SIZING：border-box"> "カテゴリ" </ SPAN> </ SPAN> </ SPAN> <SPAN
+class = pun> <SPAN lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃666600; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box">：</ SPAN> </ SPAN> </ SPAN> <SPAN class = str> <SPAN
+lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃008800; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box"> "Blowjob、Brunette、FFM、HD-Porn、Pornstar、Threesome" </ SPAN> </ SPAN> </ SPAN> <SPAN
+class = pun> <SPAN lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃666600; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box">、</ SPAN> </ SPAN> </ SPAN> <SPAN lang = EN-US
+style = "FONT-FAMILY：Consolas; COLOR：＃999999"> <o：p> </ o：p> </ SPAN> </ P>
+<Pクラス= l3
+style = "BACKGROUND：#eeeeee; MARGIN：0cm 0cm 0cm 36pt; TEXT-INDENT：-18pt; mso-list：l0 level1 lfo1; tab-stops：list 36.0pt"> <SPAN
+lang = EN-US
+style = "FONT-FAMILY：Consolas; COLOR：＃999999; mso-fareast-font-family：Consolas; mso-bidi-font-family：Consolas"> </ SPAN> <SPAN
+style = "mso-list：Ignore"> <FONTface =宋体> 14。</ FONT> <SPAN
+style = "FONT：7pt" Times New Roman ""> </ SPAN> </ SPAN> </ SPAN> <SPAN class = str> <SPAN
+lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃008800; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box"> <SPAN
+style = "BOX-SIZING：border-box"> "title" </ SPAN> </ SPAN> </ SPAN> <SPAN class = pun> <SPAN
+lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃666600; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box">：</ SPAN> </ SPAN> </ SPAN> <SPAN class = str> <SPAN
+lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃008800; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box"> "VIXENアルベルトには2人のゴージャスな愛人エメリーがいます
+＆Eveline "</ SPAN> </ SPAN> </ SPAN> <SPAN lang = EN-US
+style = "FONT-FAMILY：Consolas; COLOR：＃999999"> <o：p> </ o：p> </ SPAN> </ P>
+<Pクラス= l4
+style = "MARGIN：0cm 0cm 0cm 36pt; TEXT-INDENT：-18pt; mso-list：l0 level1 lfo1; tab-stops：list 36.0pt"> <SPAN
+lang = EN-US
+style = "FONT-FAMILY：Consolas; COLOR：＃999999; mso-fareast-font-family：Consolas; mso-bidi-font-family：Consolas"> </ SPAN> <SPAN
+style = "mso-list：Ignore"> <FONTface =宋体> 15。</ FONT> <SPAN
+style = "FONT：7pt" Times New Roman ""> </ SPAN> </ SPAN> </ SPAN> <SPAN class = pun> <SPAN
+lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃666600; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box"> <SPAN
+style = "BOX-SIZING：border-box">} </ SPAN> </ SPAN> </ SPAN> <SPANlang = EN-US
+style = "FONT-FAMILY：Consolas; COLOR：＃999999"> <o：p> </ o：p> </ SPAN> </ P>
+<Pクラス= l5
+style = "BACKGROUND：#eeeeee; MARGIN：0cm 0cm 0cm 36pt; TEXT-INDENT：-18pt; mso-list：l0 level1 lfo1; tab-stops：list 36.0pt"> <SPAN
+lang = EN-US
+style = "FONT-FAMILY：Consolas; COLOR：＃999999; mso-fareast-font-family：Consolas; mso-bidi-font-family：Consolas"> <SPAN
+style = "mso-list：Ignore"> 16. <SPAN style = "FONT：7pt" Times New Roman "">
+</ SPAN> </ SPAN> </ SPAN> <SPAN class = pun> <SPAN lang = EN-US
+style = "BORDER-TOP：windowtext 1pt; FONT-FAMILY：sans-serif; BORDER-RIGHT：windowtext 1pt; BORDER-BOTTOM：windowtext 1pt; COLOR：＃666600; PADDING-BOTTOM：0cm; PADDING-TOP：0cm; PADDING -LEFT：0cm; BORDER-LEFT：windowtext 1pt; PADDING-RIGHT：0cm; mso-border-alt：none windowtext 0cm "> <SPAN
+style = "BOX-SIZING：border-box">} </ SPAN> </ SPAN> </ SPAN> <SPAN lang = EN-US
+style = "FONT-FAMILY：Consolas; COLOR：＃999999"> <o：p> </ o：p> </ SPAN> </ P>
+<P class = MsoNormal style = "MARGIN：0cm"> <SPAN lang = EN-US
+style = "FONT-SIZE：12pt"> <o：p> <FONT face = equal line> </ FONT> </ o：p> </ SPAN> </ P>
+<P class = MsoNormal style = "MARGIN：0cm"> <SPAN lang = EN-US
+style = "FONT-SIZE：12pt"> <o：p> <FONT face = equal line> </ FONT> </ o：p> </ SPAN> </ P>
+<H4>ビデオリンク抽出：</ H4>
+<P>一部のWebサイトのダウンロードリンクは動画情報ページから直接抽出できないため、この手順は不要です。この手順を再度追加します。ビデオ情報ページでダウンロード情報を直接抽出できる場合は、この手順は不要です。システムがこのステップを検出した場合（つまり、内部のJavaScriptコードが空でない場合）、ダウンロードリンクのコンテンツに情報抽出ページを返し、ブラウザで直接開いてから、対応するJavaScriptを実行してに戻ります。実際のダウンロードリンク。データ構造は比較的単純です。次のJSONの例を参照してください。なお、ウェブサイトは多数ありますので、ダウンロードを防ぐため、リクエストヘッダーに制限を設けています。例えば、リファラー値の内容を指定する必要があります。その場合は、requestHeadersに正しく設定してください。 。これらの値は次のようになりますダウンロードリクエストは同時にウェブサイトに送信されます。 </ P>
+<OL>
+  <LI>
+  <DIVクラス= L0
+  style = "LIST-STYLE-TYPE：decimal; BOX-SIZING：border-box; PADDING-BOTTOM：0px; PADDING-TOP：0px; PADDING-LEFT：0px; MARGIN：0px; PADDING-RIGHT：0px"> <CODE
+  class = lang-json
+  style = "BOX-SIZING：border-box; FONT-SIZE：14px; BORDER-TOP：medium none; FONT-FAMILY：" YaHei Consolas Hybrid "、Consolas、" Meiryo UI "、" Malgun Gothic "、" Segoe UI " 、 "Trebuchet MS"、Helvetica、モノスペース、モノスペース;ボーダー-右：ミディアムなし;バックグラウンド：0px 0px;ボーダー-ボトム：ミディアムなし;カラー：rgb（153,153,153）;パディング-ボトム：0px;パディング-トップ：0px; PADDING-LEFT：0px; BORDER-LEFT：medium none; MARGIN：0px; DISPLAY：inline; PADDING-RIGHT：0px; border-radius：3px; overlay-wrap：normal "> <SPAN
+  class = pun
+  style = "BOX-SIZING：border-box; FONT-FAMILY：" Microsoft YaHei "、Microsoft YaHei、" Hiragino Sans GB "、STXihei、Chinese fine black、STHeiti、RobotoDraft、Roboto、" Helvetica Neue "、Helvetica、Tahoma、 "Droid Sans"、 "wenquanyi micro hei"、FreeSans、Arimo、Arial、SimSun、Times New Roman、Heiti、Heiti、sans-serif;色：rgb（102,102,0）; PADDING-BOTTOM：0px; PADDING-TOP： 0px; PADDING-LEFT：0px; MARGIN：0px; PADDING-RIGHT：0px "> <FONT
+  size = 3 face = Arial> {</ FONT> </ SPAN> </ CODE> </ DIV> </ LI>
+  <LI>
+  <DIVクラス= L1
+  style = "LIST-STYLE-TYPE：decimal; BOX-SIZING：border-box; Background：rgb（238,238,238）; PADDING-BOTTOM：0px; PADDING-TOP：0px; PADDING-LEFT：0px; MARGIN：0px; PADDING-右：0px "> <CODE
+  class = lang-json
+  style = "BOX-SIZING：border-box; FONT-SIZE：14px; BORDER-TOP：medium none; FONT-FAMILY：" YaHei Consolas Hybrid "、Consolas、" Meiryo UI "、" Malgun Gothic "、" Segoe UI " 、 "Trebuchet MS"、Helvetica、モノスペース、モノスペース;ボーダー-右：ミディアムなし;バックグラウンド：0px 0px;ボーダー-ボトム：ミディアムなし;カラー：rgb（153,153,153）;パディング-ボトム：0px;パディング-トップ：0px; PADDING-LEFT：0px; BORDER-LEFT：medium none; MARGIN：0px; DISPLAY：inline; PADDING-RIGHT：0px; border-radius：3px; overlay-wrap：normal "> <SPAN
+  class = pln
+  style = "BOX-SIZING：border-box; FONT-FAMILY：" Microsoft YaHei "、Microsoft YaHei、" Hiragino Sans GB "、STXihei、Chinese fine black、STHeiti、RobotoDraft、Roboto、" Helvetica Neue "、Helvetica、Tahoma、 "Droid Sans"、 "wenquanyi micro hei"、FreeSans、Arimo、Arial、SimSun、Times New Roman、Heiti、Heiti、sans-serif;色：rgb（0,0,0）; PADDING-BOTTOM：0px; PADDING- TOP：0px; PADDING-LEFT：0px; MARGIN：0px; PADDING-RIGHT：0px "> </ SPAN> <FONT
+  size = 3> <FONT face = Arial> <SPAN class = str
+  style = "BOX-SIZING：border-box; FONT-FAMILY：" Microsoft YaHei "、Microsoft YaHei、" Hiragino Sans GB "、STXihei、Chinese fine black、STHeiti、RobotoDraft、Roboto、" Helvetica Neue "、Helvetica、Tahoma、 "Droid Sans"、 "wenquanyi micro hei"、FreeSans、Arimo、Arial、SimSun、Times New Roman、Heiti、Heiti、sans-serif;色：rgb（0,136,0）; PADDING-BOTTOM：0px; PADDING-TOP： 0px; PADDING-LEFT：0px; MARGIN：0px; PADDING-RIGHT：0px ">" requestHeaders "</ SPAN> <SPAN
+  class = pun
+  style = "BOX-SIZING：border-box; FONT-FAMILY：" Microsoft YaHei "、Microsoft YaHei、" Hiragino Sans GB "、STXihei、Chinese fine black、STHeiti、RobotoDraft、Roboto、" Helvetica Neue "、Helvetica、Tahoma、 「DroidSans」、「wenquanyi micro hei」、FreeSans、Arimo、Arial、SimSun、Times New Roman、Heiti、Heiti、sans-serif;色：rgb（102,102,0）; PADDING-BOTTOM：0px; PADDING-TOP：0px; PADDING-LEFT：0px; MARGIN：0px ; PADDING -RIGHT：0px ">：{</ SPAN> </ FONT> </ FONT> </ CODE> </ DIV> </ LI>
+  <LI>
+  <DIVクラス= L2
+  style = "LIST-STYLE-TYPE：decimal; BOX-SIZING：border-box; PADDING-BOTTOM：0px; PADDING-TOP：0px; PADDING-LEFT：0px; MARGIN：0px; PADDING-RIGHT：0px"> <CODE
+  class = lang-json
+  style = "BOX-SIZING：border-box; FONT-SIZE：14px; BORDER-TOP：medium none; FONT-FAMILY：" YaHei Consolas Hybrid "、Consolas、" Meiryo UI "、" Malgun Gothic "、" Segoe UI " 、 "Trebuchet MS"、Helvetica、モノスペース、モノスペース;ボーダー-右：ミディアムなし;バックグラウンド：0px 0px;ボーダー-ボトム：ミディアムなし;カラー：rgb（153,153,153）;パディング-ボトム：0px;パディング-トップ：0px; PADDING-LEFT：0px; BORDER-LEFT：medium none; MARGIN：0px; DISPLAY：inline; PADDING-RIGHT：0px; border-radius：3px; overlay-wrap：normal "> <SPAN
+  class = pln
+  style = "BOX-SIZING：border-box; FONT-FAMILY：" Microsoft YaHei "、Microsoft YaHei、" Hiragino Sans GB "、STXihei、Chinese fine black、STHeiti、RobotoDraft、Roboto、" Helvetica Neue "、Helvetica、Tahoma、 "Droid Sans"、 "wenquanyi micro hei"、FreeSans、Arimo、Arial、SimSun、Times New Roman、Heiti、Heiti、sans-serif;色：rgb（0,0,0）; PADDING-BOTTOM：0px; PADDING- TOP：0px; PADDING-LEFT：0px; MARGIN：0px; PADDING-RIGHT：0px "> </ SPAN> <FONT
+  size = 3> <FONT face = Arial> <SPAN class = str
+  style = "BOX-SIZING：border-box; FONT-FAMILY：" Microsoft YaHei "、Microsoft YaHei、" Hiragino Sans GB "、STXihei、Chinese fine black、STHeiti、RobotoDraft、Roboto、" Helvetica Neue "、Helvetica、Tahoma、 "Droid Sans"、 "wenquanyi micro hei"、FreeSans、Arimo、Arial、SimSun、Times New Roman、Heiti、Heiti、sans-serif;色：rgb（0,136,0）; PADDING-BOTTOM：0px; PADDING-TOP： 0px; PADDING-LEFT：0px; MARGIN：0px; PADDING-RIGHT：0px ">"参照者 "</ SPAN> <SPAN
+  class = pun
+  style = "BOX-SIZING：border-box; FONT-FAMILY：" Microsoft YaHei "、Microsoft YaHei、" Hiragino Sans GB "、STXihei、Chinese fine black、STHeiti、RobotoDraft、Roboto、" Helvetica Neue "、Helvetica、Tahoma、 "Droid Sans"、 "wenquanyi micro hei"、FreeSans、Arimo、Arial、SimSun、Times New Roman、Heiti、Heiti、sans-serif;色：rgb（102,102,0）; PADDING-BOTTOM：0px; PADDING-TOP： 0px; PADDING-LEFT：0px; MARGIN：0px; PADDING-RIGHT：0px ">：</ SPAN> <SPAN
+  class = str
+  style = "BOX-SIZING：border-box; FONT-FAMILY：" Microsoft YaHei "、Microsoft YaHei、" Hiragino Sans GB "、STXihei、Chinese fine black、STHeiti、RobotoDraft、Roboto、" Helvetica Neue "、Helvetica、Tahoma、 "Droid Sans"、 "wenquanyi micro hei"、FreeSans、Arimo、Arial、SimSun、Times New Roman、Heiti、Heiti、sans-serif;色：rgb（0,136,0）; PADDING-BOTTOM：0px; PADDING-TOP： 0px; PADDING-LEFT：0px; MARGIN：0px; PADDING-RIGHT：0px ">" https://dood.sh/ "</ SPAN> </ FONT> </ FONT> </ CODE> </ DIV> < / LI>
+  <LI>
+  <DIVクラス= L3
+  style = "LIST-STYLE-TYPE：decimal; BOX-SIZING：border-box; Background：rgb（238,238,238）; PADDING-BOTTOM：0px; PADDING-TOP：0px; PADDING-LEFT：0px; MARGIN：0px; PADDING-右：0px "> <CODE
+  class = lang-json
+  style = "BOX-SIZING：border-box; FONT-SIZE：14px; BORDER-TOP：medium none; FONT-FAMILY：" YaHei Consolas Hybrid "、Consolas、" Meiryo UI "、" Malgun Gothic "、" Segoe UI " 、 "Trebuchet MS"、Helvetica、モノスペース、モノスペース;ボーダー-右：ミディアムなし;バックグラウンド：0px 0px;ボーダー-ボトム：ミディアムなし;カラー：rgb（153,153,153）;パディング-ボトム：0px;パディング-トップ：0px; PADDING-LEFT：0px; BORDER-LEFT：medium none; MARGIN：0px; DISPLAY：inline; PADDING-RIGHT：0px; border-radius：3px; overlay-wrap：normal "> <SPAN
+  class = pln
+  style = "BOX-SIZING：border-box; FONT-FAMILY：" Microsoft YaHei "、Microsoft YaHei、" Hiragino Sans GB "、STXihei、Chinese fine black、STHeiti、RobotoDraft、Roboto、" Helvetica Neue "、Helvetica、Tahoma、 "Droid Sans"、 "wenquanyi micro hei"、FreeSans、Arimo、Arial、SimSun、Times New Roman、Heiti、Heiti、sans-serif;色：rgb（0,0,0）; PADDING-BOTTOM：0px; PADDING- TOP：0px; PADDING-LEFT：0px; MARGIN：0px; PADDING-RIGHT：0px "> </ SPAN> <SPAN
+  class = pun
+  style = "BOX-SIZING：border-box; FONT-FAMILY：" Microsoft YaHei "、Microsoft YaHei、" Hiragino Sans GB "、STXihei、Chinese fine black、STHeiti、RobotoDraft、Roboto、" Helvetica Neue "、Helvetica、Tahoma、 "Droid Sans"、 "wenquanyi micro hei"、FreeSans、Arimo、Arial、SimSun、Times New Roman、Heiti、Heiti、sans-serif;色：rgb（102,102,0）; PADDING-BOTTOM：0px; PADDING-TOP： 0px; PADDING-LEFT：0px; MARGIN：0px; PADDING-RIGHT：0px "> <FONT
+  size = 3 face = Arial>}、</ FONT> </ SPAN> </ CODE> </ DIV> </ LI>
+  <LI>
+  <DIVクラス= L4
+  style = "LIST-STYLE-TYPE：decimal; BOX-SIZING：border-box; PADDING-BOTTOM：0px; PADDING-TOP：0px; PADDING-LEFT：0px; MARGIN：0px; PADDING-RIGHT：0px"> <CODE
+  class = lang-json
+  style = "BOX-SIZING：border-box; FONT-SIZE：14px;BORDER-TOP：ミディアムなし; FONT-FAMILY： "YaHei Consolas Hybrid"、Consolas、 "Meiryo UI"、 "Malgun Gothic"、 "Segoe UI"、 "Trebuchet MS"、Helvetica、モノスペース、モノスペース; BORDER-RIGHT：ミディアムnone;背景：0px 0px; BORDER-BOTTOM：medium none; COLOR：rgb（153,153,153）; PADDING-BOTTOM：0px; PADDING-TOP：0px; PADDING-LEFT：0px; BORDER-LEFT：medium none; MARGIN：0px;表示：インライン;パディング-右：0px;ボーダー-半径：3px;オーバーフロー-ラップ：通常 "> <SPAN
+  class = pln
+  style = "BOX-SIZING：border-box; FONT-FAMILY：" Microsoft YaHei "、Microsoft YaHei、" Hiragino Sans GB "、STXihei、Chinese fine black、STHeiti、RobotoDraft、Roboto、" Helvetica Neue "、Helvetica、Tahoma、 "Droid Sans"、 "wenquanyi micro hei"、FreeSans、Arimo、Arial、SimSun、Times New Roman、Heiti、Heiti、sans-serif;色：rgb（0,0,0）; PADDING-BOTTOM：0px; PADDING- TOP：0px; PADDING-LEFT：0px; MARGIN：0px; PADDING-RIGHT：0px "> </ SPAN> <FONT
+  size = 3> <FONT face = Arial> <SPAN class = str
+  style = "BOX-SIZING：border-box; FONT-FAMILY：" Microsoft YaHei "、Microsoft YaHei、" Hiragino Sans GB "、STXihei、Chinese fine black、STHeiti、RobotoDraft、Roboto、" Helvetica Neue "、Helvetica、Tahoma、 "Droid Sans"、 "wenquanyi micro hei"、FreeSans、Arimo、Arial、SimSun、Times New Roman、Heiti、Heiti、sans-serif;色：rgb（0,136,0）; PADDING-BOTTOM：0px; PADDING-TOP： 0px; PADDING-LEFT：0px; MARGIN：0px; PADDING-RIGHT：0px ">" downloadUrl "</ SPAN> <SPAN
+  class = pun
+  style = "BOX-SIZING：border-box; FONT-FAMILY：" Microsoft YaHei "、Microsoft YaHei、" Hiragino Sans GB "、STXihei、Chinese fine black、STHeiti、RobotoDraft、Roboto、" Helvetica Neue "、Helvetica、Tahoma、 "Droid Sans"、 "wenquanyi micro hei"、FreeSans、Arimo、Arial、SimSun、Times New Roman、Heiti、Heiti、sans-serif;色：rgb（102,102,0）; PADDING-BOTTOM：0px; PADDING-TOP： 0px; PADDING-LEFT：0px; MARGIN：0px; PADDING-RIGHT：0px ">：</ SPAN> <SPAN
+  class = str
+  style = "BOX-SIZING：border-box; FONT-FAMILY：" Microsoft YaHei "、Microsoft YaHei、" Hiragino Sans GB "、STXihei、Chinese fine black、STHeiti、RobotoDraft、Roboto、" Helvetica Neue "、Helvetica、Tahoma、 "Droid Sans"、 "wenquanyi micro hei"、FreeSans、Arimo、Arial、SimSun、Times New Roman、Heiti、Heiti、sans-serif;色：rgb（0,136,0）; PADDING-BOTTOM：0px; PADDING-TOP： 0px; PADDING-LEFT：0px; MARGIN：0px; PADDING-RIGHT：0px ">" https://fi141l.dood.video/u5kj72sgqtglsdgge5teejyrjuqlvldhxe6d4krrbishghexpud4jbz4ppwsqpq/c3x8ztoir640&#039; / LI>
+  <LI>
+  <DIVクラス= L5
+  style = "LIST-STYLE-TYPE：decimal; BOX-SIZING：border-box; Background：rgb（238,238,238）; PADDING-BOTTOM：0px; PADDING-TOP：0px; PADDING-LEFT：0px; MARGIN：0px; PADDING-右：0px "> <CODE
+  class = lang-json
+  style = "BOX-SIZING：border-box; FONT-SIZE：14px; BORDER-TOP：medium none; FONT-FAMILY：" YaHei Consolas Hybrid "、Consolas、" Meiryo UI "、" Malgun Gothic "、" Segoe UI " 、 "Trebuchet MS"、Helvetica、モノスペース、モノスペース;ボーダー-右：ミディアムなし;バックグラウンド：0px 0px;ボーダー-ボトム：ミディアムなし;カラー：rgb（153,153,153）;パディング-ボトム：0px;パディング-トップ：0px; PADDING-LEFT：0px; BORDER-LEFT：medium none; MARGIN：0px; DISPLAY：inline; PADDING-RIGHT：0px; border-radius：3px; overlay-wrap：normal "> <SPAN
+  class = pun
+  style = "BOX-SIZING：border-box; FONT-FAMILY：" Microsoft YaHei "、Microsoft YaHei、" Hiragino Sans GB "、STXihei、Chinese fine black、STHeiti、RobotoDraft、Roboto、" Helvetica Neue "、Helvetica、Tahoma、 "Droid Sans"、 "wenquanyi micro hei"、FreeSans、Arimo、Arial、SimSun、Times New Roman、Heiti、Heiti、sans-serif;色：rgb（102,102,0）; PADDING-BOTTOM：0px; PADDING-TOP： 0px; PADDING-LEFT：0px; MARGIN：0px; PADDING-RIGHT：0px "> <FONT
+  size = 3 face = Arial>} </ FONT> </ SPAN> </ CODE> </ DIV> </ LI> </ OL> </ SPAN>
+<P> </ P>
+<P> </ P> </ BODY> </ HTML>

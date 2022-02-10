@@ -1,0 +1,154 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD><TITLE>FAQ</TITLE>
+<META content="text/html; charset=unicode" http-equiv=Content-Type>
+<META name=GENERATOR content="MSHTML 11.00.10570.1001"></HEAD>
+<BODY>
+
+<h3>FAQ</h3>
+<h4>Compared with Youtbe-dl, what are the characteristics of this software, or why do users use it?</h4>
+<ol>
+<li>Youtbe-dl is a very good software, but it is only a software without a GUI, so for ordinary users, it is necessary to install an additional software with a GUI interface for easy use.</li>
+<li>This software brings a complete GUI operation interface to facilitate video management, and it can also directly generate Youtube-dl download instructions.</li>
+<li>Youtbe-dl is developed in python language. I hope to lower the threshold even more. By executing JS directly in the browser, the threshold can be lowered even more.</li>
+</ol>
+<h4>Why can't I update some video information?</h4>
+<ol>
+<li>There may be a problem with the page of some videos. For example, the website has deleted it, or for other reasons, it is really helpless for the program.</li>
+<li>Sometimes, because the speed of updating the video is too frequent, the website may be suspended. In this case, you can wait another 24 hours, and open the corresponding site resolver at the same time, and adjust the interval appropriately.</li>
+<li>Generally speaking, if the visit is suspended by the website, the program will try to find this situation and try to give a prompt. You can pay more attention to the prompt information.</li>
+</ol>
+<h4>Why can't I download some videos?</h4>
+<p>Generally, videos that cannot be downloaded will have an error message. You can pay attention to the message. There are mainly the following possibilities:</p>
+<ol>
+<li>If the corresponding resolution is specified in the preferences, then if a video does not have that resolution, it will not be downloaded. In response to this problem, you can try to allow more resolutions to be downloaded (by default, only the two common formats, 720P and 1080P, are turned on).</li>
+<li>The link of some website videos will be invalid. In this case, even if the program automatically tries multiple sources, there is really no way to download it.</li>
+<li>Some video sites may have stricter measures to prevent downloading. If you encounter this situation, <a href="https://github.com/aquariusStudio/cicada/issues">you can click here to submit feedback</a>, I will try to solve it.</li>
+</ol>
+<h4>Why do I need ffmpeg?</h4>
+<ol>
+<li>Many websites use HLS (or M3U8) streaming media solutions, so thousands of small files are actually downloaded. These files need to be converted into corresponding media files, which are needed for conversion. ffmpeg.</li>
+<li>ffmpeg can also be used to download HLS streaming media and generate individual files.</li>
+<li>You can visit <a href="http://www.ffmpeg.org/">ffmpeg's official website</a> to get the corresponding version.</li>
+</ol>
+<h4>Why can't I watch some videos after downloading?</h4>
+<ol>
+<li>First check whether your computer or mobile phone can play various local media normally. If you are sure that it can, please check online to see whether the video can play normally (the videos of many video websites will also become invalid or only available to members).</li>
+<li>There may be part of the wrong content during the download process. After deleting the video, try to download it again to see if it can be played.</li>
+<li>Because the HLS protocol is more complicated, I am not too familiar with the content of streaming media, so for some HLS protocol streaming media, it may not be downloaded correctly, and I will try to solve this problem in the future. You can use other software to download by generating external links (such as N_m3u8DL and ffmpeg can download HLS media files, you can visit the official <a href="https://github.com/nilaoda/N_m3u8DL-CLI">N_m3u8DL</a> Website, get the corresponding version).</li>
+<li>If none of the above methods can be played, you can try to use the method of generating a download link to download the video with an external download tool to see if it can be played. If the problem is solved in this way, <a href="https://github.com/aquariusStudio/cicada/issues">you can click here to submit feedback</a>, I will try to solve it.</li>
+</ol>
+<h4>After copying some links, why can’t I access them in the browser or download them with other software?</h4>
+<ol>
+<li>Many video websites make links dynamic for reasons such as advertisements or clicks. After a certain period of time, or visits with non-designated IP, the link will become invalid.</li>
+<li>For some websites, a lot of checks are used when downloading. For example, the Referer in the request must be from the specified source. In this case, only Aria2 supports specifying Referer. You can try to generate a link to Aria2 and use Aria2 to download.</li>
+<li>Due to the limitation of personal technical level, when using Java ssl certificate to visit some websites, the links obtained are dedicated and cannot be used in browsers or other downloading software. In response to this situation, you can try to generate a list of download links (in this case, the browser's SSL access will be called to generate dynamic links to ensure that they are available).</li>
+</ol>
+<h4>In addition to using JS for extension, are there other extension solutions?</h4>
+<ol>
+<li>Groovy can be used, but considering the workload of development and testing, it has not been added. If there is a large demand, Groovy support will be added in the future.</li>
+</ol>
+<h4>When the machine configuration is good, why sometimes it feels like stuck?</h4>
+<ol>
+<li>If you turn on the function of automatically refreshing the video list and video information in the background, it may be caused by the background refresh (the browser is also running in the UI thread), which will bring some feeling of stuck. In view of this situation, you can consider only turning on the automatic refresh video list and turning off the automatic refresh video information function. This will only occupy resources in a small amount of time after startup. The disadvantage is that the video information is not complete and it is not easy to search. You can also consider specifically allowing the software to refresh the historical data automatically or manually in idle time, and then turn on the automatic video refresh function. This way, the refresh speed is very fast for websites that generally only add dozens or hundreds of videos a day. There will be no performance problems.</li>
+</ol>
+<h4>Why do some browser advertisement windows pop up sometimes?</h4>
+<ol>
+<li>Under Windows, please open the Internet option, in the "Privacy" tab, select "Enable pop-up blocker", and then use the "Settings" button to set the "Blocking level" to "High" in the pop-up window. Basically block the vast majority of pop-up windows.</li>
+<li>After the above settings, advertising windows will not pop up under normal circumstances, but many video sites contain a large number of advertisements. Although the program has worked hard to block these advertisements to prevent pop-up windows, it cannot be completely avoided. If this occurs In case, you can close the window directly. If it is very frequent, you can consider abandoning this video site, or <a href="https://github.com/aquariusStudio/cicada/issues">You can click here to submit feedback</a>, I will try to solve it.</li>
+</ol>
+<h4>Why do some browser warning windows pop up sometimes?</h4>
+<ol>
+<li>Under Windows, please open the Internet options, in the "Advanced" tab window, the security sub-item has a "does not match the certificate address" and uncheck it.</li>
+<li>Sometimes some web pages contain both https and http content. For IE browser, you need to define the current security mode in security. There is a "mixed mode", please select "enable", if you confirm the access information If the page does not need to be mixed, you can also try "disable", but please don't choose the default "prompt", which will cause the dialog box to pop up constantly.</li>
+</ol>
+<h4>What is the specific core of the browser used, and the compatibility when writing JS?</h4>
+<ol>
+<li>The software supports two browser kernels, which are the default browser provided by SWT for display (IE on the Windows platform, Webkit on the Linux platform) and EdgeWebView2 based on the Chromium kernel (available only on Windows) , And need to install the runtime library of WebView2, <a href="https://developer.microsoft.com/microsoft-edge/webview2/">click here to download and install the runtime library of WebView2</a>).</li>
+<li>Under normal circumstances, the default browsing and display video list provided by SWT is used, as well as to parse web pages and execute JS.</li>
+<li>Under normal circumstances, it is not recommended to use EdgeWebView2 based on the Chromium kernel. One is that additional software is required, and the other is that EdgeWebView2 occupies too many resources (preliminary estimates require 1-2G more memory than the default browser).</li>
+<li>If you must use EdgeWebView2, for example, Youtube no longer supports IE12, then set it in the preferences (after the setting is complete, it is recommended to restart the program). To</li>
+<li>Even if EdgeWebView2 is enabled, the default browser kernel will still be used to display the video list. This is because Eclipse's current support for EdgeWebView2 is not complete, such as the inability to inject menus in the Edge browser.</li>
+<li>If you want to use Edge to display the video list, you can start Cicada through the command line "cicada -vmargs -Dorg.eclipse.swt.browser.DefaultType=edge" and force EdgeWebView2 as the default browser.</li>
+<li>When writing JS, try to consider the compatibility of IE/Webkit/Chromium.</li>
+</ol>
+<h4>Can EdgeWebView2 use Chrome extensions?</h4>
+<ol>
+<li>On the Windows platform, although the name of the WebView2 launcher is "msedgewebview2.exe", it is not Edge. The current Microsoft official statement is that extensions are not supported.</li>
+<li>If one day in the future, it will support Chrome or Edge's own extensions. Based on past experience, directly visit [Edge's official extension site](https://microsoftedge.microsoft.com/addons/Microsoft-Edge- Extensions-Home) or <a href="https://chrome.google.com/webstore/category/extensions">Chrome's official extension site</a>, just install it.</li>
+</ol>
+<h4>What version of JRE do I need to use?</h4>
+<ol>
+<li>It has been tested in several major major versions, such as JDK8, JDK11 and JDK17.</li>
+<li>But if you want to use the Edge browser, you must use JDK11 and JDK17, because Eclipse supports Edge only at version 4.19 and above, and 4.19 requires JDK11 or above.</li>
+<li>If you are limited to JDK8, you can also use the Eclipse 4.9 version, so you can't use the Edge browser, which may cause some websites, such as Youtube, to not be supported correctly.</li>
+</ol>
+<h4>Why use Java?</h4>
+<ol>
+<li>I personally use Java more, and it's better cross-platform.</li>
+<li>Use SWT because neither Swing nor Javafx can provide a convenient and easy-to-use browser component with better compatibility.</li>
+<li>I have tested selenium, but if you need to open multiple instances for multi-threaded access, it takes up resources too much and it is not easy to share the Session. Although Tab is supported, it cannot be accessed by multiple threads and is not easy to use.</li>
+<li>I have tried the browser engine (based on Webkit) with Qt, the compatibility is not good, and the availability of many websites is not even as good as IE.</li>
+<li>CEF is a Chromium-based cross-platform solution, but its compatibility is also very poor. There have been multiple crashes during the verification process.</li>
+<li>C# cannot be cross-platform, and IE is also used by default. If you use WebView2, it still consumes resources very much.</li>
+</ol>
+<h4>The configuration is wrong, what should I do?</h4>
+<ol>
+<li>Each setting of the preferences has a "restore default value" function, click to restore the initial value.</li>
+</ol>
+<h4>Why do some websites have pictures when viewed in the browser, but do not display normal pictures in the property view?</h4>
+<ol>
+<li>Because some websites may use pictures in a special format, and Java has not officially supported pictures in this format, it can only be displayed through the browser, but cannot be displayed in the view.</li>
+<li>A variety of common formats such as Webp have been supported. If this is still the case, you can send the address and make corrections.</li>
+</ol>
+<h4>How to use proxy?</h4>
+<ol>
+<li>Sorry, the official support proxy is not currently supported, because it involves the Java program, the browser that comes with SWT and the Edge browser. It is difficult for a single Java program to correctly set up a proxy server for all three of them at the same time ( Involving system permissions and other issues), follow-up will try to solve this problem.</li>
+<li>If there is such a demand, provide a temporary solution, first through the command line "cicada -vmargs -Duser.language=en -Dhttp.proxyHost=127.0.0.1 -Dhttp.proxyPort=1080 -Dhttps.proxyHost=127.0. 0.1 -Dhttps.proxyPort=1080" to start Cicada, please replace "127.0.01" and "1080" in the example with the real proxy address and port, so that the Java program can use the proxy server. Finally, find the configuration of IE or Webkit in the system (if you use Edge, you also need to modify Edge), and use the same proxy server as above.</li>
+</ol>
+<h4>Why sometimes the program cannot be closed normally, or it still runs in the background after it is closed?</h4>
+<ol>
+<li>At present, it is found that there is a bug in the integration of Edge and SWT, that is, if the browser is closed while executing JS script, it may cause deadlock (earlier Eclipse 4.17 also supported CEF, and this problem also exists, so SWT has Chromium will no longer be supported in the follow-up). The author has tried his best to avoid this kind of deadlock, but there may be potential problems in this area, and there will still be a few cases.</li>
+<li>If this happens frequently, you can consider disabling Edge (some websites may not support IE, so some video websites may not work properly).</li>
+<li>If you find that the "cicada" process is still running for a long time (a few minutes) after exiting, it is recommended to kill the process.</li>
+</ol>
+<h4>The interface displayed by the browser is not easy to use, can it be customized?</h4>
+<p>Sorry, as a programmer, I am extremely unfamiliar with the front-end of HTML+JS, so any programmer who is familiar with the front-end can try to modify the contents of the Workspace/config/site directory under the Cicada directory to customize the display interface. <a href="siteDefine.html">Detailed instructions can be found here. </a></p>
+<h4>Why is multi-threaded download set up, but only one or two threads are used for downloading?</h4>
+<ol>
+<li>While downloading, the file will be segmented. If the size of one download segment exceeds the length of the entire file, only one thread will be used to download. For example, the default size of the download segment is 200M. If the file to be downloaded is only 100M, the program will only enable one thread. If you want to use more threads, you can set the download segment to 50M or even less, but this is not recommended.</li>
+<li>When the program downloads, if it finds that some websites do not allow multi-threaded download, it will automatically switch to single-threaded.</li>
+</ol>
+<h4>How to switch the interface language?</h4>
+<p>Currently four languages ​​(Simplified Chinese, Traditional Chinese, English, Japanese) are provided, and the current system language is used by default. If the current system language is not among these four languages, English will be used. If you want to specify a specific language, you can start Cicada through the command line "cicada -vmargs -Duser.language=en", where "-Duser.language=en" specifies the language as English. The corresponding code for simplified Chinese is "zh_CN", the corresponding code for traditional Chinese is "zh_TW", the corresponding code for English is "en", and the code corresponding to Japanese is "ja".</p>
+<h4>How to backup data?</h4>
+<p>All current data is saved in the Workspace directory of the program by default. You only need to copy the entire directory to complete the backup, as well as the restore.</p>
+<h4>Why is there only a browser and no tables?</h4>
+<ol>
+<li>The table uses NatTable, if it is not installed correctly, only the browser will be displayed.</li>
+<li>The default version comes with NatTable. If you pack it yourself, please make sure to bring NatTable.</li>
+</ol>
+<h4>How to update the script?</h4>
+<ol>
+<li>If you get a script developed by others from the community or other sources, you only need to find the parser directory in the Workspace directory of the program, create a new directory based on the corresponding site name, and place the corresponding files in it. Please ensure that the structure is consistent with other sources. The directory is similar.</li>
+<li>After copying is complete, restart Cicada.</li>
+</ol>
+<h4>How to install the latest version?</h4>
+<ol>
+<li>Download the latest version directly from the official website.</li>
+<li>You can delete the contents other than the Workspace directory in the original directory and unzip it.</li>
+</ol>
+<h4>Some functions of Linux are invalid, such as double-clicking or deleting files?</h4>
+<ol>
+<li>This may be because the installed JDK does not have sufficient permissions. It is recommended to use sudo to install the JDK to ensure its permissions.</li>
+</ol>
+<h4>Why is there no automatic upgrade function?</h4>
+<ol>
+<li>Mainly because of limited energy, if subsequent users increase, I will add this feature.</li>
+</ol>
+<h4>Why is there no Mac version?</h4>
+<ol>
+<li>Because I personally don't have a Mac laptop, there is no way to test it.</li>
+<li>If anyone is interested in providing the Mac version, you can contact me <a href="mailto:aquarius.github@gmail.com">aquarius.github@gmail.com</a>.</li>
+</ol>
+
+</BODY></HTML>

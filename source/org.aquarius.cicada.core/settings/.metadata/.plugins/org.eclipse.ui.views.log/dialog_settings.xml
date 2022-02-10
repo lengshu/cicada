@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="org.eclipse.ui.internal.views.log.LogView">
+		<item key="useLimit" value="true"/>
+		<item key="limit" value="50"/>
+		<item key="info" value="false"/>
+		<item key="ok" value="false"/>
+		<item key="warning" value="false"/>
+		<item key="error" value="true"/>
+		<item key="allSessions" value="true"/>
+	</section>
+</section>

@@ -1,0 +1,31 @@
+{
+	"checkDuplicationCount":1,
+	"enable":true,
+	"mainPage":"https://www.porntube.com/",
+	"movieChannelList":[
+		{
+			"autoRefreshDetail":true,
+			"autoRefreshList":true,
+			"name":"sasha-grey",
+			"nlsDisplayName":"sasha-grey",
+			"supportPaging":true,
+			"urlPattern":"https://www.porntube.com/pornstars/sasha-grey?p={0}"
+		},
+		{
+			"autoRefreshDetail":true,
+			"autoRefreshList":true,
+			"name":"club-seventeen",
+			"nlsDisplayName":"club-seventeen",
+			"supportPaging":true,
+			"urlPattern":"https://www.porntube.com/channels/club-seventeen?p={0}&sort=date"
+		}
+	],
+	"siteName":"porntube.com",
+	"supportAlbum":false,
+	"supportImport":true,
+	"supportJumpToLast":true,
+	"supportMultiDownloadSource":false,
+	"supportPaging":true,
+	"validPeriod":360,
+	"waitTime":12
+}

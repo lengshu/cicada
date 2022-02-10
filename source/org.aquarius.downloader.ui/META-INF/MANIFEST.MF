@@ -1,0 +1,22 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Aquarius Downloader Ui
+Bundle-SymbolicName: org.aquarius.downloader.ui;singleton:=true
+Bundle-Version: 0.1
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.ui,
+ org.aquarius.downloader.core,
+ org.aquarius.util,
+ org.aquarius.library,
+ org.aquarius.ui,
+ org.aquarius.log,
+ org.aquarius.nebula,
+ org.aquarius.service
+Automatic-Module-Name: org.aquarius.downloader.ui
+Bundle-Localization: plugin
+Bundle-Vendor: aquarius.github@gmail.com
+Bundle-ClassPath: .
+Export-Package: org.aquarius.downloader.ui,
+ org.aquarius.downloader.ui.view
+Bundle-Activator: org.aquarius.downloader.ui.DownloadActivator
+Bundle-ActivationPolicy: lazy

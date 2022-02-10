@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            allowMultiple="false"
+            category="org.eclipse.ui"
+            class="org.aquarius.downloader.ui.view.DownloadView"
+            icon="icons/download.png"
+            id="org.aquarius.downloader.ui.view.DownloadView"
+            inject="false"
+            name="%Download">
+      </view>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="org.aquarius.downloader.ui.page.DownloadConfigurationPreferencePage"
+            id="org.aquarius.downloader.ui.page"
+            name="%Download">
+      </page>
+   </extension>
+
+
+</plugin>

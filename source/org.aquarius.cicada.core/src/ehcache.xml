@@ -1,0 +1,26 @@
+<ehcache> 
+  <diskStore path="user.dir/workspace/cache"/> 
+  <defaultCache 
+     eternal="true" 
+     maxElementsInMemory="1200"
+     diskPersistent="true"
+     timeToIdleSeconds="10368000" 
+     timeToLiveSeconds="10368000" 
+     diskExpiryThreadIntervalSeconds="10368000" 
+     diskSpoolBufferSizeMB="200"
+     overflowToDisk="true"
+     memoryStoreEvictionPolicy="LRU"> 
+  </defaultCache> 
+  
+  <cache   name = "main"   
+     eternal="true" 
+     maxElementsInMemory="1200"
+     diskPersistent="true"
+     timeToIdleSeconds="10368000" 
+     timeToLiveSeconds="10368000" 
+     diskExpiryThreadIntervalSeconds="10368000" 
+     diskSpoolBufferSizeMB="1000"
+     overflowToDisk="true"
+     memoryStoreEvictionPolicy="LRU"> 
+  </cache> 
+</ehcache>

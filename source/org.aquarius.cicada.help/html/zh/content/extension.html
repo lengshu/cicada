@@ -1,0 +1,719 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML xmlns:o = 
+"urn:schemas-microsoft-com:office:office"><HEAD><TITLE>扩展说明</TITLE>
+<META content="text/html; charset=unicode" http-equiv=Content-Type>
+<META name=GENERATOR content="MSHTML 11.00.10570.1001"></HEAD>
+<BODY>
+<H3>扩展说明</H3>
+<P>本软件主要提供了视频站点分析（导入视频列表和下载视频）功能，接下来会结合图来详细说明如何扩展。</P>
+<P>为了用户自己开发扩展，本软件提供了一个编辑器，可以通过"操作-&gt;创建视频解析器"这个入口创建一个全新的视频解析器来支持新的视频站点，对于已经存在的视频站点，则可以通过"操作-&gt;编辑视频解析器"这个入口来编辑。</P>
+<P>编辑器有三个基本的标签页，分别是基本信息/视频列表导入/视频下载分析，下面依次讲解。</P>
+<H4>基本信息：</H4>
+<OL>
+  <LI>支持多集：是很多视频网站把连续剧当作一个视频，因此下载时，并不只是一个文件，而是多个文件。 
+  <LI>等待时间：很多视频网站为了避免爬虫或者攻击，会限制在指定时间内，比如1秒内只能访问多少次，由于有图片等资源，所以一般把这个等待时间设置为5秒。如果用户确认某网站不存在这个限制，可以设置为2-3秒（不建议低于2秒，因为浏览器也需要较长时间来加载资源和执行脚本）。 
+
+  <LI>动态链接：很多视频网站为了避免下载，或者为了让观众观看广告，使用了动态链接，即链接只在指定时间内对指定地址有效（或者指定用户），超过指定时间后，需要重新解析。这个时间每个站点都不同，但正常下载，3个小时足够下载完一部片子，所以默认值设为180分钟。 
+
+  <LI>支持分页：有些网站，如Youtube，它是使用动态加载，所以会在单一页面加载完所有视频列表，但有些网站则是采用分页的方式，请根据实际情况选择。 
+  <LI>频道管理：它并非必要，如果你只是要单个下载视频，可以忽略它。但如果你想将视频导入本地，进行查询或者管理，此项就是必须的。一个频道由一个名称和一个链接组成。名称是用来给用户自己看的，所以可以随便命名，不重复即可。而链接则比较复杂，它可能类似于<A 
+  href="https://www.youtube.com/playlist?list=PLBWhfR_7BXduiTdH-9sM5c6z7p3n8hll8">https://www.youtube.com/playlist?list=PLBWhfR_7BXduiTdH-9sM5c6z7p3n8hll8</A>（不支持分页），或者<A 
+  href="https://www.pornhub.com/channels/vixen/videos?o=da&amp;page={0">https://www.pornhub.com/channels/vixen/videos?o=da&amp;page={0</A>}（支持分页） 
+
+  <LI>Cookie：普通用户没有必要设置这个，它可能涉及到语言选择或者登录等。普通用户如果有这类需求，建议保存完，直接使用菜单"更新浏览器-&gt;指定站点"这个入口，它会直接弹出一个浏览器，让用户进行登录或者选择语言。高级用户甚至可以直接在自己的JS代码里做各种设置。 
+  </LI></OL>
+<H4>
+<P class=l0 
+style="MARGIN: 0cm 0cm 0cm 36pt; TEXT-INDENT: -18pt; mso-list: l0 level1 lfo1; tab-stops: list 36.0pt"><SPAN 
+class=pun><SPAN class=pun><SPAN lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #666600; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box"></SPAN></SPAN></SPAN><SPAN lang=EN-US 
+style="FONT-FAMILY: Consolas; COLOR: #999999"><o:p></o:p></SPAN>&nbsp;</P>
+<P class=MsoNormal style="MARGIN: 0cm"><SPAN lang=EN-US 
+style="FONT-SIZE: 12pt"><o:p><FONT face=等线>&nbsp;<IMG style="WIDTH: 100%" 
+border=0 hspace=0 alt="" src="../../images/editSiteParser.png" width=1917 
+align=baseline height=1019></FONT></o:p></SPAN></P></SPAN></H4>
+<H4>&nbsp;</H4>
+<H4>导入列表：</H4>
+<OL>
+  <LI>中间的浏览器：在开发时，应当先在浏览器打开你要测试的视频列表网站，当在左侧完成脚本后，可以直接点击"执行"按钮，左侧的脚本会在当前的浏览器中执行，并将结果显示在右侧的数据视图中。 
+
+  <LI>左侧的脚本：是用来查询当前页面的视频列表，它如果被正确执行，会返回一个JSON的数据结构体，这个数据结构参见下面的JSON示例。 
+  <LI>右侧的数据视图：用来展示脚本的执行结果，如果返回值是一个合法的JSON数据结构，会以树的结构展示出来，方便查看。如果返回值不是一个合法的JSON数据结构，会将错误信息显示在文本框中。 
+
+  <LI>由于个人能力实在有限，没法提供代码的调试及开发时的提示功能，建议先在Chrome等浏览器中测试脚本成功后，直接复制过来。程序默认使用Chromium内核执行JS，但允许用户关闭默认的浏览器内核，而使用SWT自带的浏览器（Windows上为IE，Linux上为WebKit），所以请关注JS语法上的区别（如果可以，建议兼容）。</LI></OL>
+<P class=l0 
+style="MARGIN: 0cm 0cm 0cm 36pt; TEXT-INDENT: -18pt; mso-list: l0 level1 lfo1; tab-stops: list 36.0pt"><SPAN 
+lang=EN-US 
+style="FONT-FAMILY: Consolas; COLOR: #999999; mso-fareast-font-family: Consolas; mso-bidi-font-family: Consolas"><SPAN 
+style="mso-list: Ignore">1.<SPAN style='FONT: 7pt "Times New Roman"'>&nbsp; 
+</SPAN></SPAN></SPAN><SPAN class=pun><SPAN lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #666600; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm">{</SPAN></SPAN></SPAN><SPAN 
+lang=EN-US style="FONT-FAMILY: Consolas; COLOR: #999999"><o:p></o:p></SPAN></P>
+<P class=l1 
+style="BACKGROUND: #eeeeee; MARGIN: 0cm 0cm 0cm 36pt; TEXT-INDENT: -18pt; mso-list: l0 level1 lfo1; tab-stops: list 36.0pt"><SPAN 
+lang=EN-US 
+style="FONT-FAMILY: Consolas; COLOR: #999999; mso-fareast-font-family: Consolas; mso-bidi-font-family: Consolas"></SPAN><SPAN 
+style="mso-list: Ignore"><FONT face=宋体>2.</FONT><SPAN 
+style='FONT: 7pt "Times New Roman"'>&nbsp; </SPAN></SPAN></SPAN><SPAN 
+class=str><SPAN lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #008800; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box"><SPAN 
+style="BOX-SIZING: border-box">"lastPageUrl"</SPAN></SPAN></SPAN><SPAN 
+class=pun><SPAN lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #666600; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box">:</SPAN></SPAN></SPAN><SPAN class=pln><SPAN 
+lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: black; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box"> </SPAN></SPAN><SPAN class=str></SPAN><SPAN 
+lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #008800; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box">"https://www.pornhub.com/channels/vixen/videos?page=10"</SPAN></SPAN></SPAN><SPAN 
+class=pun><SPAN lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #666600; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box">,</SPAN></SPAN></SPAN><SPAN lang=EN-US 
+style="FONT-FAMILY: Consolas; COLOR: #999999"><o:p></o:p></SPAN></P>
+<P class=l2 
+style="MARGIN: 0cm 0cm 0cm 36pt; TEXT-INDENT: -18pt; mso-list: l0 level1 lfo1; tab-stops: list 36.0pt"><SPAN 
+lang=EN-US 
+style="FONT-FAMILY: Consolas; COLOR: #999999; mso-fareast-font-family: Consolas; mso-bidi-font-family: Consolas"></SPAN><SPAN 
+style="mso-list: Ignore"><FONT face=宋体>3.</FONT><SPAN 
+style='FONT: 7pt "Times New Roman"'>&nbsp; </SPAN></SPAN></SPAN><SPAN 
+class=str><SPAN lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #008800; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box"><SPAN 
+style="BOX-SIZING: border-box">"nextPageUrl"</SPAN></SPAN></SPAN><SPAN 
+class=pun><SPAN lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #666600; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box">:</SPAN></SPAN></SPAN><SPAN class=pln><SPAN 
+lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: black; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box"> </SPAN></SPAN><SPAN class=str></SPAN><SPAN 
+lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #008800; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box">"https://www.pornhub.com/channels/vixen/videos?page=3"</SPAN></SPAN></SPAN><SPAN 
+class=pun><SPAN lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #666600; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box">,</SPAN></SPAN></SPAN><SPAN lang=EN-US 
+style="FONT-FAMILY: Consolas; COLOR: #999999"><o:p></o:p></SPAN></P>
+<P class=l3 
+style="BACKGROUND: #eeeeee; MARGIN: 0cm 0cm 0cm 36pt; TEXT-INDENT: -18pt; mso-list: l0 level1 lfo1; tab-stops: list 36.0pt"><SPAN 
+lang=EN-US 
+style="FONT-FAMILY: Consolas; COLOR: #999999; mso-fareast-font-family: Consolas; mso-bidi-font-family: Consolas"></SPAN><SPAN 
+style="mso-list: Ignore"><FONT face=宋体>4.</FONT><SPAN 
+style='FONT: 7pt "Times New Roman"'>&nbsp; </SPAN></SPAN></SPAN><SPAN 
+class=str><SPAN lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #008800; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box"><SPAN 
+style="BOX-SIZING: border-box">"previousPageUrl"</SPAN></SPAN></SPAN><SPAN 
+class=pun><SPAN lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #666600; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box">:</SPAN></SPAN></SPAN><SPAN class=pln><SPAN 
+lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: black; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box"> </SPAN></SPAN><SPAN class=str></SPAN><SPAN 
+lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #008800; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box">"https://www.pornhub.com/channels/vixen/videos"</SPAN></SPAN></SPAN><SPAN 
+class=pun><SPAN lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #666600; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box">,</SPAN></SPAN></SPAN><SPAN lang=EN-US 
+style="FONT-FAMILY: Consolas; COLOR: #999999"><o:p></o:p></SPAN></P>
+<P class=l4 
+style="MARGIN: 0cm 0cm 0cm 36pt; TEXT-INDENT: -18pt; mso-list: l0 level1 lfo1; tab-stops: list 36.0pt"><SPAN 
+lang=EN-US 
+style="FONT-FAMILY: Consolas; COLOR: #999999; mso-fareast-font-family: Consolas; mso-bidi-font-family: Consolas"></SPAN><SPAN 
+style="mso-list: Ignore"><FONT face=宋体>5.</FONT><SPAN 
+style='FONT: 7pt "Times New Roman"'>&nbsp; </SPAN></SPAN></SPAN><SPAN 
+class=str><SPAN lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #008800; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box"><SPAN 
+style="BOX-SIZING: border-box">"totalPageCount"</SPAN></SPAN></SPAN><SPAN 
+class=pun><SPAN lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #666600; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box">:</SPAN></SPAN></SPAN><SPAN class=pln><SPAN 
+lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: black; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box"> </SPAN></SPAN><SPAN class=lit></SPAN><SPAN 
+lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #006666; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box">10</SPAN></SPAN></SPAN><SPAN class=pun><SPAN 
+lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #666600; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box">,</SPAN></SPAN></SPAN><SPAN lang=EN-US 
+style="FONT-FAMILY: Consolas; COLOR: #999999"><o:p></o:p></SPAN></P>
+<P class=l5 
+style="BACKGROUND: #eeeeee; MARGIN: 0cm 0cm 0cm 36pt; TEXT-INDENT: -18pt; mso-list: l0 level1 lfo1; tab-stops: list 36.0pt"><SPAN 
+lang=EN-US 
+style="FONT-FAMILY: Consolas; COLOR: #999999; mso-fareast-font-family: Consolas; mso-bidi-font-family: Consolas"></SPAN><SPAN 
+style="mso-list: Ignore"><FONT face=宋体>6.</FONT><SPAN 
+style='FONT: 7pt "Times New Roman"'>&nbsp; </SPAN></SPAN></SPAN><SPAN 
+class=str><SPAN lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #008800; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box"><SPAN 
+style="BOX-SIZING: border-box">"totalMovieCount"</SPAN></SPAN></SPAN><SPAN 
+class=pun><SPAN lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #666600; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box">:</SPAN></SPAN></SPAN><SPAN class=pln><SPAN 
+lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: black; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box"> </SPAN></SPAN><SPAN class=str></SPAN><SPAN 
+lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #008800; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box">"344"</SPAN></SPAN></SPAN><SPAN class=pun><SPAN 
+lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #666600; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box">,</SPAN></SPAN></SPAN><SPAN lang=EN-US 
+style="FONT-FAMILY: Consolas; COLOR: #999999"><o:p></o:p></SPAN></P>
+<P class=l6 
+style="MARGIN: 0cm 0cm 0cm 36pt; TEXT-INDENT: -18pt; mso-list: l0 level1 lfo1; tab-stops: list 36.0pt"><SPAN 
+lang=EN-US 
+style="FONT-FAMILY: Consolas; COLOR: #999999; mso-fareast-font-family: Consolas; mso-bidi-font-family: Consolas"></SPAN><SPAN 
+style="mso-list: Ignore"><FONT face=宋体>7.</FONT><SPAN 
+style='FONT: 7pt "Times New Roman"'>&nbsp; </SPAN></SPAN></SPAN><SPAN 
+class=str><SPAN lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #008800; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box"><SPAN 
+style="BOX-SIZING: border-box">"movieList"</SPAN></SPAN></SPAN><SPAN 
+class=pun><SPAN lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #666600; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box">:</SPAN></SPAN></SPAN><SPAN class=pln><SPAN 
+lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: black; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box"> </SPAN></SPAN><SPAN class=pun></SPAN><SPAN 
+lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #666600; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box">[{</SPAN></SPAN></SPAN><SPAN lang=EN-US 
+style="FONT-FAMILY: Consolas; COLOR: #999999"><o:p></o:p></SPAN></P>
+<P class=l7 
+style="BACKGROUND: #eeeeee; MARGIN: 0cm 0cm 0cm 36pt; TEXT-INDENT: -18pt; mso-list: l0 level1 lfo1; tab-stops: list 36.0pt"><SPAN 
+lang=EN-US 
+style="FONT-FAMILY: Consolas; COLOR: #999999; mso-fareast-font-family: Consolas; mso-bidi-font-family: Consolas"></SPAN><SPAN 
+style="mso-list: Ignore"><FONT face=宋体>8.</FONT><SPAN 
+style='FONT: 7pt "Times New Roman"'>&nbsp; </SPAN></SPAN></SPAN><SPAN 
+class=str><SPAN lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #008800; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box"><SPAN 
+style="BOX-SIZING: border-box">"duration"</SPAN></SPAN></SPAN><SPAN 
+class=pun><SPAN lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #666600; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box">:</SPAN></SPAN></SPAN><SPAN class=pln><SPAN 
+lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: black; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box"> </SPAN></SPAN><SPAN class=str></SPAN><SPAN 
+lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #008800; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box">"00:12:35"</SPAN></SPAN></SPAN><SPAN 
+class=pun><SPAN lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #666600; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box">,</SPAN></SPAN></SPAN><SPAN lang=EN-US 
+style="FONT-FAMILY: Consolas; COLOR: #999999"><o:p></o:p></SPAN></P>
+<P class=l8 
+style="MARGIN: 0cm 0cm 0cm 36pt; TEXT-INDENT: -18pt; mso-list: l0 level1 lfo1; tab-stops: list 36.0pt"><SPAN 
+lang=EN-US 
+style="FONT-FAMILY: Consolas; COLOR: #999999; mso-fareast-font-family: Consolas; mso-bidi-font-family: Consolas"></SPAN><SPAN 
+style="mso-list: Ignore"><FONT face=宋体>9.</FONT><SPAN 
+style='FONT: 7pt "Times New Roman"'>&nbsp; </SPAN></SPAN></SPAN><SPAN 
+class=str><SPAN lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #008800; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box"><SPAN 
+style="BOX-SIZING: border-box">"imageUrl"</SPAN></SPAN></SPAN><SPAN 
+class=pun><SPAN lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #666600; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box">:</SPAN></SPAN></SPAN><SPAN class=pln><SPAN 
+lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: black; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box"> </SPAN></SPAN><SPAN class=str></SPAN><SPAN 
+lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #008800; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box">"https://di.phncdn.com/videos/202103/29/385839441/original/(m=eafTGgaaaa)(mh=tJZIlUcJe1Us4N4e)12.jpg"</SPAN></SPAN></SPAN><SPAN 
+class=pun><SPAN lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #666600; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box">,</SPAN></SPAN></SPAN><SPAN lang=EN-US 
+style="FONT-FAMILY: Consolas; COLOR: #999999"><o:p></o:p></SPAN></P>
+<P class=l9 
+style="BACKGROUND: #eeeeee; MARGIN: 0cm 0cm 0cm 36pt; TEXT-INDENT: -18pt; mso-list: l0 level1 lfo1; tab-stops: list 36.0pt"><SPAN 
+lang=EN-US 
+style="FONT-FAMILY: Consolas; COLOR: #999999; mso-fareast-font-family: Consolas; mso-bidi-font-family: Consolas"></SPAN><SPAN 
+style="mso-list: Ignore"><FONT face=宋体>10.</FONT><SPAN 
+style='FONT: 7pt "Times New Roman"'> </SPAN></SPAN></SPAN><SPAN class=str><SPAN 
+lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #008800; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box"><SPAN 
+style="BOX-SIZING: border-box">"pageUrl"</SPAN></SPAN></SPAN><SPAN 
+class=pun><SPAN lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #666600; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box">:</SPAN></SPAN></SPAN><SPAN class=pln><SPAN 
+lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: black; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box"> </SPAN></SPAN><SPAN class=str></SPAN><SPAN 
+lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #008800; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box">"https://www.pornhub.com/view_video.php?viewkey=ph60617f5f88f3c"</SPAN></SPAN></SPAN><SPAN 
+class=pun><SPAN lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #666600; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box">,</SPAN></SPAN></SPAN><SPAN lang=EN-US 
+style="FONT-FAMILY: Consolas; COLOR: #999999"><o:p></o:p></SPAN></P>
+<P class=l0 
+style="MARGIN: 0cm 0cm 0cm 36pt; TEXT-INDENT: -18pt; mso-list: l0 level1 lfo1; tab-stops: list 36.0pt"><SPAN 
+lang=EN-US 
+style="FONT-FAMILY: Consolas; COLOR: #999999; mso-fareast-font-family: Consolas; mso-bidi-font-family: Consolas"></SPAN><SPAN 
+style="mso-list: Ignore"><FONT face=宋体>11.</FONT><SPAN 
+style='FONT: 7pt "Times New Roman"'> </SPAN></SPAN></SPAN><SPAN class=str><SPAN 
+lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #008800; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box"><SPAN 
+style="BOX-SIZING: border-box">"title"</SPAN></SPAN></SPAN><SPAN class=pun><SPAN 
+lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #666600; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box">:</SPAN></SPAN></SPAN><SPAN class=pln><SPAN 
+lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: black; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box"> </SPAN></SPAN><SPAN class=str></SPAN><SPAN 
+lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #008800; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box">"VIXEN Alberto has two gorgeous mistresses Emelie 
+&amp; Eveline"</SPAN></SPAN></SPAN><SPAN lang=EN-US 
+style="FONT-FAMILY: Consolas; COLOR: #999999"><o:p></o:p></SPAN></P>
+<P class=l1 
+style="BACKGROUND: #eeeeee; MARGIN: 0cm 0cm 0cm 36pt; TEXT-INDENT: -18pt; mso-list: l0 level1 lfo1; tab-stops: list 36.0pt"><SPAN 
+lang=EN-US 
+style="FONT-FAMILY: Consolas; COLOR: #999999; mso-fareast-font-family: Consolas; mso-bidi-font-family: Consolas"></SPAN><SPAN 
+style="mso-list: Ignore"><FONT face=宋体>12.</FONT><SPAN 
+style='FONT: 7pt "Times New Roman"'> </SPAN></SPAN></SPAN><SPAN class=pun><SPAN 
+lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #666600; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box"><SPAN 
+style="BOX-SIZING: border-box">},</SPAN></SPAN></SPAN><SPAN class=pln><SPAN 
+lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: black; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box"> </SPAN></SPAN><SPAN class=pun></SPAN><SPAN 
+lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #666600; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box">{</SPAN></SPAN></SPAN><SPAN lang=EN-US 
+style="FONT-FAMILY: Consolas; COLOR: #999999"><o:p></o:p></SPAN></P>
+<P class=l2 
+style="MARGIN: 0cm 0cm 0cm 36pt; TEXT-INDENT: -18pt; mso-list: l0 level1 lfo1; tab-stops: list 36.0pt"><SPAN 
+lang=EN-US 
+style="FONT-FAMILY: Consolas; COLOR: #999999; mso-fareast-font-family: Consolas; mso-bidi-font-family: Consolas"></SPAN><SPAN 
+style="mso-list: Ignore"><FONT face=宋体>13.</FONT><SPAN 
+style='FONT: 7pt "Times New Roman"'> </SPAN></SPAN></SPAN><SPAN class=str><SPAN 
+lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #008800; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box"><SPAN 
+style="BOX-SIZING: border-box">"duration"</SPAN></SPAN></SPAN><SPAN 
+class=pun><SPAN lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #666600; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box">:</SPAN></SPAN></SPAN><SPAN class=pln><SPAN 
+lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: black; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box"> </SPAN></SPAN><SPAN class=str></SPAN><SPAN 
+lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #008800; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box">"00:12:38"</SPAN></SPAN></SPAN><SPAN 
+class=pun><SPAN lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #666600; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box">,</SPAN></SPAN></SPAN><SPAN lang=EN-US 
+style="FONT-FAMILY: Consolas; COLOR: #999999"><o:p></o:p></SPAN></P>
+<P class=l3 
+style="BACKGROUND: #eeeeee; MARGIN: 0cm 0cm 0cm 36pt; TEXT-INDENT: -18pt; mso-list: l0 level1 lfo1; tab-stops: list 36.0pt"><SPAN 
+lang=EN-US 
+style="FONT-FAMILY: Consolas; COLOR: #999999; mso-fareast-font-family: Consolas; mso-bidi-font-family: Consolas"></SPAN><SPAN 
+style="mso-list: Ignore"><FONT face=宋体>14.</FONT><SPAN 
+style='FONT: 7pt "Times New Roman"'> </SPAN></SPAN></SPAN><SPAN class=str><SPAN 
+lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #008800; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box"><SPAN 
+style="BOX-SIZING: border-box">"imageUrl"</SPAN></SPAN></SPAN><SPAN 
+class=pun><SPAN lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #666600; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box">:</SPAN></SPAN></SPAN><SPAN class=pln><SPAN 
+lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: black; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box"> </SPAN></SPAN><SPAN class=str></SPAN><SPAN 
+lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #008800; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box">"https://di.phncdn.com/videos/202103/19/385357081/original/(m=eafTGgaaaa)(mh=cCztdW7mG_FFzyx4)11.jpg"</SPAN></SPAN></SPAN><SPAN 
+class=pun><SPAN lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #666600; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box">,</SPAN></SPAN></SPAN><SPAN lang=EN-US 
+style="FONT-FAMILY: Consolas; COLOR: #999999"><o:p></o:p></SPAN></P>
+<P class=l4 
+style="MARGIN: 0cm 0cm 0cm 36pt; TEXT-INDENT: -18pt; mso-list: l0 level1 lfo1; tab-stops: list 36.0pt"><SPAN 
+lang=EN-US 
+style="FONT-FAMILY: Consolas; COLOR: #999999; mso-fareast-font-family: Consolas; mso-bidi-font-family: Consolas"></SPAN><SPAN 
+style="mso-list: Ignore"><FONT face=宋体>15.</FONT><SPAN 
+style='FONT: 7pt "Times New Roman"'> </SPAN></SPAN></SPAN><SPAN class=str><SPAN 
+lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #008800; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box"><SPAN 
+style="BOX-SIZING: border-box">"pageUrl"</SPAN></SPAN></SPAN><SPAN 
+class=pun><SPAN lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #666600; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box">:</SPAN></SPAN></SPAN><SPAN class=pln><SPAN 
+lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: black; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box"> </SPAN></SPAN><SPAN class=str></SPAN><SPAN 
+lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #008800; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box">"https://www.pornhub.com/view_video.php?viewkey=ph60546afb3605f"</SPAN></SPAN></SPAN><SPAN 
+class=pun><SPAN lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #666600; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box">,</SPAN></SPAN></SPAN><SPAN lang=EN-US 
+style="FONT-FAMILY: Consolas; COLOR: #999999"><o:p></o:p></SPAN></P>
+<P class=l5 
+style="BACKGROUND: #eeeeee; MARGIN: 0cm 0cm 0cm 36pt; TEXT-INDENT: -18pt; mso-list: l0 level1 lfo1; tab-stops: list 36.0pt"><SPAN 
+lang=EN-US 
+style="FONT-FAMILY: Consolas; COLOR: #999999; mso-fareast-font-family: Consolas; mso-bidi-font-family: Consolas"></SPAN><SPAN 
+style="mso-list: Ignore"><FONT face=宋体>16.</FONT><SPAN 
+style='FONT: 7pt "Times New Roman"'> </SPAN></SPAN></SPAN><SPAN class=str><SPAN 
+lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #008800; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box"><SPAN 
+style="BOX-SIZING: border-box">"title"</SPAN></SPAN></SPAN><SPAN class=pun><SPAN 
+lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #666600; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box">:</SPAN></SPAN></SPAN><SPAN class=pln><SPAN 
+lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: black; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box"> </SPAN></SPAN><SPAN class=str></SPAN><SPAN 
+lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #008800; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box">"VIXEN Seductive chess-pro Vanna has all the 
+winning moves"</SPAN></SPAN></SPAN><SPAN lang=EN-US 
+style="FONT-FAMILY: Consolas; COLOR: #999999"><o:p></o:p></SPAN></P>
+<P class=l6 
+style="MARGIN: 0cm 0cm 0cm 36pt; TEXT-INDENT: -18pt; mso-list: l0 level1 lfo1; tab-stops: list 36.0pt"><SPAN 
+lang=EN-US 
+style="FONT-FAMILY: Consolas; COLOR: #999999; mso-fareast-font-family: Consolas; mso-bidi-font-family: Consolas"></SPAN><SPAN 
+style="mso-list: Ignore"><FONT face=宋体>17.</FONT><SPAN 
+style='FONT: 7pt "Times New Roman"'> </SPAN></SPAN></SPAN><SPAN class=pun><SPAN 
+lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #666600; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box"><SPAN 
+style="BOX-SIZING: border-box">}]</SPAN></SPAN></SPAN><SPAN lang=EN-US 
+style="FONT-FAMILY: Consolas; COLOR: #999999"><o:p></o:p></SPAN></P>
+<P class=l7 
+style="BACKGROUND: #eeeeee; MARGIN: 0cm 0cm 0cm 36pt; TEXT-INDENT: -18pt; mso-list: l0 level1 lfo1; tab-stops: list 36.0pt"><SPAN 
+lang=EN-US 
+style="FONT-FAMILY: Consolas; COLOR: #999999; mso-fareast-font-family: Consolas; mso-bidi-font-family: Consolas"><SPAN 
+style="mso-list: Ignore">18.<SPAN style='FONT: 7pt "Times New Roman"'> 
+</SPAN></SPAN></SPAN><SPAN class=pun><SPAN lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #666600; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box">}</SPAN></SPAN></SPAN></P></SPAN>
+<H4><IMG style="WIDTH: 100%" border=0 hspace=0 alt="" 
+src="../../images/editSiteParserList.png" width=1917 align=baseline 
+height=1019></H4>
+<H4>视频信息提取：</H4>
+<P>该功能与上面的"导入列表"类似，最大的区别就是返回的JSON数据结构体不同，参见下面的JSON示例。</P>
+<P class=l0 
+style="MARGIN: 0cm 0cm 0cm 36pt; TEXT-INDENT: -18pt; mso-list: l0 level1 lfo1; tab-stops: list 36.0pt"><SPAN 
+lang=EN-US 
+style="FONT-FAMILY: Consolas; COLOR: #999999; mso-fareast-font-family: Consolas; mso-bidi-font-family: Consolas"><SPAN 
+style="mso-list: Ignore">1.<SPAN style='FONT: 7pt "Times New Roman"'>&nbsp; 
+</SPAN></SPAN></SPAN><SPAN class=pun><SPAN lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #666600; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm">{</SPAN></SPAN></SPAN><SPAN 
+lang=EN-US style="FONT-FAMILY: Consolas; COLOR: #999999"><o:p></o:p></SPAN></P>
+<P class=l1 
+style="BACKGROUND: #eeeeee; MARGIN: 0cm 0cm 0cm 36pt; TEXT-INDENT: -18pt; mso-list: l0 level1 lfo1; tab-stops: list 36.0pt"><SPAN 
+lang=EN-US 
+style="FONT-FAMILY: Consolas; COLOR: #999999; mso-fareast-font-family: Consolas; mso-bidi-font-family: Consolas"></SPAN><SPAN 
+style="mso-list: Ignore"><FONT face=宋体>2.</FONT><SPAN 
+style='FONT: 7pt "Times New Roman"'>&nbsp; </SPAN></SPAN></SPAN><SPAN 
+class=str><SPAN lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #008800; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box"><SPAN 
+style="BOX-SIZING: border-box">"movie"</SPAN></SPAN></SPAN><SPAN class=pun><SPAN 
+lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #666600; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box">:{</SPAN></SPAN></SPAN><SPAN lang=EN-US 
+style="FONT-FAMILY: Consolas; COLOR: #999999"><o:p></o:p></SPAN></P>
+<P class=l2 
+style="MARGIN: 0cm 0cm 0cm 36pt; TEXT-INDENT: -18pt; mso-list: l0 level1 lfo1; tab-stops: list 36.0pt"><SPAN 
+lang=EN-US 
+style="FONT-FAMILY: Consolas; COLOR: #999999; mso-fareast-font-family: Consolas; mso-bidi-font-family: Consolas"></SPAN><SPAN 
+style="mso-list: Ignore"><FONT face=宋体>3.</FONT><SPAN 
+style='FONT: 7pt "Times New Roman"'>&nbsp; </SPAN></SPAN></SPAN><SPAN 
+class=str><SPAN lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #008800; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box"><SPAN 
+style="BOX-SIZING: border-box">"actor"</SPAN></SPAN></SPAN><SPAN class=pun><SPAN 
+lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #666600; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box">:</SPAN></SPAN></SPAN><SPAN class=str><SPAN 
+lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #008800; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box">"Alberto-Blanco,Eveline-Dellai,Emelie-Ekstrom"</SPAN></SPAN></SPAN><SPAN 
+class=pun><SPAN lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #666600; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box">,</SPAN></SPAN></SPAN><SPAN lang=EN-US 
+style="FONT-FAMILY: Consolas; COLOR: #999999"><o:p></o:p></SPAN></P>
+<P class=l3 
+style="BACKGROUND: #eeeeee; MARGIN: 0cm 0cm 0cm 36pt; TEXT-INDENT: -18pt; mso-list: l0 level1 lfo1; tab-stops: list 36.0pt"><SPAN 
+lang=EN-US 
+style="FONT-FAMILY: Consolas; COLOR: #999999; mso-fareast-font-family: Consolas; mso-bidi-font-family: Consolas"></SPAN><SPAN 
+style="mso-list: Ignore"><FONT face=宋体>4.</FONT><SPAN 
+style='FONT: 7pt "Times New Roman"'>&nbsp; </SPAN></SPAN></SPAN><SPAN 
+class=str><SPAN lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #008800; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box"><SPAN 
+style="BOX-SIZING: border-box">"imageUrl"</SPAN></SPAN></SPAN><SPAN 
+class=pun><SPAN lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #666600; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box">:</SPAN></SPAN></SPAN><SPAN class=str><SPAN 
+lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #008800; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box">"https://ei.phncdn.com/videos/202103/29/385839441/original/(m=eafTGgaaaa)(mh=tJZIlUcJe1Us4N4e)12.jpg?cache=2021120302"</SPAN></SPAN></SPAN><SPAN 
+class=pun><SPAN lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #666600; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box">,</SPAN></SPAN></SPAN><SPAN lang=EN-US 
+style="FONT-FAMILY: Consolas; COLOR: #999999"><o:p></o:p></SPAN></P>
+<P class=l4 
+style="MARGIN: 0cm 0cm 0cm 36pt; TEXT-INDENT: -18pt; mso-list: l0 level1 lfo1; tab-stops: list 36.0pt"><SPAN 
+lang=EN-US 
+style="FONT-FAMILY: Consolas; COLOR: #999999; mso-fareast-font-family: Consolas; mso-bidi-font-family: Consolas"></SPAN><SPAN 
+style="mso-list: Ignore"><FONT face=宋体>5.</FONT><SPAN 
+style='FONT: 7pt "Times New Roman"'>&nbsp; </SPAN></SPAN></SPAN><SPAN 
+class=str><SPAN lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #008800; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box"><SPAN 
+style="BOX-SIZING: border-box">"publishDate"</SPAN></SPAN></SPAN><SPAN 
+class=pun><SPAN lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #666600; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box">:</SPAN></SPAN></SPAN><SPAN class=str><SPAN 
+lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #008800; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box">"2021-03-29T07:21:20+00:00"</SPAN></SPAN></SPAN><SPAN 
+class=pun><SPAN lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #666600; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box">,</SPAN></SPAN></SPAN><SPAN lang=EN-US 
+style="FONT-FAMILY: Consolas; COLOR: #999999"><o:p></o:p></SPAN></P>
+<P class=l5 
+style="BACKGROUND: #eeeeee; MARGIN: 0cm 0cm 0cm 36pt; TEXT-INDENT: -18pt; mso-list: l0 level1 lfo1; tab-stops: list 36.0pt"><SPAN 
+lang=EN-US 
+style="FONT-FAMILY: Consolas; COLOR: #999999; mso-fareast-font-family: Consolas; mso-bidi-font-family: Consolas"></SPAN><SPAN 
+style="mso-list: Ignore"><FONT face=宋体>6.</FONT><SPAN 
+style='FONT: 7pt "Times New Roman"'>&nbsp; </SPAN></SPAN></SPAN><SPAN 
+class=str><SPAN lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #008800; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box"><SPAN 
+style="BOX-SIZING: border-box">"downloadInfoList"</SPAN></SPAN></SPAN><SPAN 
+class=pun><SPAN lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #666600; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box">:[</SPAN></SPAN></SPAN><SPAN lang=EN-US 
+style="FONT-FAMILY: Consolas; COLOR: #999999"><o:p></o:p></SPAN></P>
+<P class=l6 
+style="MARGIN: 0cm 0cm 0cm 36pt; TEXT-INDENT: -18pt; mso-list: l0 level1 lfo1; tab-stops: list 36.0pt"><SPAN 
+lang=EN-US 
+style="FONT-FAMILY: Consolas; COLOR: #999999; mso-fareast-font-family: Consolas; mso-bidi-font-family: Consolas"></SPAN><SPAN 
+style="mso-list: Ignore"><FONT face=宋体>7.</FONT><SPAN 
+style='FONT: 7pt "Times New Roman"'>&nbsp; </SPAN></SPAN></SPAN><SPAN 
+class=pun><SPAN lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #666600; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box"><SPAN 
+style="BOX-SIZING: border-box">{</SPAN></SPAN></SPAN><SPAN lang=EN-US 
+style="FONT-FAMILY: Consolas; COLOR: #999999"><o:p></o:p></SPAN></P>
+<P class=l7 
+style="BACKGROUND: #eeeeee; MARGIN: 0cm 0cm 0cm 36pt; TEXT-INDENT: -18pt; mso-list: l0 level1 lfo1; tab-stops: list 36.0pt"><SPAN 
+lang=EN-US 
+style="FONT-FAMILY: Consolas; COLOR: #999999; mso-fareast-font-family: Consolas; mso-bidi-font-family: Consolas"></SPAN><SPAN 
+style="mso-list: Ignore"><FONT face=宋体>8.</FONT><SPAN 
+style='FONT: 7pt "Times New Roman"'>&nbsp; </SPAN></SPAN></SPAN><SPAN 
+class=str><SPAN lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #008800; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box"><SPAN 
+style="BOX-SIZING: border-box">"downloadLinks"</SPAN></SPAN></SPAN><SPAN 
+class=pun><SPAN lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #666600; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box">:[],</SPAN></SPAN></SPAN><SPAN lang=EN-US 
+style="FONT-FAMILY: Consolas; COLOR: #999999"><o:p></o:p></SPAN></P>
+<P class=l8 
+style="MARGIN: 0cm 0cm 0cm 36pt; TEXT-INDENT: -18pt; mso-list: l0 level1 lfo1; tab-stops: list 36.0pt"><SPAN 
+lang=EN-US 
+style="FONT-FAMILY: Consolas; COLOR: #999999; mso-fareast-font-family: Consolas; mso-bidi-font-family: Consolas"></SPAN><SPAN 
+style="mso-list: Ignore"><FONT face=宋体>9.</FONT><SPAN 
+style='FONT: 7pt "Times New Roman"'>&nbsp; </SPAN></SPAN></SPAN><SPAN 
+class=str><SPAN lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #008800; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box"><SPAN 
+style="BOX-SIZING: border-box">"mp4File"</SPAN></SPAN></SPAN><SPAN 
+class=pun><SPAN lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #666600; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box">:</SPAN></SPAN></SPAN><SPAN class=str><SPAN 
+lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #008800; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box">"VIXEN Alberto has two gorgeous mistresses Emelie 
+&amp; Eveline.mp4"</SPAN></SPAN></SPAN><SPAN lang=EN-US 
+style="FONT-FAMILY: Consolas; COLOR: #999999"><o:p></o:p></SPAN></P>
+<P class=l9 
+style="BACKGROUND: #eeeeee; MARGIN: 0cm 0cm 0cm 36pt; TEXT-INDENT: -18pt; mso-list: l0 level1 lfo1; tab-stops: list 36.0pt"><SPAN 
+lang=EN-US 
+style="FONT-FAMILY: Consolas; COLOR: #999999; mso-fareast-font-family: Consolas; mso-bidi-font-family: Consolas"></SPAN><SPAN 
+style="mso-list: Ignore"><FONT face=宋体>10.</FONT><SPAN 
+style='FONT: 7pt "Times New Roman"'> </SPAN></SPAN></SPAN><SPAN class=pun><SPAN 
+lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #666600; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box"><SPAN 
+style="BOX-SIZING: border-box">}</SPAN></SPAN></SPAN><SPAN lang=EN-US 
+style="FONT-FAMILY: Consolas; COLOR: #999999"><o:p></o:p></SPAN></P>
+<P class=l0 
+style="MARGIN: 0cm 0cm 0cm 36pt; TEXT-INDENT: -18pt; mso-list: l0 level1 lfo1; tab-stops: list 36.0pt"><SPAN 
+lang=EN-US 
+style="FONT-FAMILY: Consolas; COLOR: #999999; mso-fareast-font-family: Consolas; mso-bidi-font-family: Consolas"></SPAN><SPAN 
+style="mso-list: Ignore"><FONT face=宋体>11.</FONT><SPAN 
+style='FONT: 7pt "Times New Roman"'> </SPAN></SPAN></SPAN><SPAN class=pun><SPAN 
+lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #666600; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box"><SPAN 
+style="BOX-SIZING: border-box">],</SPAN></SPAN></SPAN><SPAN lang=EN-US 
+style="FONT-FAMILY: Consolas; COLOR: #999999"><o:p></o:p></SPAN></P>
+<P class=l1 
+style="BACKGROUND: #eeeeee; MARGIN: 0cm 0cm 0cm 36pt; TEXT-INDENT: -18pt; mso-list: l0 level1 lfo1; tab-stops: list 36.0pt"><SPAN 
+lang=EN-US 
+style="FONT-FAMILY: Consolas; COLOR: #999999; mso-fareast-font-family: Consolas; mso-bidi-font-family: Consolas"></SPAN><SPAN 
+style="mso-list: Ignore"><FONT face=宋体>12.</FONT><SPAN 
+style='FONT: 7pt "Times New Roman"'> </SPAN></SPAN></SPAN><SPAN class=str><SPAN 
+lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #008800; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box"><SPAN 
+style="BOX-SIZING: border-box">"tag"</SPAN></SPAN></SPAN><SPAN class=pun><SPAN 
+lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #666600; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box">:</SPAN></SPAN></SPAN><SPAN class=str><SPAN 
+lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #008800; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box">"vixen,threesome,brunette,blowjob,riding,reverse-cowgirl,missionary,doggystyle,facial,cum-in-mouth,cum-swapping,deepthroat,double-blowjob,3some"</SPAN></SPAN></SPAN><SPAN 
+class=pun><SPAN lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #666600; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box">,</SPAN></SPAN></SPAN><SPAN lang=EN-US 
+style="FONT-FAMILY: Consolas; COLOR: #999999"><o:p></o:p></SPAN></P>
+<P class=l2 
+style="MARGIN: 0cm 0cm 0cm 36pt; TEXT-INDENT: -18pt; mso-list: l0 level1 lfo1; tab-stops: list 36.0pt"><SPAN 
+lang=EN-US 
+style="FONT-FAMILY: Consolas; COLOR: #999999; mso-fareast-font-family: Consolas; mso-bidi-font-family: Consolas"></SPAN><SPAN 
+style="mso-list: Ignore"><FONT face=宋体>13.</FONT><SPAN 
+style='FONT: 7pt "Times New Roman"'> </SPAN></SPAN></SPAN><SPAN class=str><SPAN 
+lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #008800; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box"><SPAN 
+style="BOX-SIZING: border-box">"category"</SPAN></SPAN></SPAN><SPAN 
+class=pun><SPAN lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #666600; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box">:</SPAN></SPAN></SPAN><SPAN class=str><SPAN 
+lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #008800; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box">"Blowjob,Brunette,FFM,HD-Porn,Pornstar,Threesome"</SPAN></SPAN></SPAN><SPAN 
+class=pun><SPAN lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #666600; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box">,</SPAN></SPAN></SPAN><SPAN lang=EN-US 
+style="FONT-FAMILY: Consolas; COLOR: #999999"><o:p></o:p></SPAN></P>
+<P class=l3 
+style="BACKGROUND: #eeeeee; MARGIN: 0cm 0cm 0cm 36pt; TEXT-INDENT: -18pt; mso-list: l0 level1 lfo1; tab-stops: list 36.0pt"><SPAN 
+lang=EN-US 
+style="FONT-FAMILY: Consolas; COLOR: #999999; mso-fareast-font-family: Consolas; mso-bidi-font-family: Consolas"></SPAN><SPAN 
+style="mso-list: Ignore"><FONT face=宋体>14.</FONT><SPAN 
+style='FONT: 7pt "Times New Roman"'> </SPAN></SPAN></SPAN><SPAN class=str><SPAN 
+lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #008800; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box"><SPAN 
+style="BOX-SIZING: border-box">"title"</SPAN></SPAN></SPAN><SPAN class=pun><SPAN 
+lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #666600; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box">:</SPAN></SPAN></SPAN><SPAN class=str><SPAN 
+lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #008800; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box">"VIXEN Alberto has two gorgeous mistresses Emelie 
+&amp; Eveline"</SPAN></SPAN></SPAN><SPAN lang=EN-US 
+style="FONT-FAMILY: Consolas; COLOR: #999999"><o:p></o:p></SPAN></P>
+<P class=l4 
+style="MARGIN: 0cm 0cm 0cm 36pt; TEXT-INDENT: -18pt; mso-list: l0 level1 lfo1; tab-stops: list 36.0pt"><SPAN 
+lang=EN-US 
+style="FONT-FAMILY: Consolas; COLOR: #999999; mso-fareast-font-family: Consolas; mso-bidi-font-family: Consolas"></SPAN><SPAN 
+style="mso-list: Ignore"><FONT face=宋体>15.</FONT><SPAN 
+style='FONT: 7pt "Times New Roman"'> </SPAN></SPAN></SPAN><SPAN class=pun><SPAN 
+lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #666600; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box"><SPAN 
+style="BOX-SIZING: border-box">}</SPAN></SPAN></SPAN><SPAN lang=EN-US 
+style="FONT-FAMILY: Consolas; COLOR: #999999"><o:p></o:p></SPAN></P>
+<P class=l5 
+style="BACKGROUND: #eeeeee; MARGIN: 0cm 0cm 0cm 36pt; TEXT-INDENT: -18pt; mso-list: l0 level1 lfo1; tab-stops: list 36.0pt"><SPAN 
+lang=EN-US 
+style="FONT-FAMILY: Consolas; COLOR: #999999; mso-fareast-font-family: Consolas; mso-bidi-font-family: Consolas"><SPAN 
+style="mso-list: Ignore">16.<SPAN style='FONT: 7pt "Times New Roman"'> 
+</SPAN></SPAN></SPAN><SPAN class=pun><SPAN lang=EN-US 
+style="BORDER-TOP: windowtext 1pt; FONT-FAMILY: sans-serif; BORDER-RIGHT: windowtext 1pt; BORDER-BOTTOM: windowtext 1pt; COLOR: #666600; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; BORDER-LEFT: windowtext 1pt; PADDING-RIGHT: 0cm; mso-border-alt: none windowtext 0cm"><SPAN 
+style="BOX-SIZING: border-box">}</SPAN></SPAN></SPAN><SPAN lang=EN-US 
+style="FONT-FAMILY: Consolas; COLOR: #999999"><o:p></o:p></SPAN></P>
+<P class=MsoNormal style="MARGIN: 0cm"><SPAN lang=EN-US 
+style="FONT-SIZE: 12pt"><o:p><FONT face=等线>&nbsp;</FONT></o:p></SPAN></P>
+<P class=MsoNormal style="MARGIN: 0cm"><SPAN lang=EN-US 
+style="FONT-SIZE: 12pt"><o:p><FONT face=等线></FONT></o:p></SPAN>&nbsp;</P>
+<H4>视频链接提取：</H4>
+<P>这一步并非必须的，因为某些网站的下载链接并不能通过视频信息页面直接提取，所以才又加入这一步。如果在视频信息页面可以直接提取下载信息，就无须这一步。系统如果发现存在这一步（即里面的JavaScript代码不为空），那么就会将信息提取页面返回下载链接中的内容直接在浏览器中打开，然后执行相应的JavaScript，以返回真正的下载链接。数据结构体比较简单，参见下面的JSON示例。其中需要注意的是，有很多网站，为了防止下载，会在请求头里加入一些限制，比如Referer值需要为指定内容，如果有这种情况，请正确设置requestHeaders里的值，这些值会随着下载请求，一并发给网站。</P>
+<OL>
+  <LI>
+  <DIV class=L0 
+  style="LIST-STYLE-TYPE: decimal; BOX-SIZING: border-box; PADDING-BOTTOM: 0px; PADDING-TOP: 0px; PADDING-LEFT: 0px; MARGIN: 0px; PADDING-RIGHT: 0px"><CODE 
+  class=lang-json 
+  style='BOX-SIZING: border-box; FONT-SIZE: 14px; BORDER-TOP: medium none; FONT-FAMILY: "YaHei Consolas Hybrid", Consolas, "Meiryo UI", "Malgun Gothic", "Segoe UI", "Trebuchet MS", Helvetica, monospace, monospace; BORDER-RIGHT: medium none; BACKGROUND: 0px 0px; BORDER-BOTTOM: medium none; COLOR: rgb(153,153,153); PADDING-BOTTOM: 0px; PADDING-TOP: 0px; PADDING-LEFT: 0px; BORDER-LEFT: medium none; MARGIN: 0px; DISPLAY: inline; PADDING-RIGHT: 0px; border-radius: 3px; overflow-wrap: normal'><SPAN 
+  class=pun 
+  style='BOX-SIZING: border-box; FONT-FAMILY: "Microsoft YaHei", 微软雅黑, "Hiragino Sans GB", STXihei, 华文细黑, STHeiti, RobotoDraft, Roboto, "Helvetica Neue", Helvetica, Tahoma, "Droid Sans", "wenquanyi micro hei", FreeSans, Arimo, Arial, SimSun, 宋体, Heiti, 黑体, sans-serif; COLOR: rgb(102,102,0); PADDING-BOTTOM: 0px; PADDING-TOP: 0px; PADDING-LEFT: 0px; MARGIN: 0px; PADDING-RIGHT: 0px'><FONT 
+  size=3 face=Arial>{</FONT></SPAN></CODE></DIV></LI>
+  <LI>
+  <DIV class=L1 
+  style="LIST-STYLE-TYPE: decimal; BOX-SIZING: border-box; BACKGROUND: rgb(238,238,238); PADDING-BOTTOM: 0px; PADDING-TOP: 0px; PADDING-LEFT: 0px; MARGIN: 0px; PADDING-RIGHT: 0px"><CODE 
+  class=lang-json 
+  style='BOX-SIZING: border-box; FONT-SIZE: 14px; BORDER-TOP: medium none; FONT-FAMILY: "YaHei Consolas Hybrid", Consolas, "Meiryo UI", "Malgun Gothic", "Segoe UI", "Trebuchet MS", Helvetica, monospace, monospace; BORDER-RIGHT: medium none; BACKGROUND: 0px 0px; BORDER-BOTTOM: medium none; COLOR: rgb(153,153,153); PADDING-BOTTOM: 0px; PADDING-TOP: 0px; PADDING-LEFT: 0px; BORDER-LEFT: medium none; MARGIN: 0px; DISPLAY: inline; PADDING-RIGHT: 0px; border-radius: 3px; overflow-wrap: normal'><SPAN 
+  class=pln 
+  style='BOX-SIZING: border-box; FONT-FAMILY: "Microsoft YaHei", 微软雅黑, "Hiragino Sans GB", STXihei, 华文细黑, STHeiti, RobotoDraft, Roboto, "Helvetica Neue", Helvetica, Tahoma, "Droid Sans", "wenquanyi micro hei", FreeSans, Arimo, Arial, SimSun, 宋体, Heiti, 黑体, sans-serif; COLOR: rgb(0,0,0); PADDING-BOTTOM: 0px; PADDING-TOP: 0px; PADDING-LEFT: 0px; MARGIN: 0px; PADDING-RIGHT: 0px'></SPAN><FONT 
+  size=3><FONT face=Arial><SPAN class=str 
+  style='BOX-SIZING: border-box; FONT-FAMILY: "Microsoft YaHei", 微软雅黑, "Hiragino Sans GB", STXihei, 华文细黑, STHeiti, RobotoDraft, Roboto, "Helvetica Neue", Helvetica, Tahoma, "Droid Sans", "wenquanyi micro hei", FreeSans, Arimo, Arial, SimSun, 宋体, Heiti, 黑体, sans-serif; COLOR: rgb(0,136,0); PADDING-BOTTOM: 0px; PADDING-TOP: 0px; PADDING-LEFT: 0px; MARGIN: 0px; PADDING-RIGHT: 0px'>"requestHeaders"</SPAN><SPAN 
+  class=pun 
+  style='BOX-SIZING: border-box; FONT-FAMILY: "Microsoft YaHei", 微软雅黑, "Hiragino Sans GB", STXihei, 华文细黑, STHeiti, RobotoDraft, Roboto, "Helvetica Neue", Helvetica, Tahoma, "Droid Sans", "wenquanyi micro hei", FreeSans, Arimo, Arial, SimSun, 宋体, Heiti, 黑体, sans-serif; COLOR: rgb(102,102,0); PADDING-BOTTOM: 0px; PADDING-TOP: 0px; PADDING-LEFT: 0px; MARGIN: 0px; PADDING-RIGHT: 0px'>:{</SPAN></FONT></FONT></CODE></DIV></LI>
+  <LI>
+  <DIV class=L2 
+  style="LIST-STYLE-TYPE: decimal; BOX-SIZING: border-box; PADDING-BOTTOM: 0px; PADDING-TOP: 0px; PADDING-LEFT: 0px; MARGIN: 0px; PADDING-RIGHT: 0px"><CODE 
+  class=lang-json 
+  style='BOX-SIZING: border-box; FONT-SIZE: 14px; BORDER-TOP: medium none; FONT-FAMILY: "YaHei Consolas Hybrid", Consolas, "Meiryo UI", "Malgun Gothic", "Segoe UI", "Trebuchet MS", Helvetica, monospace, monospace; BORDER-RIGHT: medium none; BACKGROUND: 0px 0px; BORDER-BOTTOM: medium none; COLOR: rgb(153,153,153); PADDING-BOTTOM: 0px; PADDING-TOP: 0px; PADDING-LEFT: 0px; BORDER-LEFT: medium none; MARGIN: 0px; DISPLAY: inline; PADDING-RIGHT: 0px; border-radius: 3px; overflow-wrap: normal'><SPAN 
+  class=pln 
+  style='BOX-SIZING: border-box; FONT-FAMILY: "Microsoft YaHei", 微软雅黑, "Hiragino Sans GB", STXihei, 华文细黑, STHeiti, RobotoDraft, Roboto, "Helvetica Neue", Helvetica, Tahoma, "Droid Sans", "wenquanyi micro hei", FreeSans, Arimo, Arial, SimSun, 宋体, Heiti, 黑体, sans-serif; COLOR: rgb(0,0,0); PADDING-BOTTOM: 0px; PADDING-TOP: 0px; PADDING-LEFT: 0px; MARGIN: 0px; PADDING-RIGHT: 0px'></SPAN><FONT 
+  size=3><FONT face=Arial><SPAN class=str 
+  style='BOX-SIZING: border-box; FONT-FAMILY: "Microsoft YaHei", 微软雅黑, "Hiragino Sans GB", STXihei, 华文细黑, STHeiti, RobotoDraft, Roboto, "Helvetica Neue", Helvetica, Tahoma, "Droid Sans", "wenquanyi micro hei", FreeSans, Arimo, Arial, SimSun, 宋体, Heiti, 黑体, sans-serif; COLOR: rgb(0,136,0); PADDING-BOTTOM: 0px; PADDING-TOP: 0px; PADDING-LEFT: 0px; MARGIN: 0px; PADDING-RIGHT: 0px'>"Referer"</SPAN><SPAN 
+  class=pun 
+  style='BOX-SIZING: border-box; FONT-FAMILY: "Microsoft YaHei", 微软雅黑, "Hiragino Sans GB", STXihei, 华文细黑, STHeiti, RobotoDraft, Roboto, "Helvetica Neue", Helvetica, Tahoma, "Droid Sans", "wenquanyi micro hei", FreeSans, Arimo, Arial, SimSun, 宋体, Heiti, 黑体, sans-serif; COLOR: rgb(102,102,0); PADDING-BOTTOM: 0px; PADDING-TOP: 0px; PADDING-LEFT: 0px; MARGIN: 0px; PADDING-RIGHT: 0px'>:</SPAN><SPAN 
+  class=str 
+  style='BOX-SIZING: border-box; FONT-FAMILY: "Microsoft YaHei", 微软雅黑, "Hiragino Sans GB", STXihei, 华文细黑, STHeiti, RobotoDraft, Roboto, "Helvetica Neue", Helvetica, Tahoma, "Droid Sans", "wenquanyi micro hei", FreeSans, Arimo, Arial, SimSun, 宋体, Heiti, 黑体, sans-serif; COLOR: rgb(0,136,0); PADDING-BOTTOM: 0px; PADDING-TOP: 0px; PADDING-LEFT: 0px; MARGIN: 0px; PADDING-RIGHT: 0px'>"https://dood.sh/"</SPAN></FONT></FONT></CODE></DIV></LI>
+  <LI>
+  <DIV class=L3 
+  style="LIST-STYLE-TYPE: decimal; BOX-SIZING: border-box; BACKGROUND: rgb(238,238,238); PADDING-BOTTOM: 0px; PADDING-TOP: 0px; PADDING-LEFT: 0px; MARGIN: 0px; PADDING-RIGHT: 0px"><CODE 
+  class=lang-json 
+  style='BOX-SIZING: border-box; FONT-SIZE: 14px; BORDER-TOP: medium none; FONT-FAMILY: "YaHei Consolas Hybrid", Consolas, "Meiryo UI", "Malgun Gothic", "Segoe UI", "Trebuchet MS", Helvetica, monospace, monospace; BORDER-RIGHT: medium none; BACKGROUND: 0px 0px; BORDER-BOTTOM: medium none; COLOR: rgb(153,153,153); PADDING-BOTTOM: 0px; PADDING-TOP: 0px; PADDING-LEFT: 0px; BORDER-LEFT: medium none; MARGIN: 0px; DISPLAY: inline; PADDING-RIGHT: 0px; border-radius: 3px; overflow-wrap: normal'><SPAN 
+  class=pln 
+  style='BOX-SIZING: border-box; FONT-FAMILY: "Microsoft YaHei", 微软雅黑, "Hiragino Sans GB", STXihei, 华文细黑, STHeiti, RobotoDraft, Roboto, "Helvetica Neue", Helvetica, Tahoma, "Droid Sans", "wenquanyi micro hei", FreeSans, Arimo, Arial, SimSun, 宋体, Heiti, 黑体, sans-serif; COLOR: rgb(0,0,0); PADDING-BOTTOM: 0px; PADDING-TOP: 0px; PADDING-LEFT: 0px; MARGIN: 0px; PADDING-RIGHT: 0px'></SPAN><SPAN 
+  class=pun 
+  style='BOX-SIZING: border-box; FONT-FAMILY: "Microsoft YaHei", 微软雅黑, "Hiragino Sans GB", STXihei, 华文细黑, STHeiti, RobotoDraft, Roboto, "Helvetica Neue", Helvetica, Tahoma, "Droid Sans", "wenquanyi micro hei", FreeSans, Arimo, Arial, SimSun, 宋体, Heiti, 黑体, sans-serif; COLOR: rgb(102,102,0); PADDING-BOTTOM: 0px; PADDING-TOP: 0px; PADDING-LEFT: 0px; MARGIN: 0px; PADDING-RIGHT: 0px'><FONT 
+  size=3 face=Arial>},</FONT></SPAN></CODE></DIV></LI>
+  <LI>
+  <DIV class=L4 
+  style="LIST-STYLE-TYPE: decimal; BOX-SIZING: border-box; PADDING-BOTTOM: 0px; PADDING-TOP: 0px; PADDING-LEFT: 0px; MARGIN: 0px; PADDING-RIGHT: 0px"><CODE 
+  class=lang-json 
+  style='BOX-SIZING: border-box; FONT-SIZE: 14px; BORDER-TOP: medium none; FONT-FAMILY: "YaHei Consolas Hybrid", Consolas, "Meiryo UI", "Malgun Gothic", "Segoe UI", "Trebuchet MS", Helvetica, monospace, monospace; BORDER-RIGHT: medium none; BACKGROUND: 0px 0px; BORDER-BOTTOM: medium none; COLOR: rgb(153,153,153); PADDING-BOTTOM: 0px; PADDING-TOP: 0px; PADDING-LEFT: 0px; BORDER-LEFT: medium none; MARGIN: 0px; DISPLAY: inline; PADDING-RIGHT: 0px; border-radius: 3px; overflow-wrap: normal'><SPAN 
+  class=pln 
+  style='BOX-SIZING: border-box; FONT-FAMILY: "Microsoft YaHei", 微软雅黑, "Hiragino Sans GB", STXihei, 华文细黑, STHeiti, RobotoDraft, Roboto, "Helvetica Neue", Helvetica, Tahoma, "Droid Sans", "wenquanyi micro hei", FreeSans, Arimo, Arial, SimSun, 宋体, Heiti, 黑体, sans-serif; COLOR: rgb(0,0,0); PADDING-BOTTOM: 0px; PADDING-TOP: 0px; PADDING-LEFT: 0px; MARGIN: 0px; PADDING-RIGHT: 0px'></SPAN><FONT 
+  size=3><FONT face=Arial><SPAN class=str 
+  style='BOX-SIZING: border-box; FONT-FAMILY: "Microsoft YaHei", 微软雅黑, "Hiragino Sans GB", STXihei, 华文细黑, STHeiti, RobotoDraft, Roboto, "Helvetica Neue", Helvetica, Tahoma, "Droid Sans", "wenquanyi micro hei", FreeSans, Arimo, Arial, SimSun, 宋体, Heiti, 黑体, sans-serif; COLOR: rgb(0,136,0); PADDING-BOTTOM: 0px; PADDING-TOP: 0px; PADDING-LEFT: 0px; MARGIN: 0px; PADDING-RIGHT: 0px'>"downloadUrl"</SPAN><SPAN 
+  class=pun 
+  style='BOX-SIZING: border-box; FONT-FAMILY: "Microsoft YaHei", 微软雅黑, "Hiragino Sans GB", STXihei, 华文细黑, STHeiti, RobotoDraft, Roboto, "Helvetica Neue", Helvetica, Tahoma, "Droid Sans", "wenquanyi micro hei", FreeSans, Arimo, Arial, SimSun, 宋体, Heiti, 黑体, sans-serif; COLOR: rgb(102,102,0); PADDING-BOTTOM: 0px; PADDING-TOP: 0px; PADDING-LEFT: 0px; MARGIN: 0px; PADDING-RIGHT: 0px'>:</SPAN><SPAN 
+  class=str 
+  style='BOX-SIZING: border-box; FONT-FAMILY: "Microsoft YaHei", 微软雅黑, "Hiragino Sans GB", STXihei, 华文细黑, STHeiti, RobotoDraft, Roboto, "Helvetica Neue", Helvetica, Tahoma, "Droid Sans", "wenquanyi micro hei", FreeSans, Arimo, Arial, SimSun, 宋体, Heiti, 黑体, sans-serif; COLOR: rgb(0,136,0); PADDING-BOTTOM: 0px; PADDING-TOP: 0px; PADDING-LEFT: 0px; MARGIN: 0px; PADDING-RIGHT: 0px'>"https://fi141l.dood.video/u5kj72sgqtglsdgge5teejyrjuqlvldhxe6d4krrbishghud4jbz4ppwsqpq/c3x8z5aj7n~PPSjnmrJCv?token=ima4toomuenj50d6jhlenqwd&amp;expiry=1640261894020"</SPAN></FONT></FONT></CODE></DIV></LI>
+  <LI>
+  <DIV class=L5 
+  style="LIST-STYLE-TYPE: decimal; BOX-SIZING: border-box; BACKGROUND: rgb(238,238,238); PADDING-BOTTOM: 0px; PADDING-TOP: 0px; PADDING-LEFT: 0px; MARGIN: 0px; PADDING-RIGHT: 0px"><CODE 
+  class=lang-json 
+  style='BOX-SIZING: border-box; FONT-SIZE: 14px; BORDER-TOP: medium none; FONT-FAMILY: "YaHei Consolas Hybrid", Consolas, "Meiryo UI", "Malgun Gothic", "Segoe UI", "Trebuchet MS", Helvetica, monospace, monospace; BORDER-RIGHT: medium none; BACKGROUND: 0px 0px; BORDER-BOTTOM: medium none; COLOR: rgb(153,153,153); PADDING-BOTTOM: 0px; PADDING-TOP: 0px; PADDING-LEFT: 0px; BORDER-LEFT: medium none; MARGIN: 0px; DISPLAY: inline; PADDING-RIGHT: 0px; border-radius: 3px; overflow-wrap: normal'><SPAN 
+  class=pun 
+  style='BOX-SIZING: border-box; FONT-FAMILY: "Microsoft YaHei", 微软雅黑, "Hiragino Sans GB", STXihei, 华文细黑, STHeiti, RobotoDraft, Roboto, "Helvetica Neue", Helvetica, Tahoma, "Droid Sans", "wenquanyi micro hei", FreeSans, Arimo, Arial, SimSun, 宋体, Heiti, 黑体, sans-serif; COLOR: rgb(102,102,0); PADDING-BOTTOM: 0px; PADDING-TOP: 0px; PADDING-LEFT: 0px; MARGIN: 0px; PADDING-RIGHT: 0px'><FONT 
+  size=3 face=Arial>}</FONT></SPAN></CODE></DIV></LI></OL></SPAN>
+<P></P>
+<P>&nbsp;</P></BODY></HTML>

@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Aquarius Nebula
+Bundle-SymbolicName: org.aquarius.nebula
+Bundle-Version: 0.1
+Bundle-Vendor: aquarius.github@gmail.com
+Automatic-Module-Name: org.aquarius.nebula
+Export-Package: org.eclipse.nebula.widgets.chips,
+ org.eclipse.nebula.widgets.opal.commons,
+ org.eclipse.nebula.widgets.opal.promptsupport,
+ org.eclipse.nebula.widgets.opal.propertytable,
+ org.eclipse.nebula.widgets.opal.propertytable.editor,
+ org.eclipse.nebula.widgets.opal.textassist,
+ org.eclipse.nebula.widgets.opal.titledseparator
+Require-Bundle: org.eclipse.swt
+Bundle-ClassPath: .

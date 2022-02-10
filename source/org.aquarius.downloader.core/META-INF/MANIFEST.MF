@@ -1,0 +1,20 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Aquarius Downloader Core
+Bundle-SymbolicName: org.aquarius.downloader.core
+Bundle-Version: 0.1
+Bundle-Vendor: aquarius.github@gmail.com
+Automatic-Module-Name: org.aquarius.downloader.core
+Export-Package: org.aquarius.downloader.core,
+ org.aquarius.downloader.core.config,
+ org.aquarius.downloader.core.impl,
+ org.aquarius.downloader.core.impl.hls,
+ org.aquarius.downloader.core.impl.http,
+ org.aquarius.downloader.core.spi,
+ org.aquarius.downloader.core.spi.impl,
+ org.aquarius.downloader.core.util
+Require-Bundle: org.aquarius.util,
+ org.aquarius.log,
+ org.aquarius.library,
+ org.aquarius.service
+Bundle-ClassPath: .

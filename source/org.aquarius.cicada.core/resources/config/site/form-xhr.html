@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Post</title>
+	</head>
+	<script>
+		function doPostData()
+		{
+		var xhr = new XMLHttpRequest();
+		xhr.open('POST', '{#url}', true);
+		xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+		xhr.onload = function () {
+		    // do something to response
+		    invokePostData(this.responseText);
+		};
+		xhr.send();
+		}
+		
+		function startTimer(timeOut)
+		{
+		setTimeout(function(){doPostData();},timeOut);
+		}
+		
+		startTimer(1000);
+	</script>
+	<body>
+		<form action="" method="post" id="postForm"></form>
+	</body>
+
+</html>

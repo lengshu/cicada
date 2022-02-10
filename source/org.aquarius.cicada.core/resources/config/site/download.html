@@ -1,0 +1,114 @@
+﻿<!DOCTYPE html>
+<!-- saved from url=(0070)https://www.html5tricks.com/demo/jquery-css3-simple-gallery/index.html -->
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title></title>
+		<script src="./js/jquery.js"></script>
+		<link rel="stylesheet" href="./css/reset.css">
+		<link rel="stylesheet" href="./css/style.css" media="screen" type="text/css">
+		<script src="./js/index.js"></script>
+		<script src="./js/aquarius.js"></script>
+		<script>
+			function queryGeneratorNames() {
+			            var json = queryGeneratorNameListFunction();
+			            var names = JSON.parse(json);
+			
+			            var htmlContents = [];
+			            for (var i = 0; i < names.length; i++) {
+			                var htmlContent = "<option value='" + names[i] + "'>" + names[i] + "</option>";
+			                htmlContents.push(htmlContent);
+			            }
+			
+			            var element = document.getElementById("generaterName");
+			            element.innerHTML = htmlContents;
+			        }
+			
+			        function getSelectedMovies() {
+			            var selectedElements = $("li.selected");
+			
+			            var results = [];
+			            for (var i = 0; i < selectedElements.length; i++) {
+			                results.push(selectedElements[i].getAttribute("name"));
+			            }
+			
+			            return results.join("|");
+			        }
+			
+			        function generateDownloadUrls() {
+			            var element = document.getElementById("generaterName");
+			            var value = element.options[element.selectedIndex].value;
+			
+			            var parameter = getSelectedMovies();
+			            if ( (parameter != null) && (parameter.length > 0)) {
+			                generateMovieDownloadUrlsFunction(parameter, value);
+			            }
+						else{
+							alert("No movies selected.");
+						}
+			
+			        }
+		</script>
+		<script>
+			function downloadMovieList() {
+			
+			            var parameter = getSelectedMovies();
+			            
+						if ( (parameter != null) && (parameter.length > 0)) {
+			                 downloadMovieListFunction(parameter);
+			            }
+						else{
+							alert("No movies selected.");
+						}
+			
+			        };
+		</script>
+		<script>
+			function queryMovieList(pageCount, pageSize) {
+			
+			
+			            var json = queryMovieListFunction(pageCount, pageSize);
+			
+			
+			            var movieList = JSON.parse(json);
+			
+			            var htmlContent = "";
+			            for (var i = 0; i < movieList.length; i++) {
+			                var movie = movieList[i];
+			                htmlContent = htmlContent + "<li class='portrait'  name='" + movie.id + "' data-url='" + movie.pageUrl + "'  data-title='" + movie.title + "'>";
+			                htmlContent = htmlContent + "<img class='pic' src='" + movie.imageUrl + "'  alt='" + movie.title + "'>";
+			                htmlContent = htmlContent + " <div class='foot'>";
+			                htmlContent = htmlContent + "<span class='entypo-comment comment'>" + movie.title + "</span>";
+			                htmlContent = htmlContent + "</div></li>";
+			            }
+			
+			            document.getElementById('movieList').innerHTML = htmlContent;
+			            initListeners();
+			
+			
+			        }
+		</script>
+	</head>
+	<body>
+		<P/>
+		<BR/>
+		<!-- One -->
+		<section id="basicusage" class="wrapper special">
+			<div class="clearfix">
+				<button class="select">&nbsp;</button>
+				<button class="action" onclick="downloadMovieList();">下载</button>
+				<select id="generaterName"></select>
+				<button class="action" onclick="generateDownloadUrls();">生成下载列表</button>
+				<button class="send" data-counter="0">✔</button>
+			</div>
+			<div id="topPaging" class="pageParent"></div>
+			<ul id="movieList" class="gallery"></ul>
+		</section>
+	</body>
+	<script>
+		queryMovieList("1", 1000);
+		
+		    queryGeneratorNames();
+	</script>
+
+</html>

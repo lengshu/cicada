@@ -1,0 +1,19 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD><TITLE>Technical Description</TITLE>
+<META content="text/html; charset=unicode" http-equiv=Content-Type>
+<META name=GENERATOR content="MSHTML 11.00.10570.1001"></HEAD>
+<BODY>
+<H3>Technical Description</H3>
+<P>This is a document written to technicians, and ordinary users can ignore it. </P>
+<P>The design idea of ​​the entire program is actually very simple, divided into the following steps:</P>
+<OL>
+  <LI>Each site corresponds to a designated directory, which is composed by loading a configuration file (including basic information/channels, etc.) in the directory and the corresponding parsing script (JS).
+  <LI>When accessing a channel corresponding to a site, a browser will be launched (not visible by default), open the corresponding page of the site, and then call the list extraction script to obtain the corresponding video list and store it in the database.
+  <LI>When extracting the video list, the list page needs to display the video list in time update order, because the program will use the video link as the unique identification key. When it encounters the data that already exists in the database, it will stop the current traversal.
+
+  <LI>If the user needs to view specific information or download a video, it will launch a browser, open the page corresponding to the video, and then call the information extraction script to obtain the corresponding download address, and then hand it over to the downloader for download.
+
+  <LI>In fact, when parsing videos, many websites jump through multiple layers of dynamic links, so the system also provides an Analyser function, which can also be defined by JS scripts.
+  <LI>The whole software is an RCP program based on Eclipse, so it can also be passed through Eclipse
+  Plugin to provide new functions. Several extension points are also provided in the program, and interested students can also try to add new functions. If it is really necessary, I will add more technical documents in detail. </LI></OL>
+<P></P></BODY></HTML>

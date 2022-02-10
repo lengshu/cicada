@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+	<context id="context"  targetRuntime="MyBatis3">
+		<plugin type="org.mybatis.generator.plugins.SerializablePlugin" />
+		<!-- 实体类重写HashCode()和equals() -->
+		<plugin
+			type="org.mybatis.generator.plugins.EqualsHashCodePlugin" />
+		<!-- 实体类重写toString() -->
+		<plugin type="org.mybatis.generator.plugins.ToStringPlugin" />
+
+		<jdbcConnection
+			connectionURL="jdbc:h2:C:\Eclipse\Eclipse4.20\Workspace\workspace\database\movie.db"
+			driverClass="org.h2.Driver" password="kingdom" userId="king" />
+		<javaModelGenerator
+			targetPackage="org.aquarius.cicada.core.model"
+			targetProject="org.aquarius.cicada.core" />
+		<sqlMapGenerator
+			targetPackage="org.aquarius.cicada.core.model"
+			targetProject="org.aquarius.cicada.core" />
+		<javaClientGenerator
+			targetPackage="org.aquarius.cicada.core.model"
+			targetProject="org.aquarius.cicada.core" type="XMLMAPPER" />
+<!-- 				<table tableName="MOVIE">
+
+		</table> -->
+
+<!-- 		<table tableName="DOWNLOAD_TASK"> 
+
+</table> -->
+
+<table tableName="VISIT_HISTORY">
+
+		</table>
+	</context>
+</generatorConfiguration>

@@ -1,0 +1,44 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD><TITLE>Configuration instructions</TITLE>
+<META content="text/html; charset=utf-8" http-equiv=Content-Type>
+<META name=GENERATOR content="MSHTML 11.00.10570.1001"></HEAD>
+<BODY>
+<H3>Configuration instructions</H3>
+<P>Currently, the software provides the configuration of four preferred content. 
+Here are a few important configuration items. </P>
+<P><STRONG>Download instructions:</STRONG></P>
+<OL>
+  <LI>specifies the ffmpeg command. For streaming media using the HLS protocol, 
+  after the download is complete, you need to use ffmpeg to merge, and you can 
+  configure the corresponding command line here. If ffmpeg has been added to the 
+  current environment, just use the default configuration. Otherwise, you need 
+  to specify the path of the ffmpeg execution file, such as 
+  "C:\MyTools\ffmpeg\bin\ffmpeg.exe -f concat -safe 0 -i "{0}" -c copy "{1}". 
+  When configuring, please set "{0}" and "{1}" correctly. The former is the 
+  corresponding HLS list file, and the latter is the output media file. These 
+  two parameters are automatically filled in by the system. 
+  <LI>Configure the call system command and check the "Delete source files after 
+  HLS merge is completed" to automatically clear the redundant HLS fragment 
+  files after the merge. 
+  <LI>Many sites have restrictions on the number of thread connections, so if 
+  there is an error due to too many thread connections, you can set the 
+  connection limit for the specified site in the bottom table. If <A 
+  href="http://www.google.com" of number The>www.google.com</A> is 10, and you 
+  only need to use google or google.com as the site keyword when setting it, 
+  because the system will use The way the string contains is judged. 
+<BR></LI></OL>
+<P><STRONG>User Interface description:</STRONG></P>
+<OL>
+  <LI>If you feel that the system resources are too high, or the system is 
+  unstable, you can cancel the configuration of "Use Chromium kernel", and you 
+  can disable Chrominum after restarting, which can improve system stability. 
+  <LI>Whether it is Mp4 or HLS streaming media, there are many players that can 
+  be played directly. If you want to directly use the browser of this machine to 
+  view the video, you can quickly enable this function by setting the "Start 
+  Player Command". PotPlayer is used by default. You can specify your favorite 
+  player at will. Just put the parameter "{0}" in the correct position, because 
+  the system will automatically fill in the remote playback URL address here 
+  before executing. </LI></OL>
+<P></P>
+<P>The management of "video" and "site" is relatively simple, so I won't explain 
+it in detail. </P></BODY></HTML>

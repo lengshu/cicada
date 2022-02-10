@@ -1,0 +1,23 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Cicada Workbench Extension
+Bundle-SymbolicName: org.aquarius.cicada.workbench.extension;singleton:=true
+Bundle-Version: 0.1
+Bundle-Vendor: aquarius.github@gmail.com
+Automatic-Module-Name: org.aquarius.cicada.workbench.extension
+Require-Bundle: org.aquarius.cicada.workbench,
+ org.eclipse.nebula.widgets.nattable.core,
+ org.aquarius.ui,
+ org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.aquarius.cicada.core,
+ org.aquarius.util,
+ ca.odell.glazedlists,
+ org.eclipse.nebula.widgets.nattable.extension.glazedlists,
+ org.aquarius.library,
+ org.aquarius.log,
+ org.eclipse.collections
+Bundle-Activator: org.aquarius.cicada.workbench.extension.WorkbenchExtensionActivator
+Bundle-ActivationPolicy: lazy
+Bundle-Localization: plugin
+Import-Package: org.aquarius.service

@@ -1,0 +1,22 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD><TITLE>配置说明</TITLE>
+<META content="text/html; charset=unicode" http-equiv=Content-Type>
+<META name=GENERATOR content="MSHTML 11.00.10570.1001"></HEAD>
+<BODY>
+<H3>配置说明</H3>
+<P>目前软件提供了四个首选内容的配置，下面介绍一下几个重要的配置项内容。</P>
+<P><STRONG>下载说明：</STRONG></P>
+<OL>
+  <LI>指定ffmpeg命令，对于使用HLS协议的流媒体来说，下载完成后，需要使用ffmpeg进行合并，可以在这里配置好相应的命令行。如果已经把ffmpeg加到当前环境里，使用默认配置即可。否则需要指定ffmpeg执行文件的路径，如"C:\MyTools\ffmpeg\bin\ffmpeg.exe 
+  -f concat -safe 0 -i "{0}" -c copy 
+  "{1}"，配置时，请一定要正确设置"{0}"和"{1}"，前者是对应的HLS列表文件，后者是输出的媒体文件。这两个参数均由系统自动填写。 
+  <LI>配置调用系统命令，并将"合并HLS完成后删除源文件"勾选后，即可自动清除合并后多余的HLS分片文件。 
+  <LI>很多站点对线程连接数均有约束，所以如果出现因为线程连接数过多而出错的问题，可以在最下面的表格里为指定的站点设置连接数限制。假如<A 
+  href="http://www.google.com">www.google.com</A>的连接数为10，设置时只需要用google或者google.com作为站点关键字即可，因为系统会使用字符串包含的方式进行判断。<BR></LI></OL>
+<P><STRONG>界面说明：</STRONG></P>
+<OL>
+  <LI>如果感觉系统资源占用过高，或者系统出现不稳定的情况，可以将"使用Chromium内核"这一配置取消，重启后即可禁用Chrominum，可以提高系统稳定性。 
+
+  <LI>不管是Mp4还是HLS流媒体，有很多播放器都是可以直接播放的，如果想直接使用本机的浏览器查看视频，那么可以通过设置"启动播放器命令"来快捷启用该功能。默认使用了PotPlayer，你可以随意指定自己偏爱的播放器，只需要注意将参数"{0}"放在正确的位置即可，因为系统会自动将远程播放的URL地址填写在这里后再执行。</LI></OL>
+<P>&nbsp;</P>
+<P>对于"视频"和"站点"管理比较简单，不再详细说明。</P></BODY></HTML>

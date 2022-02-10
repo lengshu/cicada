@@ -1,0 +1,33 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD><TITLE>Interface description</TITLE>
+<META content="text/html; charset=unicode" http-equiv=Content-Type>
+<META name=GENERATOR content="MSHTML 11.00.10570.1001"></HEAD>
+<BODY>
+<H3>Interface description</H3>
+<P>The entire interface is divided into several large sections. The top one is the operation area, namely the menu and the toolbar, and the middle is the data area, which is used to display the video information of the specified site. It should be emphasized that it can be used in the browser and You can switch between the two methods of the table at will, and the query conditions of the two are also different. The specific operation will be described in detail later. The bottom is the download, error, task and other views, which is convenient for user management. </P>
+<P>When opening a site for the first time, it will generally prompt that the video list information in the site is empty, and will prompt the user whether to import from the site now. Sometimes the import will be very slow, maybe because the website has a large number of videos, the import is naturally slow; and in order to block crawlers, many websites will stipulate how long the visit will exceed the specified number of times, and the visit will be denied, so the default frequency of visiting the webpage is increased. Restrictions. But don’t worry, importing is a work done silently in the background, and every time several pieces of video information are imported, the interface will be automatically refreshed and displayed, and the operation will not be affected. Although the program uses a background thread to load web pages as much as possible, it still has a certain impact on the interface operation speed of the entire program due to the use of a browser to access it, so if possible, consider importing videos in free time. </P>
+<P> </P>
+<P><STRONG>Use a browser to view video information:</STRONG></P>
+<OL>
+  <LI>In the browser interface, you can find your favorite videos at any time through the interface on the right, including keywords/actors/categories and other information.
+  <LI> The top of the browser interface is the paging function, and you can quickly jump to the previous or next page through the left and right keyboards.
+  <LI>In the browser interface, you can click the mouse to select or deselect the specified video. For the selected video, you can perform various operations through the buttons on the toolbar.
+  <LI>By default, the browser provides a function menu. If you want to use the browser's own menu, you can set it in the preferences and it will take effect after reopening it. </LI></OL>
+<P align=center><IMG style="WIDTH: 100%" border=0 hspace=0 alt=""
+src="..\..\images\browserView.png" width=1917 align=baseline height=1019></P>
+<P><STRONG></STRONG></P>
+<P><STRONG>Use the form to view video information:</STRONG></P>
+<OL>
+  <LI>The table is more suitable for displaying large amounts of data. Considering that the scale of general video websites is not exaggerated, all video information will be displayed in the list. Due to the use of NatTable, it takes about 3 seconds to load from the database, which is slightly slower. , The rest of the time can be operated smoothly.
+
+  <LI>In order to facilitate the query, the next line of the table header row is used to support the query of each column, including the duration.
+  <LI>The table supports multiple selections. You can use Shift/Ctrl and other keys to make multiple selections.
+  <LI>Click the header of the table to sort.
+  <LI>Click the right mouse button on the title bar of the table to customize the display status of each column.
+  <LI>The table supports editing function, but it is closed by default to prevent misoperation. If you confirm the need for editing functions, you can click "Unlock" on the toolbar, and then you can edit the table. For the modified content, you can write the modified data back to the database through the "save" operation. Similarly, if you click "Lock" to close the editing function, the data will be automatically written back to the database.
+
+  <LI>When the user selects a row of data, the detailed information of the video will be displayed in the "Properties" view.
+  <LI>You can use Tooltip in the table to get detailed information and pictures by hovering the mouse on a piece of data for 1-2 seconds. This function is turned off by default and can be used after setting in the preferences, and it will take effect automatically. </LI></OL>
+<P align=center><IMG style="WIDTH: 100%" border=0 hspace=0 alt=""
+src="..\..\images\tableView.png" width=1917 align=baseline
+height=1019></P></BODY></HTML>

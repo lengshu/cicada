@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Aquarius Service
+Bundle-SymbolicName: org.aquarius.service
+Bundle-Version: 0.1
+Bundle-Vendor: aquarius.github@gmail.com
+Automatic-Module-Name: org.aquarius.cicada.service
+Export-Package: org.aquarius.service,
+ org.aquarius.service.config,
+ org.aquarius.service.manager
+Bundle-ClassPath: .
+Require-Bundle: org.aquarius.library,
+ org.aquarius.util,
+ org.aquarius.log;bundle-version="0.1.0"

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>DownloadTube</title>
+	</head>
+	<body>
+		<p align="center">Please wait, the page is redirecting, the download address will be displayed later.</p>
+		
+		<form style=' visibility: hidden;' action="https://www.downloadtube.net/convert/" method="post" id="postForm">
+			<input type="text" name="url" id="url"></input>
+			<input type="hidden" name="from" value="all"></input>
+			<input type="submit" value="Submit">
+		</form>
+	</body>
+	<script>
+		var hrefString=document.location.href;
+		var index=hrefString.indexOf("=");
+	
+		if(index>-1)
+		{
+		    var redirectUrl=hrefString.substring(index+1);
+		    redirectUrl= decodeURIComponent(redirectUrl);
+		    document.querySelector("#url").value=redirectUrl;
+		
+		    document.querySelector("#postForm").submit();
+		}
+	</script>
+
+</html>

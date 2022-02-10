@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Aquarius Log
+Bundle-SymbolicName: org.aquarius.log;singleton:=true
+Bundle-Version: 0.1
+Bundle-Vendor: aquarius.github@gmail.com
+Require-Bundle: org.aquarius.library,
+ org.eclipse.core.runtime
+Automatic-Module-Name: org.aquarius.log
+Bundle-ClassPath: lib/aquarius_log.jar,
+ lib/slf4j-api-1.7.12.jar
+Export-Package: org.aquarius.log,
+ org.slf4j,
+ org.slf4j.helpers,
+ org.slf4j.spi
+Import-Package: org.slf4j,
+ org.slf4j.helpers
