@@ -1,8 +1,9 @@
 This is a desktop client to download movies.
+
 The following site is supported: hpjav,jable,pornhub,avhbo,hayav,jaxmix,netflav,porntube.
 
 
-点击下面查看不同语言的详细介绍。
+Click the follwing links to view details in your language.
 
 #### [简体中文](help/zh/intro.md "简体中文") 
 #### [繁體中文](help/tw/intro.md "繁體中文") 
