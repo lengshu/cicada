@@ -73,7 +73,7 @@ public abstract class AbstractSelectionAction extends Action {
 		}
 
 		ISelectionProvider selectionProvider = workbenchPart.getSite().getSelectionProvider();
-		if (null == selectionProvider) {
+		if ((null == selectionProvider) || (selectionProvider.getSelection() == null) || (selectionProvider.getSelection().isEmpty())) {
 			selectionProvider = AdapterUtil.getAdapter(workbenchPart, ISelectionProvider.class);
 		}
 
