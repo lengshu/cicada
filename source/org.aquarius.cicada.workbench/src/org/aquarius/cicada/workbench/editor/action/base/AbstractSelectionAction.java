@@ -65,15 +65,16 @@ public abstract class AbstractSelectionAction extends Action {
 	 * @return
 	 */
 	protected ISelectionProvider getSelectionProvider() {
-		IWorkbenchPart workbenchPart = WorkbenchUtil.getActiveEditor();
+
+		IWorkbenchPart workbenchPart = WorkbenchUtil.getActivePart();
 
 		if (null == workbenchPart) {
 			return null;
 		}
 
-		ISelectionProvider selectionProvider = AdapterUtil.getAdapter(workbenchPart, ISelectionProvider.class);
+		ISelectionProvider selectionProvider = workbenchPart.getSite().getSelectionProvider();
 		if (null == selectionProvider) {
-			selectionProvider = workbenchPart.getSite().getSelectionProvider();
+			selectionProvider = AdapterUtil.getAdapter(workbenchPart, ISelectionProvider.class);
 		}
 
 		this.lastSelectionProvider = selectionProvider;

@@ -10,6 +10,7 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 
@@ -52,6 +53,20 @@ public class WorkbenchUtil {
 	public static final void setInited(IPreferenceStore store, Class<?> clazz, boolean inited) {
 		String id = clazz.getClass().getName() + "." + InitMarker;
 		store.setValue(id, inited);
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public static IWorkbenchPart getActivePart() {
+		IWorkbenchPage page = getActivePage();
+
+		if (null == page) {
+			return null;
+		}
+
+		return page.getActivePart();
 	}
 
 	/**
