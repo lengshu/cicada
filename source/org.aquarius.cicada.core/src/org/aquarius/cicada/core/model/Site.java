@@ -140,6 +140,22 @@ public class Site extends LockObject {
 					name = name.substring(0, 8);
 				}
 
+				if (StringUtils.contains(name, "(")) {
+					name = StringUtils.substringBefore(name, "(");
+				}
+
+				if (StringUtils.contains(name, "[")) {
+					name = StringUtils.substringBefore(name, "[");
+				}
+
+				if (StringUtils.contains(name, "（")) {
+					name = StringUtils.substringBefore(name, "（");
+				}
+
+				if (StringUtils.contains(name, "【")) {
+					name = StringUtils.substringBefore(name, "【");
+				}
+
 				contentSet.add(name);
 			}
 		}
