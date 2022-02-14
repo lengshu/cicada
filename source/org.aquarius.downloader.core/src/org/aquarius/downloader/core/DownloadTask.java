@@ -318,6 +318,11 @@ public final class DownloadTask {
 	 * @return the finishedLength
 	 */
 	public long getFinishedLength() {
+
+		if (this.finishedLength > this.remoteFileLength) {
+			return this.remoteFileLength - 1000;
+		}
+
 		return this.finishedLength;
 	}
 

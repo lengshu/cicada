@@ -29,6 +29,10 @@ public class RemaingTimeColumnLabelProvider extends ColumnLabelProvider {
 		try {
 			DownloadTask downloadTask = (DownloadTask) element;
 
+			if (DownloadTask.StateFinish == downloadTask.getState()) {
+				return "";
+			}
+
 			int speed = downloadTask.getSpeed();
 
 			if (speed <= 0) {
@@ -39,6 +43,10 @@ public class RemaingTimeColumnLabelProvider extends ColumnLabelProvider {
 			long finishedLength = downloadTask.getFinishedLength();
 
 			long remaingLength = totalLength - finishedLength;
+
+			if (remaingLength <= 0) {
+				return "00:00:52";
+			}
 
 			double value = remaingLength / speed;
 
