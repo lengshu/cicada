@@ -29,7 +29,6 @@ import org.aquarius.cicada.core.model.result.MovieResult;
 import org.aquarius.cicada.core.spi.web.IWebAccessor;
 import org.aquarius.cicada.core.spi.web.IWebAccessorService;
 import org.aquarius.cicada.core.spi.web.IWebAccessorService.Visitor;
-import org.aquarius.service.IReloadable;
 import org.aquarius.util.PropertyUtil;
 import org.aquarius.util.SystemUtil;
 import org.aquarius.util.net.UrlUtil;
@@ -42,7 +41,7 @@ import com.alibaba.fastjson.JSON;
  * @author aquarius.github@gmail.com
  *
  */
-public abstract class AbstractBrowserMovieParser extends AbstractMovieParser implements IReloadable {
+public abstract class AbstractBrowserMovieParser extends AbstractMovieParser {
 
 	private static int DefaultRetryCount = 10;
 

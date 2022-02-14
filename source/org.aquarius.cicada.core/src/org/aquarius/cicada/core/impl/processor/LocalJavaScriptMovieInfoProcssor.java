@@ -7,12 +7,12 @@ import java.io.File;
 
 import javax.script.Invocable;
 
+import org.apache.commons.lang.StringUtils;
 import org.aquarius.cicada.core.model.Movie;
 import org.aquarius.cicada.core.script.LocalJavaScriptEngineObject;
 import org.aquarius.cicada.core.spi.AbstractMovieInfoProcssor;
 import org.aquarius.log.LogUtil;
 import org.aquarius.service.IReloadable;
-import org.aquarius.util.StringUtil;
 import org.slf4j.Logger;
 
 /**
@@ -35,6 +35,15 @@ public class LocalJavaScriptMovieInfoProcssor extends AbstractMovieInfoProcssor 
 	}
 
 	/**
+	 * 
+	 */
+	public LocalJavaScriptMovieInfoProcssor(String name, File file) {
+		super();
+
+		this.localJavaScriptEngineObject = new LocalJavaScriptEngineObject(name, file);
+	}
+
+	/**
 	 * {@inheritDoc}
 	 */
 	@Override
@@ -47,7 +56,7 @@ public class LocalJavaScriptMovieInfoProcssor extends AbstractMovieInfoProcssor 
 	 */
 	@Override
 	public boolean isAcceptable(String urlString) {
-		return StringUtil.containsAnyIgnoreCase(urlString, this.localJavaScriptEngineObject.getNames());
+		return StringUtils.containsIgnoreCase(urlString, this.localJavaScriptEngineObject.getName());
 	}
 
 	/**

@@ -10,6 +10,7 @@ import java.util.Set;
 import org.apache.commons.collections4.set.ListOrderedSet;
 import org.aquarius.service.INameService;
 import org.aquarius.service.IReloadable;
+import org.aquarius.service.manager.spi.IServiceFilter;
 import org.aquarius.util.AssertUtil;
 
 /**
@@ -21,10 +22,40 @@ import org.aquarius.util.AssertUtil;
  */
 public class ServiceManager<T extends INameService<?>> {
 
+	private static IServiceFilter NullIServiceFilterInstance = new IServiceFilter() {
+
+		@Override
+		public boolean isFiltered(Object t) {
+			return false;
+		}
+
+	};
+
 	/**
 	 * Use tree set to sort the services
 	 */
 	private Set<T> services = new ListOrderedSet<T>();
+
+	private IServiceFilter<T> serviceFilter;
+
+	/**
+	 * 
+	 */
+	public ServiceManager() {
+		this(null);
+	}
+
+	/**
+	 * @param serviceFilter
+	 */
+	public ServiceManager(IServiceFilter<T> serviceFilter) {
+		super();
+		this.serviceFilter = serviceFilter;
+
+		if (null == this.serviceFilter) {
+			this.serviceFilter = NullIServiceFilterInstance;
+		}
+	}
 
 	/**
 	 * register a service.
@@ -72,8 +103,14 @@ public class ServiceManager<T extends INameService<?>> {
 			if (service instanceof IReloadable) {
 				ReloadManager.getInstance().register((IReloadable) service);
 			}
-
 		}
+	}
+
+	/**
+	 * @return the serviceFilter
+	 */
+	public IServiceFilter<T> getServiceFilter() {
+		return this.serviceFilter;
 	}
 
 	/**
@@ -102,7 +139,7 @@ public class ServiceManager<T extends INameService<?>> {
 	public synchronized T findService(String name) {
 
 		for (T service : this.services) {
-			if (service.getName().equals(name)) {
+			if ((!this.serviceFilter.isFiltered(service)) && service.getName().equals(name)) {
 				return service;
 			}
 		}
@@ -121,7 +158,7 @@ public class ServiceManager<T extends INameService<?>> {
 		ListOrderedSet<T> serviceSet = new ListOrderedSet<>();
 
 		for (T service : this.services) {
-			if (service.getName().equals(name)) {
+			if ((!this.serviceFilter.isFiltered(service)) && service.getName().equals(name)) {
 				serviceSet.add(service);
 			}
 		}
@@ -135,7 +172,16 @@ public class ServiceManager<T extends INameService<?>> {
 	 * @return
 	 */
 	public synchronized List<T> getAllServices() {
-		return new ArrayList<T>(this.services);
+
+		List<T> serviceList = new ArrayList<>();
+
+		for (T service : this.services) {
+			if ((!this.serviceFilter.isFiltered(service))) {
+				serviceList.add(service);
+			}
+		}
+
+		return serviceList;
 	}
 
 	/**
@@ -147,7 +193,9 @@ public class ServiceManager<T extends INameService<?>> {
 		ListOrderedSet<String> nameSet = new ListOrderedSet<>();
 
 		for (T service : this.services) {
-			nameSet.add(service.getName());
+			if ((!this.serviceFilter.isFiltered(service))) {
+				nameSet.add(service.getName());
+			}
 		}
 
 		return nameSet.asList();

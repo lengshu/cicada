@@ -393,6 +393,11 @@
             id="org.aquarius.cicada.workbench.page.site"
             name="%Site">
       </page>
+      <page
+            class="org.aquarius.cicada.workbench.page.ServiceFilterConfigurationPreferencePage"
+            id="org.aquarius.cicada.workbench.page.pluginManage"
+            name="%PluginManage">
+      </page>
    </extension>
    <extension
          point="org.eclipse.core.contenttype.contentTypes">

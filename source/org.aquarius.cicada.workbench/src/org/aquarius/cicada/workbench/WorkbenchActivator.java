@@ -8,6 +8,7 @@ import java.util.List;
 import org.apache.commons.io.FileUtils;
 import org.aquarius.cicada.core.RuntimeManager;
 import org.aquarius.cicada.core.config.MovieConfiguration;
+import org.aquarius.cicada.core.config.ServiceFilterConfiguration;
 import org.aquarius.cicada.core.impl.generator.Aria2DownloadListGenerator;
 import org.aquarius.cicada.core.impl.generator.DefaultDownloadListGenerator;
 import org.aquarius.cicada.core.impl.generator.FdmDownloadListGenerator;
@@ -117,7 +118,7 @@ public class WorkbenchActivator extends AbstractUIPlugin {
 		HttpCacheServiceImpl cacheService = new HttpCacheServiceImpl();
 		RuntimeManager.getInstance().setCacheService(cacheService);
 
-		loadMovieConfiguration(workingFolderPath);
+		loadRuntimeConfiguration(workingFolderPath);
 		loadDownloadConfiguration(workingFolderPath);
 
 		List<String> pixelList = RuntimeManager.getInstance().getConfiguration().getPixelList();
@@ -252,11 +253,16 @@ public class WorkbenchActivator extends AbstractUIPlugin {
 	 *
 	 * @param workingFolderPath
 	 */
-	private void loadMovieConfiguration(String workingFolderPath) {
+	private void loadRuntimeConfiguration(String workingFolderPath) {
 
 		IPreferenceStore store = this.getPreferenceStore();
+		EclipsePropertyStoreService storeService = new EclipsePropertyStoreService(store);
 
-		MovieConfiguration movieConfiguration = new MovieConfiguration(new EclipsePropertyStoreService(store));
+		ServiceFilterConfiguration serviceFilterConfiguration = new ServiceFilterConfiguration(storeService);
+		RuntimeManager.getInstance().setServiceFilterConfiguration(serviceFilterConfiguration);
+
+		MovieConfiguration movieConfiguration = new MovieConfiguration(storeService);
+		RuntimeManager.getInstance().setConfiguration(movieConfiguration);
 
 		try {
 			File filteredAnalyserJsonFile = new File(Starter.getInstance().getAnalyserPath() + "filter.json");
@@ -274,7 +280,7 @@ public class WorkbenchActivator extends AbstractUIPlugin {
 			// Nothing to do
 		}
 
-		RuntimeManager.getInstance().setConfiguration(movieConfiguration);
+		RuntimeManager.getInstance().init();
 
 	}
 

@@ -18,7 +18,6 @@ import org.aquarius.cicada.core.spi.AbstractDownloadUrlAnalyser;
 import org.aquarius.cicada.core.spi.IProcessMonitor;
 import org.aquarius.cicada.core.util.MovieUtil;
 import org.aquarius.service.IReloadable;
-import org.aquarius.util.StringUtil;
 import org.aquarius.util.SystemUtil;
 
 import com.alibaba.fastjson.JSON;
@@ -41,7 +40,16 @@ public class LocalJavaScriptDownloadUrlAnalyser extends AbstractDownloadUrlAnaly
 	public LocalJavaScriptDownloadUrlAnalyser(File file) throws Exception {
 		super();
 		this.localJavaScriptEngineObject = new LocalJavaScriptEngineObject(file);
+	}
 
+	/**
+	 * 
+	 * @param file
+	 * @throws Exception
+	 */
+	public LocalJavaScriptDownloadUrlAnalyser(String name, File file) throws Exception {
+		super();
+		this.localJavaScriptEngineObject = new LocalJavaScriptEngineObject(name, file);
 	}
 
 	/**
@@ -61,7 +69,7 @@ public class LocalJavaScriptDownloadUrlAnalyser extends AbstractDownloadUrlAnaly
 	 */
 	@Override
 	public boolean isAcceptable(String urlString) {
-		return StringUtil.containsAnyIgnoreCase(urlString, this.localJavaScriptEngineObject.getNames());
+		return StringUtils.containsIgnoreCase(urlString, this.localJavaScriptEngineObject.getName());
 	}
 
 	/**
@@ -71,7 +79,6 @@ public class LocalJavaScriptDownloadUrlAnalyser extends AbstractDownloadUrlAnaly
 	 */
 	@Override
 	public boolean reload() {
-
 		return this.localJavaScriptEngineObject.reload();
 
 	}

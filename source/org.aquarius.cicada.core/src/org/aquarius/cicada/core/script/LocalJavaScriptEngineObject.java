@@ -11,7 +11,6 @@ import javax.script.ScriptException;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang.StringUtils;
 import org.aquarius.service.IReloadable;
 import org.aquarius.util.StringUtil;
 import org.aquarius.util.io.FileUtil;
@@ -27,8 +26,6 @@ public final class LocalJavaScriptEngineObject implements IReloadable {
 
 	private String name;
 
-	private String[] names;
-
 	private String script;
 
 	private ScriptEngine scriptEngine;
@@ -40,7 +37,17 @@ public final class LocalJavaScriptEngineObject implements IReloadable {
 		this.file = file;
 
 		this.name = FilenameUtils.getBaseName(file.getName());
-		this.names = StringUtils.split(this.name, ",");
+
+		this.reload();
+	}
+
+	/**
+	 * 
+	 */
+	public LocalJavaScriptEngineObject(String name, File file) {
+		this.file = file;
+
+		this.name = name;
 
 		this.reload();
 	}
@@ -53,7 +60,6 @@ public final class LocalJavaScriptEngineObject implements IReloadable {
 		super();
 
 		this.name = name;
-		this.names = StringUtils.split(this.name, ",");
 
 		this.script = script;
 
@@ -64,13 +70,6 @@ public final class LocalJavaScriptEngineObject implements IReloadable {
 	 */
 	public String getName() {
 		return this.name;
-	}
-
-	/**
-	 * @return the names
-	 */
-	public String[] getNames() {
-		return this.names;
 	}
 
 	/**

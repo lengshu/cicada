@@ -17,6 +17,7 @@ import java.util.regex.Pattern;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.BooleanUtils;
 import org.aquarius.cicada.core.config.MovieConfiguration;
+import org.aquarius.cicada.core.config.ServiceFilterConfiguration;
 import org.aquarius.cicada.core.model.Movie;
 import org.aquarius.cicada.core.model.Site;
 import org.aquarius.cicada.core.service.IMovieStoreService;
@@ -27,7 +28,9 @@ import org.aquarius.cicada.core.spi.AbstractMovieParser;
 import org.aquarius.cicada.core.spi.AbstractUrlRedirector;
 import org.aquarius.cicada.core.template.TemplateStore;
 import org.aquarius.service.IHttpCacheService;
+import org.aquarius.service.INameService;
 import org.aquarius.service.manager.ServiceManager;
+import org.aquarius.service.manager.impl.ConfigurationServiceFilter;
 import org.aquarius.util.AssertUtil;
 import org.aquarius.util.nls.InternalNlsResource;
 import org.aquarius.util.nls.NlsResource;
@@ -62,6 +65,8 @@ public final class RuntimeManager {
 
 	private MovieConfiguration configuration;
 
+	private ServiceFilterConfiguration serviceFilterConfiguration;
+
 	private NlsResource nlsResource;
 
 	private IHttpCacheService cacheService;
@@ -72,6 +77,27 @@ public final class RuntimeManager {
 	private RuntimeManager() {
 		ResourceBundle resourceBundle = ResourceBundle.getBundle("org.aquarius.cicada.core.nls/lang");
 		this.nlsResource = new InternalNlsResource(resourceBundle);
+	}
+
+	public void init() {
+		AssertUtil.assertNotNull(this.configuration, "Please set movie configuration before init.");
+		AssertUtil.assertNotNull(this.serviceFilterConfiguration, "Please set service filter configuration before init.");
+
+		// this.movieParserManager = new
+		// ServiceManager<>(this.serviceFilterConfiguration.createConfigurationServiceFilter(AbstractMovieParser.class.getName()));
+
+		this.downloadUrlAnalyserManagers = new ServiceManager<>(
+				this.serviceFilterConfiguration.createConfigurationServiceFilter(AbstractDownloadUrlAnalyser.class.getName(), false));
+
+		this.downloadListGeneratorManager = new ServiceManager<>(
+				this.serviceFilterConfiguration.createConfigurationServiceFilter(AbstractDownloadListGenerator.class.getName(), false));
+
+		this.urlRedirectorManager = new ServiceManager<>(
+				this.serviceFilterConfiguration.createConfigurationServiceFilter(AbstractUrlRedirector.class.getName(), false));
+
+		this.movieInfoProcessorManager = new ServiceManager<>(
+				this.serviceFilterConfiguration.createConfigurationServiceFilter(AbstractMovieInfoProcssor.class.getName(), true));
+
 	}
 
 	/**
@@ -191,12 +217,22 @@ public final class RuntimeManager {
 	}
 
 	/**
-	 * Register a new movie parser to parse urlPattern.
-	 *
-	 * @param movieParser
+	 * 
+	 * @param serviceManager
+	 * @param defautEnableState
+	 * @param services
 	 */
-	public void registerMovieParsers(AbstractMovieInfoProcssor... movieTagProcssors) {
-		this.movieInfoProcessorManager.registerServices(movieTagProcssors);
+	private void checkFilter(ServiceManager<?> serviceManager, boolean defautEnableState, INameService... services) {
+
+		ConfigurationServiceFilter<INameService<?>> filter = (ConfigurationServiceFilter<INameService<?>>) serviceManager.getServiceFilter();
+		Map<String, Boolean> map = filter.getMap();
+
+		for (INameService service : services) {
+			if (!map.containsKey(service.getName())) {
+				map.put(service.getName(), defautEnableState);
+			}
+		}
+
 	}
 
 	/**
@@ -206,6 +242,8 @@ public final class RuntimeManager {
 	 */
 	public void registerMovieParsers(AbstractMovieParser... movieParsers) {
 		this.movieParserManager.registerServices(movieParsers);
+
+		// this.checkFilter(this.movieParserManager, movieParsers);
 	}
 
 	/**
@@ -224,6 +262,8 @@ public final class RuntimeManager {
 	 */
 	public void registerUrlRedirectors(AbstractUrlRedirector... urlRedirectors) {
 		this.urlRedirectorManager.registerServices(urlRedirectors);
+
+		this.checkFilter(this.urlRedirectorManager, false, urlRedirectors);
 	}
 
 	/**
@@ -233,6 +273,8 @@ public final class RuntimeManager {
 	 */
 	public void registerMovieProcessors(AbstractMovieInfoProcssor... movieTagProcessors) {
 		this.movieInfoProcessorManager.registerServices(movieTagProcessors);
+
+		this.checkFilter(this.movieInfoProcessorManager, true, movieTagProcessors);
 	}
 
 	/**
@@ -311,6 +353,8 @@ public final class RuntimeManager {
 	 */
 	public void registerDownloadUrlAnalyser(AbstractDownloadUrlAnalyser... downloadUrlAnalysers) {
 		this.downloadUrlAnalyserManagers.registerServices(downloadUrlAnalysers);
+
+		this.checkFilter(this.downloadUrlAnalyserManagers, false, downloadUrlAnalysers);
 	}
 
 	/**
@@ -362,6 +406,8 @@ public final class RuntimeManager {
 	 */
 	public void registerDownloadListGenerator(AbstractDownloadListGenerator... generators) {
 		this.downloadListGeneratorManager.registerServices(generators);
+
+		this.checkFilter(this.downloadListGeneratorManager, false, generators);
 	}
 
 	/**
@@ -413,6 +459,22 @@ public final class RuntimeManager {
 	public void setConfiguration(MovieConfiguration configuration) {
 		if (null != configuration) {
 			this.configuration = configuration;
+		}
+	}
+
+	/**
+	 * @return the serviceFilterConfiguration
+	 */
+	public ServiceFilterConfiguration getServiceFilterConfiguration() {
+		return this.serviceFilterConfiguration;
+	}
+
+	/**
+	 * @param serviceFilterConfiguration the serviceFilterConfiguration to set
+	 */
+	public void setServiceFilterConfiguration(ServiceFilterConfiguration serviceFilterConfiguration) {
+		if (null != serviceFilterConfiguration) {
+			this.serviceFilterConfiguration = serviceFilterConfiguration;
 		}
 	}
 

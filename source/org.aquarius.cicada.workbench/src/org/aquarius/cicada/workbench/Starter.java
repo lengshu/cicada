@@ -116,7 +116,7 @@ public final class Starter {
 		loadLocalSciptFolder();
 
 		loadDownloadGenerators();
-		loadMovieTagProcessors();
+		loadMovieInfoProcessors();
 
 		loadUrlRedirectors();
 
@@ -223,7 +223,7 @@ public final class Starter {
 	/**
 	 *
 	 */
-	private void loadMovieTagProcessors() {
+	private void loadMovieInfoProcessors() {
 		String folderString = this.getMovieProcessorPath();
 		File folder = new File(folderString);
 
@@ -235,8 +235,16 @@ public final class Starter {
 
 		for (File file : files) {
 			try {
-				LocalJavaScriptMovieInfoProcssor movieTagProcessor = new LocalJavaScriptMovieInfoProcssor(file);
-				RuntimeManager.getInstance().registerMovieProcessors(movieTagProcessor);
+
+				String fileBaseName = FilenameUtils.getBaseName(file.getName());
+
+				String[] siteNames = StringUtils.split(fileBaseName, ",");
+
+				for (String siteName : siteNames) {
+					LocalJavaScriptMovieInfoProcssor movieTagProcessor = new LocalJavaScriptMovieInfoProcssor(siteName, file);
+					RuntimeManager.getInstance().registerMovieProcessors(movieTagProcessor);
+				}
+
 			} catch (Exception e) {
 				this.log.error("load movie tag processor with js file " + file.getAbsolutePath(), e);
 			}
@@ -394,11 +402,19 @@ public final class Starter {
 
 		for (File file : files) {
 			try {
-				BrowserJavaScriptDownloadUrlAnalyser analyser = new BrowserJavaScriptDownloadUrlAnalyser(file);
-				analyser.setPriority(priority);
-				RuntimeManager.getInstance().registerDownloadUrlAnalyser(analyser);
 
-				ReloadManager.getInstance().register(analyser);
+				String fileBaseName = FilenameUtils.getBaseName(file.getName());
+
+				String[] siteNames = StringUtils.split(fileBaseName, ",");
+
+				for (String siteName : siteNames) {
+					BrowserJavaScriptDownloadUrlAnalyser analyser = new BrowserJavaScriptDownloadUrlAnalyser(siteName, file);
+					analyser.setPriority(priority);
+					RuntimeManager.getInstance().registerDownloadUrlAnalyser(analyser);
+
+					ReloadManager.getInstance().register(analyser);
+				}
+
 			} catch (Exception e) {
 				this.log.error("load browser analyzer width config file " + file.getAbsolutePath(), e);
 			}
@@ -480,9 +496,16 @@ public final class Starter {
 
 		for (File file : files) {
 			try {
-				LocalJavaScriptDownloadUrlAnalyser analyser = new LocalJavaScriptDownloadUrlAnalyser(file);
-				analyser.setPriority(priority);
-				RuntimeManager.getInstance().registerDownloadUrlAnalyser(analyser);
+
+				String fileBaseName = FilenameUtils.getBaseName(file.getName());
+
+				String[] siteNames = StringUtils.split(fileBaseName, ",");
+
+				for (String siteName : siteNames) {
+					LocalJavaScriptDownloadUrlAnalyser analyser = new LocalJavaScriptDownloadUrlAnalyser(siteName, file);
+					analyser.setPriority(priority);
+					RuntimeManager.getInstance().registerDownloadUrlAnalyser(analyser);
+				}
 
 			} catch (Exception e) {
 				this.log.error("load local script analyzer width config file " + file.getAbsolutePath(), e);

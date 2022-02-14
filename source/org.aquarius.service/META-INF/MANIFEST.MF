@@ -7,7 +7,9 @@ Bundle-Vendor: aquarius.github@gmail.com
 Automatic-Module-Name: org.aquarius.cicada.service
 Export-Package: org.aquarius.service,
  org.aquarius.service.config,
- org.aquarius.service.manager
+ org.aquarius.service.manager,
+ org.aquarius.service.manager.impl,
+ org.aquarius.service.manager.spi
 Bundle-ClassPath: .
 Require-Bundle: org.aquarius.library,
  org.aquarius.util,
