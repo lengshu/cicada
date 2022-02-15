@@ -15,6 +15,11 @@ public interface IRefreshable {
 	/**
 	 * Full refresh to view new data.<BR>
 	 */
-	public void refresh();
+	public void refreshContent();
+
+	/**
+	 * 
+	 */
+	public void updateContent();
 
 }

@@ -5,6 +5,7 @@ import org.aquarius.cicada.workbench.WorkbenchActivator;
 import org.aquarius.cicada.workbench.action.ICommandIds;
 import org.aquarius.cicada.workbench.editor.SiteMultiPageEditor;
 import org.aquarius.cicada.workbench.editor.action.base.AbstractSiteEditorAction;
+import org.aquarius.util.enu.RefreshType;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.swt.SWT;
 
@@ -37,7 +38,7 @@ public class LockAction extends AbstractSiteEditorAction {
 	 * {@inheritDoc}}
 	 */
 	@Override
-	protected boolean doRun(SiteMultiPageEditor siteEditor) {
+	protected RefreshType doRun(SiteMultiPageEditor siteEditor) {
 
 		if (this.isChecked()) {
 
@@ -59,7 +60,7 @@ public class LockAction extends AbstractSiteEditorAction {
 
 		this.setChecked(!isChecked());
 
-		return false;
+		return RefreshType.None;
 	}
 
 }

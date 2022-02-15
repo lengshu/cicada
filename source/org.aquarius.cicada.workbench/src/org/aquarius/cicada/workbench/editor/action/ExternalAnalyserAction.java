@@ -5,9 +5,9 @@ import java.util.List;
 import org.aquarius.cicada.core.model.Movie;
 import org.aquarius.cicada.core.spi.AbstractUrlRedirector;
 import org.aquarius.cicada.workbench.Messages;
-import org.aquarius.cicada.workbench.editor.SiteMultiPageEditor;
-import org.aquarius.cicada.workbench.editor.action.base.AbstractSiteEditorMultiSelectionAction;
+import org.aquarius.cicada.workbench.editor.action.base.AbstractSelectionAction;
 import org.aquarius.cicada.workbench.job.ExternalAnalyserJob;
+import org.aquarius.util.enu.RefreshType;
 
 /**
  * Update the selected movies to the specified score.<BR>
@@ -15,7 +15,7 @@ import org.aquarius.cicada.workbench.job.ExternalAnalyserJob;
  * @author aquarius.github@gmail.com
  *
  */
-public class ExternalAnalyserAction extends AbstractSiteEditorMultiSelectionAction {
+public class ExternalAnalyserAction extends AbstractSelectionAction {
 
 	private AbstractUrlRedirector urlRedirector;
 
@@ -33,14 +33,13 @@ public class ExternalAnalyserAction extends AbstractSiteEditorMultiSelectionActi
 	}
 
 	/**
-	 * {@inheritDoc}}
+	 * {@inheritDoc}
 	 */
 	@Override
-	protected boolean internalRun(SiteMultiPageEditor siteEditor, List<Movie> selectedMovieList) {
+	protected RefreshType internalRun(List<Movie> movieList) {
+		new ExternalAnalyserJob(Messages.ExternalAnalyserAction_JobName, movieList, this.urlRedirector).schedule();
 
-		new ExternalAnalyserJob(Messages.ExternalAnalyserAction_JobName, selectedMovieList, this.urlRedirector).schedule();
-
-		return false;
+		return RefreshType.None;
 	}
 
 }

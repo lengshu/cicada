@@ -4,6 +4,7 @@ import org.aquarius.cicada.workbench.WorkbenchActivator;
 import org.aquarius.cicada.workbench.action.ICommandIds;
 import org.aquarius.cicada.workbench.editor.SiteMultiPageEditor;
 import org.aquarius.cicada.workbench.editor.action.base.AbstractSiteEditorAction;
+import org.aquarius.util.enu.RefreshType;
 
 /**
  * Add a channel to the current site.<BR>
@@ -32,9 +33,9 @@ public class AddChannelAction extends AbstractSiteEditorAction {
 	 * {@inheritDoc}}
 	 */
 	@Override
-	protected boolean doRun(SiteMultiPageEditor siteEditor) {
+	protected RefreshType doRun(SiteMultiPageEditor siteEditor) {
 
-		return false;
+		return RefreshType.None;
 	}
 
 }

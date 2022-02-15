@@ -10,6 +10,7 @@ import org.aquarius.cicada.workbench.WorkbenchActivator;
 import org.aquarius.cicada.workbench.action.ICommandIds;
 import org.aquarius.cicada.workbench.editor.action.base.AbstractSelectionAction;
 import org.aquarius.cicada.workbench.job.PlayMovieJob;
+import org.aquarius.util.enu.RefreshType;
 import org.eclipse.jface.dialogs.MessageDialog;
 
 /**
@@ -39,14 +40,14 @@ public class PlayMovieAction extends AbstractSelectionAction {
 	 * {@inheritDoc}}
 	 */
 	@Override
-	protected void internalRun(List<Movie> selectedMovieList) {
+	protected RefreshType internalRun(List<Movie> selectedMovieList) {
 
 		String mediaPlayerCommand = WorkbenchActivator.getDefault().getConfiguration().getMediaPlayerCommand();
 
 		if (StringUtils.isBlank(mediaPlayerCommand)) {
 			MessageDialog.openWarning(getShell(), Messages.PlayMovieAction_MediaPlayerCommandErrorTitle,
 					Messages.PlayMovieAction_MediaPlayerCommandErrorMessage);
-			return;
+			return RefreshType.None;
 		}
 
 		if (CollectionUtils.isNotEmpty(selectedMovieList)) {
@@ -55,6 +56,8 @@ public class PlayMovieAction extends AbstractSelectionAction {
 			new PlayMovieJob("PlayMovie", movie).schedule();
 
 		}
+
+		return RefreshType.None;
 	}
 
 }

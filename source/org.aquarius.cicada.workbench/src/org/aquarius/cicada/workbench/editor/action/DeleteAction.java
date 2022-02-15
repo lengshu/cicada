@@ -11,6 +11,7 @@ import org.aquarius.cicada.workbench.action.ICommandIds;
 import org.aquarius.cicada.workbench.editor.SiteMultiPageEditor;
 import org.aquarius.cicada.workbench.editor.action.base.AbstractSiteEditorMultiSelectionAction;
 import org.aquarius.ui.util.SwtUtil;
+import org.aquarius.util.enu.RefreshType;
 import org.eclipse.jface.preference.IPreferenceStore;
 
 /**
@@ -36,7 +37,7 @@ public class DeleteAction extends AbstractSiteEditorMultiSelectionAction {
 	 * {@inheritDoc}}
 	 */
 	@Override
-	protected boolean internalRun(SiteMultiPageEditor siteEditor, List<Movie> selectedMovieList) {
+	protected RefreshType internalRun(SiteMultiPageEditor siteEditor, List<Movie> selectedMovieList) {
 
 		IPreferenceStore store = WorkbenchActivator.getDefault().getPreferenceStore();
 
@@ -45,9 +46,9 @@ public class DeleteAction extends AbstractSiteEditorMultiSelectionAction {
 			RuntimeManager.getInstance().getStoreService().deleteMovies(selectedMovieList);
 			siteEditor.getMovieSite().removeMovies(selectedMovieList);
 
-			return true;
+			return RefreshType.Refresh;
 		} else {
-			return false;
+			return RefreshType.None;
 		}
 
 	}

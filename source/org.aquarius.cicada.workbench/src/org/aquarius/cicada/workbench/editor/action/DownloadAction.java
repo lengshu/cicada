@@ -11,6 +11,7 @@ import org.aquarius.cicada.workbench.action.ICommandIds;
 import org.aquarius.cicada.workbench.editor.action.base.AbstractSelectionAction;
 import org.aquarius.cicada.workbench.job.DownloadMovieJob;
 import org.aquarius.ui.util.SwtUtil;
+import org.aquarius.util.enu.RefreshType;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.ISelectionProvider;
 
@@ -41,7 +42,7 @@ public class DownloadAction extends AbstractSelectionAction {
 	 * {@inheritDoc}}
 	 */
 	@Override
-	protected void internalRun(List<Movie> selectedMovieList) {
+	protected RefreshType internalRun(List<Movie> selectedMovieList) {
 
 		int count = 0;
 		List<Movie> filteredMovieList = new ArrayList<>();
@@ -58,7 +59,7 @@ public class DownloadAction extends AbstractSelectionAction {
 			if (!SwtUtil.openConfirm(getShell(), Messages.DownloadAction_ConfirmDialogTitle, Messages.DownloadAction_ConfirmDialogMessage, store,
 					MovieConfiguration.Key_ConfirmDownloadMovie)) {
 				new DownloadMovieJob(Messages.DownloadAction_DownloadMovieJobName, filteredMovieList, true, this.chooseSource).schedule();
-				return;
+				return RefreshType.None;
 			}
 		}
 
@@ -69,6 +70,7 @@ public class DownloadAction extends AbstractSelectionAction {
 		}
 		new DownloadMovieJob(Messages.DownloadAction_DownloadMovieJobName, selectedMovieList, true, this.chooseSource).schedule();
 
+		return RefreshType.None;
 	}
 
 }

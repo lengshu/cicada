@@ -1,6 +1,7 @@
 package org.aquarius.cicada.workbench.editor.action.base;
 
 import org.aquarius.cicada.workbench.editor.SiteMultiPageEditor;
+import org.aquarius.util.enu.RefreshType;
 import org.eclipse.jface.action.Action;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchWindow;
@@ -37,7 +38,7 @@ public abstract class AbstractSiteEditorAction extends Action {
 	 *
 	 * @return
 	 */
-	protected SiteMultiPageEditor getSiteEditor() {
+	public static final SiteMultiPageEditor getSiteEditor() {
 		IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
 		IEditorPart editorPart = window.getActivePage().getActiveEditor();
 
@@ -56,10 +57,14 @@ public abstract class AbstractSiteEditorAction extends Action {
 		SiteMultiPageEditor siteEditor = this.getSiteEditor();
 
 		if (null != siteEditor) {
-			boolean needRefresh = this.doRun(siteEditor);
+			RefreshType refreshType = this.doRun(siteEditor);
 
-			if (needRefresh) {
-				siteEditor.refresh();
+			if (refreshType == RefreshType.Refresh) {
+				siteEditor.refreshContent();
+			}
+
+			if (refreshType == RefreshType.Update) {
+				siteEditor.updateContent();
 			}
 		}
 	}
@@ -69,6 +74,6 @@ public abstract class AbstractSiteEditorAction extends Action {
 	 *
 	 * @param siteEditor
 	 */
-	protected abstract boolean doRun(SiteMultiPageEditor siteEditor);
+	protected abstract RefreshType doRun(SiteMultiPageEditor siteEditor);
 
 }

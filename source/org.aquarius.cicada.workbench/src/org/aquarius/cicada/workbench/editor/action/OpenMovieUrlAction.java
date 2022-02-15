@@ -6,6 +6,7 @@ import org.aquarius.cicada.core.model.Movie;
 import org.aquarius.cicada.workbench.action.ICommandIds;
 import org.aquarius.cicada.workbench.editor.action.base.AbstractSelectionAction;
 import org.aquarius.util.DesktopUtil;
+import org.aquarius.util.enu.RefreshType;
 
 /**
  * Open the selected movies in the browser.<BR>
@@ -34,11 +35,13 @@ public class OpenMovieUrlAction extends AbstractSelectionAction {
 	 * {@inheritDoc}}
 	 */
 	@Override
-	protected void internalRun(List<Movie> selectedMovieList) {
+	protected RefreshType internalRun(List<Movie> selectedMovieList) {
 
 		for (Movie movie : selectedMovieList) {
 			DesktopUtil.openWebpages(movie.getPageUrl());
 		}
+
+		return RefreshType.None;
 	}
 
 }

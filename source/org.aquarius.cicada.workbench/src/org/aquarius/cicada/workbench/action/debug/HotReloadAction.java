@@ -5,6 +5,7 @@ import org.aquarius.cicada.workbench.action.ICommandIds;
 import org.aquarius.cicada.workbench.editor.SiteMultiPageEditor;
 import org.aquarius.cicada.workbench.editor.action.base.AbstractSiteEditorAction;
 import org.aquarius.service.manager.ReloadManager;
+import org.aquarius.util.enu.RefreshType;
 
 /**
  * Hot-Reload script.<BR>
@@ -33,11 +34,11 @@ public class HotReloadAction extends AbstractSiteEditorAction {
 	 * {@inheritDoc}}
 	 */
 	@Override
-	protected boolean doRun(SiteMultiPageEditor siteEditor) {
+	protected RefreshType doRun(SiteMultiPageEditor siteEditor) {
 
 		ReloadManager.getInstance().reloadAll();
 
-		return true;
+		return RefreshType.None;
 	}
 
 }

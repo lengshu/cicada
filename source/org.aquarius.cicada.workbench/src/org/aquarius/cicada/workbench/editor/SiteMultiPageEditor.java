@@ -142,8 +142,6 @@ public final class SiteMultiPageEditor extends MultiPageEditorPart implements IM
 				break;
 			}
 		}
-
-		this.addPageChangedListener(this.browserEditor);
 	}
 
 	/**
@@ -322,13 +320,28 @@ public final class SiteMultiPageEditor extends MultiPageEditorPart implements IM
 	 * {@inheritDoc}}
 	 */
 	@Override
-	public void refresh() {
+	public void refreshContent() {
 		for (int i = 0; i < this.getPageCount(); i++) {
 			IEditorPart editorPart = this.getEditor(i);
 
 			if (editorPart instanceof IMovieListRefreshable) {
 				IMovieListRefreshable movieListRefreshable = (IMovieListRefreshable) editorPart;
-				movieListRefreshable.refresh();
+				movieListRefreshable.refreshContent();
+			}
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void updateContent() {
+		for (int i = 0; i < this.getPageCount(); i++) {
+			IEditorPart editorPart = this.getEditor(i);
+
+			if (editorPart instanceof IMovieListRefreshable) {
+				IMovieListRefreshable movieListRefreshable = (IMovieListRefreshable) editorPart;
+				movieListRefreshable.updateContent();
 			}
 		}
 	}
@@ -419,4 +432,14 @@ public final class SiteMultiPageEditor extends MultiPageEditorPart implements IM
 			}
 		}
 	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void setFocus() {
+		this.browserEditor.updateOutline(this.getActiveEditor() == this.browserEditor);
+		super.setFocus();
+	}
+
 }

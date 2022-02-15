@@ -4,6 +4,7 @@ import org.aquarius.cicada.core.model.Site;
 import org.aquarius.cicada.workbench.editor.SiteMultiPageEditor;
 import org.aquarius.cicada.workbench.editor.action.base.AbstractSiteEditorAction;
 import org.aquarius.cicada.workbench.job.FillMissingInfoJob;
+import org.aquarius.util.enu.RefreshType;
 
 /**
  * Fill the missing actor and publish date.<BR>
@@ -29,7 +30,7 @@ public class FillMissingInfoAction extends AbstractSiteEditorAction {
 	 * {@inheritDoc}}
 	 */
 	@Override
-	protected boolean doRun(SiteMultiPageEditor siteEditor) {
+	protected RefreshType doRun(SiteMultiPageEditor siteEditor) {
 
 		Site site = siteEditor.getAdapter(Site.class);
 
@@ -39,7 +40,7 @@ public class FillMissingInfoAction extends AbstractSiteEditorAction {
 			new FillMissingInfoJob(this.getText(), site, siteEditor.getSelectedMovieList(), true).schedule();
 		}
 
-		return false;
+		return RefreshType.None;
 	}
 
 }

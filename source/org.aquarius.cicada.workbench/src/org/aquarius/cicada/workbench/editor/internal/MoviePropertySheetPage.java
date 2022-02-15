@@ -22,6 +22,8 @@ import org.aquarius.cicada.workbench.editor.action.PlayMovieAction;
 import org.aquarius.cicada.workbench.editor.action.RefreshMovieAction;
 import org.aquarius.cicada.workbench.editor.action.SaveImageAction;
 import org.aquarius.cicada.workbench.editor.action.ShowImageAction;
+import org.aquarius.cicada.workbench.editor.action.UpdateScoreDropDownAction;
+import org.aquarius.cicada.workbench.editor.action.UpdateStateDropDownAction;
 import org.aquarius.cicada.workbench.editor.action.factory.EditorActionFactory;
 import org.aquarius.cicada.workbench.helper.MovieHelper;
 import org.aquarius.service.IHttpCacheService.LoadFinishListener;
@@ -98,6 +100,10 @@ public class MoviePropertySheetPage extends Page implements IPropertySheetPage, 
 	private IAction playMovieAction;
 	private IAction copyInfoDropDownAction;
 	private IAction generateDownloadUrlsDropDownAction;
+
+	private IAction updateScoreDropDownAction;
+
+	private IAction updateStateDropDownAction;
 
 	private IAction externalAnalyserDropdownAction;
 
@@ -233,6 +239,10 @@ public class MoviePropertySheetPage extends Page implements IPropertySheetPage, 
 		this.copyInfoDropDownAction = new CopyInfoDropDownAction(Messages.SiteEditorActionBarContributor_Copy);
 		this.generateDownloadUrlsDropDownAction = new GenerateDownloadUrlsDropDownAction(Messages.SiteEditorActionBarContributor_GenerateDownloadUrls);
 
+		this.updateStateDropDownAction = new UpdateStateDropDownAction(Messages.SiteEditorActionBarContributor_ChangeState);
+
+		this.updateScoreDropDownAction = new UpdateScoreDropDownAction(Messages.SiteEditorActionBarContributor_ChangeScore);
+
 		this.externalAnalyserDropdownAction = EditorActionFactory.getInstance()
 				.createExternalAnalyserAction(Messages.SiteEditorActionBarContributor_ExternalAnalyser);
 
@@ -300,12 +310,16 @@ public class MoviePropertySheetPage extends Page implements IPropertySheetPage, 
 		addAction(menuManager, toolBarManager, this.refreshMovieAction);
 		addAction(menuManager, toolBarManager, this.openMovieUrlAction);
 		addAction(menuManager, toolBarManager, this.downloadAction);
+		addAction(menuManager, toolBarManager, this.playMovieAction);
 		addAction(menuManager, toolBarManager, new Separator());
 
-		addAction(menuManager, toolBarManager, this.playMovieAction);
 		addAction(menuManager, toolBarManager, this.copyInfoDropDownAction);
 		addAction(menuManager, toolBarManager, this.generateDownloadUrlsDropDownAction);
 		addAction(menuManager, toolBarManager, this.externalAnalyserDropdownAction);
+		addAction(menuManager, toolBarManager, new Separator());
+
+		addAction(menuManager, toolBarManager, this.updateStateDropDownAction);
+		addAction(menuManager, toolBarManager, this.updateScoreDropDownAction);
 
 	}
 

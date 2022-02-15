@@ -7,6 +7,7 @@ import org.aquarius.cicada.workbench.Messages;
 import org.aquarius.cicada.workbench.action.ICommandIds;
 import org.aquarius.cicada.workbench.editor.action.base.AbstractSelectionAction;
 import org.aquarius.cicada.workbench.job.RefreshMovieJob;
+import org.aquarius.util.enu.RefreshType;
 
 /**
  * Parse movie info.<BR>
@@ -33,10 +34,11 @@ public class RefreshMovieAction extends AbstractSelectionAction {
 	 * {@inheritDoc}}
 	 */
 	@Override
-	protected void internalRun(List<Movie> selectedMovieList) {
+	protected RefreshType internalRun(List<Movie> selectedMovieList) {
 
 		new RefreshMovieJob(Messages.RefreshMovieJob_Name, selectedMovieList).schedule();
 
+		return RefreshType.None;
 	}
 
 }

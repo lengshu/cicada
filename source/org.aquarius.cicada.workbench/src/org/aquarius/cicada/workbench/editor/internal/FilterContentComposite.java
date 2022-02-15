@@ -461,7 +461,7 @@ public class FilterContentComposite extends Composite {
 	 */
 	protected void refresh() {
 		this.filterSite.doFilter();
-		this.siteEditor.refresh();
+		this.siteEditor.refreshContent();
 
 	}
 

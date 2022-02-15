@@ -7,6 +7,7 @@ import org.aquarius.cicada.core.spi.AbstractDownloadListGenerator;
 import org.aquarius.cicada.workbench.Messages;
 import org.aquarius.cicada.workbench.editor.action.base.AbstractSelectionAction;
 import org.aquarius.cicada.workbench.job.GenerateDownloadUrlJob;
+import org.aquarius.util.enu.RefreshType;
 
 /**
  * Generate download url.<BR>
@@ -28,9 +29,10 @@ public class GenerateDownloadUrlsAction extends AbstractSelectionAction {
 	 * {@inheritDoc}}
 	 */
 	@Override
-	protected void internalRun(List<Movie> selectedMovieList) {
+	protected RefreshType internalRun(List<Movie> selectedMovieList) {
 		new GenerateDownloadUrlJob(Messages.GenerateDownloadUrlsAction_GenerateDownloadUrlsJob, this.downloadListGenerator, selectedMovieList).schedule();
 
+		return RefreshType.None;
 	}
 
 }

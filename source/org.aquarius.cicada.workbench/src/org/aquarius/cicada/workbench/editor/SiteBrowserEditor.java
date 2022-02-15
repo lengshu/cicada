@@ -42,8 +42,6 @@ import org.aquarius.util.spi.IElementNavigator;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
-import org.eclipse.jface.dialogs.IPageChangedListener;
-import org.eclipse.jface.dialogs.PageChangedEvent;
 import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.nebula.widgets.opal.promptsupport.PromptSupport;
@@ -75,7 +73,7 @@ import com.alibaba.fastjson.JSON;
  * @author aquarius.github@gmail.com
  *
  */
-public class SiteBrowserEditor extends BaseTableEditorPart implements IMovieListRefreshable, IPageChangedListener {
+public class SiteBrowserEditor extends BaseTableEditorPart implements IMovieListRefreshable {
 
 	private MovieListBrowserComposite movieListBrowserComposite = null;
 
@@ -92,6 +90,8 @@ public class SiteBrowserEditor extends BaseTableEditorPart implements IMovieList
 	private Action showFilterOutlineAction;
 
 	private IElementNavigator<Movie> elementNavigator;
+
+	private boolean activePage = false;
 
 	/**
 	 * @param movieSite
@@ -157,7 +157,7 @@ public class SiteBrowserEditor extends BaseTableEditorPart implements IMovieList
 	 * 
 	 */
 	public void reload() {
-		this.movieListBrowserComposite.refresh();
+		this.movieListBrowserComposite.refreshContent();
 	}
 
 	/**
@@ -286,7 +286,7 @@ public class SiteBrowserEditor extends BaseTableEditorPart implements IMovieList
 
 				if (!CollectionUtils.isEqualCollection(states, filter.getStateSet())) {
 					filter.setStateSet(new TreeSet<Integer>(states));
-					refresh();
+					refreshContent();
 				}
 			}
 		});
@@ -344,7 +344,7 @@ public class SiteBrowserEditor extends BaseTableEditorPart implements IMovieList
 
 				if (!CollectionUtils.isEqualCollection(selectedChannelNameList, filter.getChannelNameList())) {
 					filter.setChannelNameList(selectedChannelNameList);
-					refresh();
+					refreshContent();
 				}
 			}
 		});
@@ -389,7 +389,7 @@ public class SiteBrowserEditor extends BaseTableEditorPart implements IMovieList
 
 				if (!CollectionUtils.isEqualCollection(actorList, filter.getActorList())) {
 					filter.setActorList(actorList);
-					refresh();
+					refreshContent();
 				}
 			}
 		});
@@ -442,7 +442,7 @@ public class SiteBrowserEditor extends BaseTableEditorPart implements IMovieList
 
 				if (!CollectionUtils.isEqualCollection(tagList, filter.getTagList())) {
 					filter.setTagList(tagList);
-					refresh();
+					refreshContent();
 				}
 			}
 		});
@@ -476,7 +476,7 @@ public class SiteBrowserEditor extends BaseTableEditorPart implements IMovieList
 
 				if (!CollectionUtils.isEqualCollection(categoryList, filter.getCategoryList())) {
 					filter.setCategoryList(categoryList);
-					refresh();
+					refreshContent();
 				}
 			}
 		});
@@ -534,7 +534,7 @@ public class SiteBrowserEditor extends BaseTableEditorPart implements IMovieList
 
 				if (!StringUtils.equalsIgnoreCase(oldKeyword, textAssist.getText())) {
 					filter.setKeyword(textAssist.getText());
-					refresh();
+					refreshContent();
 				}
 			}
 		});
@@ -548,9 +548,9 @@ public class SiteBrowserEditor extends BaseTableEditorPart implements IMovieList
 	 * {@inheritDoc}}
 	 */
 	@Override
-	public void refresh() {
+	public void refreshContent() {
 		this.filterSite.doFilter();
-		this.movieListBrowserComposite.refresh();
+		this.movieListBrowserComposite.refreshContent();
 
 	}
 
@@ -663,14 +663,19 @@ public class SiteBrowserEditor extends BaseTableEditorPart implements IMovieList
 	}
 
 	/**
+	 * 
+	 */
+	public void updateOutline(boolean activePage) {
+		if (this.filterType == RuntimeConstant.FilterTypeOutline) {
+			this.contentOutlinePage.setVisible(activePage);
+		}
+	}
+
+	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void pageChanged(PageChangedEvent event) {
-
-		if (this.filterType == RuntimeConstant.FilterTypeOutline) {
-			this.contentOutlinePage.setVisible(this == event.getSelectedPage());
-		}
-
+	public void updateContent() {
+		// Nothing to do
 	}
 }

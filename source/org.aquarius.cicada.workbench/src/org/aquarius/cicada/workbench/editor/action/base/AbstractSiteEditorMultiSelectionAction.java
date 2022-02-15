@@ -6,6 +6,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.aquarius.cicada.core.model.Movie;
 import org.aquarius.cicada.workbench.Messages;
 import org.aquarius.cicada.workbench.editor.SiteMultiPageEditor;
+import org.aquarius.util.enu.RefreshType;
 import org.eclipse.jface.dialogs.MessageDialog;
 
 /**
@@ -24,13 +25,13 @@ public abstract class AbstractSiteEditorMultiSelectionAction extends AbstractSit
 	 * {@inheritDoc}}
 	 */
 	@Override
-	protected boolean doRun(SiteMultiPageEditor siteEditor) {
+	protected RefreshType doRun(SiteMultiPageEditor siteEditor) {
 		List<Movie> selectedMovieList = siteEditor.getSelectedMovieList();
 
 		if (CollectionUtils.isEmpty(selectedMovieList)) {
 			MessageDialog.openWarning(siteEditor.getSite().getShell(), Messages.AbstractSiteEditorMultiSelectionAction_WarningDialogTitle,
 					Messages.AbstractSiteEditorMultiSelectionAction_WarningDialogMessage);
-			return false;
+			return RefreshType.None;
 		}
 
 		return this.internalRun(siteEditor, selectedMovieList);
@@ -42,6 +43,6 @@ public abstract class AbstractSiteEditorMultiSelectionAction extends AbstractSit
 	 * @param siteEditor
 	 * @param selectedMovieList
 	 */
-	protected abstract boolean internalRun(SiteMultiPageEditor siteEditor, List<Movie> selectedMovieList);
+	protected abstract RefreshType internalRun(SiteMultiPageEditor siteEditor, List<Movie> selectedMovieList);
 
 }

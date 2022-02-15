@@ -9,6 +9,7 @@ import org.aquarius.cicada.workbench.editor.action.base.AbstractSelectionAction;
 import org.aquarius.cicada.workbench.helper.MovieHelper;
 import org.aquarius.ui.dialog.ListInfoDialog;
 import org.aquarius.ui.util.ClipboardUtil;
+import org.aquarius.util.enu.RefreshType;
 
 /**
  * Copy the specified attribute information or all the information in the
@@ -31,7 +32,7 @@ public class CopyInfoAction extends AbstractSelectionAction {
 	 * {@inheritDoc}}
 	 */
 	@Override
-	protected void internalRun(List<Movie> selectedMovieList) {
+	protected RefreshType internalRun(List<Movie> selectedMovieList) {
 		String content = MovieHelper.copyMovieInfo(selectedMovieList, this.property);
 
 		if (WorkbenchActivator.getDefault().getConfiguration().isShowInfoDialog()) {
@@ -40,6 +41,7 @@ public class CopyInfoAction extends AbstractSelectionAction {
 			ClipboardUtil.setClipboardString(content);
 		}
 
+		return RefreshType.None;
 	}
 
 }

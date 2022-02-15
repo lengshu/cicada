@@ -131,7 +131,7 @@ public class RefreshSiteJob extends AbstractCancelableJob {
 				}
 
 				if (eidtor instanceof SiteMultiPageEditor) {
-					((SiteMultiPageEditor) eidtor).refresh();
+					((SiteMultiPageEditor) eidtor).refreshContent();
 					workbenchPage.activate(eidtor);
 				}
 			}

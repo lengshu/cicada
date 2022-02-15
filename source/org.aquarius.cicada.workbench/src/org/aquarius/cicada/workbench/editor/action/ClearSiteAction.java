@@ -11,6 +11,7 @@ import org.aquarius.cicada.workbench.editor.action.base.AbstractSiteEditorAction
 import org.aquarius.log.LogUtil;
 import org.aquarius.ui.util.SwtUtil;
 import org.aquarius.ui.util.TooltipUtil;
+import org.aquarius.util.enu.RefreshType;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
@@ -42,16 +43,16 @@ public class ClearSiteAction extends AbstractSiteEditorAction {
 	 * {@inheritDoc}}
 	 */
 	@Override
-	protected boolean doRun(SiteMultiPageEditor siteEditor) {
+	protected RefreshType doRun(SiteMultiPageEditor siteEditor) {
 
 		Shell shell = siteEditor.getSite().getShell();
 
 		if (!MessageDialog.openConfirm(shell, Messages.ConfirmDialogTitle, Messages.ClearSiteAction_ConfirmMessage)) {
-			return false;
+			return RefreshType.None;
 		}
 
 		if (!MessageDialog.openConfirm(shell, Messages.ConfirmDialogTitle, Messages.ClearSiteAction_ConfirmAgainMessage)) {
-			return false;
+			return RefreshType.None;
 		}
 
 		ProgressMonitorDialog progressDialog = new ProgressMonitorDialog(shell);
@@ -75,7 +76,7 @@ public class ClearSiteAction extends AbstractSiteEditorAction {
 			TooltipUtil.showErrorTip(Messages.ErrorDialogTitle, Messages.ClearSiteAction_ErrorMessage);
 		}
 
-		return false;
+		return RefreshType.Refresh;
 	}
 
 }

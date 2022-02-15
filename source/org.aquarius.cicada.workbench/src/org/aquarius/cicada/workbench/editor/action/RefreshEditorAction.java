@@ -34,7 +34,7 @@ public class RefreshEditorAction extends Action {
 
 		if (workbenchPart instanceof IRefreshable) {
 			IRefreshable refreshable = (IRefreshable) workbenchPart;
-			refreshable.refresh();
+			refreshable.refreshContent();
 		}
 	}
 

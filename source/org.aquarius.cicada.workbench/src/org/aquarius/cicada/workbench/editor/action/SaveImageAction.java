@@ -12,6 +12,7 @@ import org.aquarius.cicada.workbench.job.SaveImageJob;
 import org.aquarius.ui.util.ImageUtil;
 import org.aquarius.ui.util.SwtUtil;
 import org.aquarius.ui.util.TooltipUtil;
+import org.aquarius.util.enu.RefreshType;
 import org.eclipse.swt.widgets.FileDialog;
 
 /**
@@ -36,16 +37,16 @@ public class SaveImageAction extends AbstractSelectionAction {
 	 * {@inheritDoc}}
 	 */
 	@Override
-	protected void internalRun(List<Movie> selectedMovieList) {
+	protected RefreshType internalRun(List<Movie> selectedMovieList) {
 		if (CollectionUtils.isEmpty(selectedMovieList)) {
-			return;
+			return RefreshType.None;
 		}
 
 		FileDialog fileDialog = new FileDialog(SwtUtil.findShell());
 		String fileName = fileDialog.open();
 
 		if (StringUtils.isBlank(fileName)) {
-			return;
+			return RefreshType.None;
 		}
 
 		String extensionName = FilenameUtils.getExtension(fileName);
@@ -53,12 +54,14 @@ public class SaveImageAction extends AbstractSelectionAction {
 
 		if (!isSupportedImageFormat) {
 			TooltipUtil.showErrorTip(Messages.ErrorDialogTitle, Messages.SaveImageAction_UnsupportImageFormatMessage);
-			return;
+			return RefreshType.None;
 		}
 
 		Movie movie = selectedMovieList.get(0);
 		SaveImageJob saveImageJob = new SaveImageJob(this.getText(), movie.getImageUrl(), fileName);
 		saveImageJob.schedule();
+
+		return RefreshType.None;
 	}
 
 }

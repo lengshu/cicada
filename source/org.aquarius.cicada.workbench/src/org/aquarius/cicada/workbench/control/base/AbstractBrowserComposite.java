@@ -121,7 +121,7 @@ public abstract class AbstractBrowserComposite extends Composite implements IMov
 
 		this.service = service;
 
-		refresh();
+		refreshContent();
 
 	}
 
@@ -129,7 +129,7 @@ public abstract class AbstractBrowserComposite extends Composite implements IMov
 	 *
 	 */
 	@Override
-	public void refresh() {
+	public void refreshContent() {
 		if (this.inited) {
 			doFresh(this.browser, this.service);
 			return;
@@ -181,6 +181,14 @@ public abstract class AbstractBrowserComposite extends Composite implements IMov
 
 			timer.schedule(timerTask, 800, 300);
 		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void updateContent() {
+		// Nothing to do
 	}
 
 	protected abstract String getPageUrl();

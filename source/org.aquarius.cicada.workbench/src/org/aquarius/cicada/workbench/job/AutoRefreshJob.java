@@ -194,7 +194,7 @@ public class AutoRefreshJob extends AbstractCancelableJob {
 				IEditorPart eidtor = workbenchPage.findEditor(input);
 
 				if (eidtor instanceof SiteMultiPageEditor) {
-					((SiteMultiPageEditor) eidtor).refresh();
+					((SiteMultiPageEditor) eidtor).refreshContent();
 					workbenchPage.activate(eidtor);
 				}
 

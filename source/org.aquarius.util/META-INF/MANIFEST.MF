@@ -8,6 +8,7 @@ Automatic-Module-Name: org.aquarius.util
 Export-Package: org.aquarius.util,
  org.aquarius.util.base,
  org.aquarius.util.collection,
+ org.aquarius.util.enu,
  org.aquarius.util.exception,
  org.aquarius.util.io,
  org.aquarius.util.jdbc,

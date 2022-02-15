@@ -8,6 +8,7 @@ import org.aquarius.cicada.core.model.Movie;
 import org.aquarius.cicada.workbench.action.ICommandIds;
 import org.aquarius.cicada.workbench.editor.action.base.AbstractSelectionAction;
 import org.aquarius.cicada.workbench.util.WorkbenchUtil;
+import org.aquarius.util.enu.RefreshType;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.model.application.ui.basic.MPartSashContainerElement;
 import org.eclipse.e4.ui.workbench.modeling.EModelService;
@@ -45,9 +46,9 @@ public class ShowImageAction extends AbstractSelectionAction {
 	 * {@inheritDoc}}
 	 */
 	@Override
-	protected void internalRun(List<Movie> selectedMovieList) {
+	protected RefreshType internalRun(List<Movie> selectedMovieList) {
 		if (CollectionUtils.isEmpty(selectedMovieList)) {
-			return;
+			return RefreshType.None;
 		}
 
 		IWorkbenchPage workbenchPage = WorkbenchUtil.getActivePage();
@@ -60,7 +61,7 @@ public class ShowImageAction extends AbstractSelectionAction {
 			Shell shell = viewSite.getShell();
 
 			if (StringUtils.isEmpty(shell.getText())) {
-				return;
+				return RefreshType.None;
 			}
 
 			EModelService modelService = viewSite.getService(EModelService.class);
@@ -82,6 +83,8 @@ public class ShowImageAction extends AbstractSelectionAction {
 			e.printStackTrace();
 			// Nothing to do
 		}
+
+		return RefreshType.None;
 
 		// get editorpart somehow which you wanted to open it.
 		// EditorPart openEditor =

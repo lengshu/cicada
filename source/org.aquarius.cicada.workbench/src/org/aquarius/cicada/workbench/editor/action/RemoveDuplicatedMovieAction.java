@@ -14,6 +14,7 @@ import org.aquarius.cicada.workbench.action.ICommandIds;
 import org.aquarius.cicada.workbench.editor.SiteMultiPageEditor;
 import org.aquarius.cicada.workbench.editor.action.base.AbstractSiteEditorAction;
 import org.aquarius.ui.util.TooltipUtil;
+import org.aquarius.util.enu.RefreshType;
 
 /**
  * Remove the duplicated movies.<BR>
@@ -42,7 +43,7 @@ public class RemoveDuplicatedMovieAction extends AbstractSiteEditorAction {
 	 * {@inheritDoc}}
 	 */
 	@Override
-	protected boolean doRun(SiteMultiPageEditor siteEditor) {
+	protected RefreshType doRun(SiteMultiPageEditor siteEditor) {
 		Site site = siteEditor.getMovieSite();
 
 		List<Movie> movieList = site.getMovieList();
@@ -65,7 +66,7 @@ public class RemoveDuplicatedMovieAction extends AbstractSiteEditorAction {
 		String message = MessageFormat.format(Messages.RemoveDuplicatedMovieAction_TooltipMessage, duplicatedMovieList.size());
 		TooltipUtil.showInfoTip(Messages.RemoveDuplicatedMovieAction_TooltipTitle, message);
 
-		return true;
+		return RefreshType.Refresh;
 	}
 
 }

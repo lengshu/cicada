@@ -7,6 +7,7 @@ import org.aquarius.cicada.workbench.editor.SiteMultiPageEditor;
 import org.aquarius.cicada.workbench.editor.action.base.AbstractSiteEditorAction;
 import org.aquarius.cicada.workbench.job.RefreshSiteJob;
 import org.aquarius.ui.util.TooltipUtil;
+import org.aquarius.util.enu.RefreshType;
 
 /**
  * Refresh the site to get the newest movies.<BR>
@@ -35,16 +36,16 @@ public class RefreshSiteAction extends AbstractSiteEditorAction {
 	 * {@inheritDoc}}
 	 */
 	@Override
-	protected boolean doRun(SiteMultiPageEditor siteEditor) {
+	protected RefreshType doRun(SiteMultiPageEditor siteEditor) {
 		Site site = siteEditor.getMovieSite();
 
 		if (site.isRefreshing()) {
 			TooltipUtil.showErrorTip(Messages.WarnDialogTitle, Messages.RefreshSiteAction_RefreshingErrorMessage);
-			return false;
+			return RefreshType.None;
 		}
 
 		RefreshSiteJob refreshSiteJob = new RefreshSiteJob(Messages.RefreshSiteAction_RefreshSite, site.getSiteName(), false);
 		refreshSiteJob.schedule();
-		return false;
+		return RefreshType.None;
 	}
 }

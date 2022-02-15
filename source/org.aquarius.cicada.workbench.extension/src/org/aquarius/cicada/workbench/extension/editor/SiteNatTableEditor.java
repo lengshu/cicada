@@ -344,7 +344,7 @@ public class SiteNatTableEditor extends BaseTableEditorPart implements IMovieLis
 	 * {@inheritDoc}}
 	 */
 	@Override
-	public void refresh() {
+	public void refreshContent() {
 		Site site = this.getEditorInput().getAdapter(Site.class);
 
 		this.bodyLayer.sortedList.getReadWriteLock().writeLock().lock();
@@ -1261,6 +1261,19 @@ public class SiteNatTableEditor extends BaseTableEditorPart implements IMovieLis
 		this.natTable.loadState(Property_Prefix, properties);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void updateContent() {
+		this.natTable.redraw();
+	}
+
+	/**
+	 * 
+	 * @param elements
+	 * @return
+	 */
 	private static boolean isUseTextForNatTableRowFilter(Collection<?> elements) {
 		return WorkbenchActivator.getDefault().getConfiguration().isUseTextForNatTableRowFilter() && elements.size() > 60;
 	}

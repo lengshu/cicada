@@ -4,6 +4,7 @@ import org.aquarius.cicada.workbench.action.ICommandIds;
 import org.aquarius.cicada.workbench.editor.SiteMultiPageEditor;
 import org.aquarius.cicada.workbench.editor.action.base.AbstractSiteEditorAction;
 import org.aquarius.util.DesktopUtil;
+import org.aquarius.util.enu.RefreshType;
 
 /**
  * Open the main page of the site in a browser.<BR>
@@ -32,12 +33,12 @@ public class OpenSiteUrlAction extends AbstractSiteEditorAction {
 	 * {@inheritDoc}}
 	 */
 	@Override
-	protected boolean doRun(SiteMultiPageEditor siteEditor) {
+	protected RefreshType doRun(SiteMultiPageEditor siteEditor) {
 
 		String[] urls = siteEditor.getMovieSite().getMovieParser().getSiteUrls();
 		DesktopUtil.openWebpages(urls);
 
-		return false;
+		return RefreshType.None;
 	}
 
 }

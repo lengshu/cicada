@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.aquarius.cicada.core.RuntimeManager;
 import org.aquarius.cicada.core.model.Movie;
-import org.aquarius.cicada.workbench.editor.SiteMultiPageEditor;
-import org.aquarius.cicada.workbench.editor.action.base.AbstractSiteEditorMultiSelectionAction;
+import org.aquarius.cicada.workbench.editor.action.base.AbstractSelectionAction;
+import org.aquarius.util.enu.RefreshType;
 
 /**
  * Update the selected movies to the specified score.<BR>
@@ -13,7 +13,7 @@ import org.aquarius.cicada.workbench.editor.action.base.AbstractSiteEditorMultiS
  * @author aquarius.github@gmail.com
  *
  */
-public class UpdateScoreAction extends AbstractSiteEditorMultiSelectionAction {
+public class UpdateScoreAction extends AbstractSelectionAction {
 
 	private int score;
 
@@ -29,18 +29,17 @@ public class UpdateScoreAction extends AbstractSiteEditorMultiSelectionAction {
 	}
 
 	/**
-	 * {@inheritDoc}}
+	 * {@inheritDoc}
 	 */
 	@Override
-	protected boolean internalRun(SiteMultiPageEditor siteEditor, List<Movie> selectedMovieList) {
-
-		for (Movie movie : selectedMovieList) {
+	protected RefreshType internalRun(List<Movie> movieList) {
+		for (Movie movie : movieList) {
 			movie.setScore(this.score);
 		}
 
-		RuntimeManager.getInstance().getStoreService().insertOrUpdateMovies(selectedMovieList);
+		RuntimeManager.getInstance().getStoreService().insertOrUpdateMovies(movieList);
 
-		return true;
+		return RefreshType.Update;
 	}
 
 }

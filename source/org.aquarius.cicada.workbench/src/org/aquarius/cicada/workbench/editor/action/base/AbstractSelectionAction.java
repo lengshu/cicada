@@ -6,10 +6,12 @@ package org.aquarius.cicada.workbench.editor.action.base;
 import java.util.List;
 
 import org.aquarius.cicada.core.model.Movie;
+import org.aquarius.cicada.workbench.editor.SiteMultiPageEditor;
 import org.aquarius.cicada.workbench.helper.MovieHelper;
 import org.aquarius.cicada.workbench.util.WorkbenchUtil;
 import org.aquarius.ui.util.AdapterUtil;
 import org.aquarius.ui.util.SwtUtil;
+import org.aquarius.util.enu.RefreshType;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionProvider;
@@ -57,7 +59,24 @@ public abstract class AbstractSelectionAction extends Action {
 		List<Movie> movieList = MovieHelper.getMovieList(selection);
 
 		if (!movieList.isEmpty()) {
-			this.internalRun(movieList);
+			RefreshType refreshType = this.internalRun(movieList);
+			if (refreshType == RefreshType.None) {
+				return;
+			}
+
+			SiteMultiPageEditor siteEditor = AbstractSiteEditorAction.getSiteEditor();
+
+			if (null == siteEditor) {
+				return;
+			}
+
+			if (refreshType == RefreshType.Update) {
+				siteEditor.updateContent();
+			}
+
+			if (refreshType == RefreshType.Refresh) {
+				siteEditor.refreshContent();
+			}
 		}
 	}
 
@@ -101,5 +120,5 @@ public abstract class AbstractSelectionAction extends Action {
 	/**
 	 * @param movieList
 	 */
-	protected abstract void internalRun(List<Movie> movieList);
+	protected abstract RefreshType internalRun(List<Movie> movieList);
 }
