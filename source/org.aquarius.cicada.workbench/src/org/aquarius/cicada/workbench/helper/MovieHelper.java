@@ -365,14 +365,14 @@ public class MovieHelper {
 	 * @param site
 	 * @return
 	 */
-	public static List<Movie> fillPublishDate(Site site) {
+	public static List<Movie> fillPublishDate(Site site, IProcessMonitor monitor) {
 
 		if (null == site) {
 			return new ArrayList<Movie>();
 		}
 
 		List<Movie> movieList = site.getMovieList();
-		return fillPublishDate(site, movieList);
+		return fillPublishDate(site, movieList, monitor);
 	}
 
 	/**
@@ -380,7 +380,7 @@ public class MovieHelper {
 	 * @param site
 	 * @return
 	 */
-	public static List<Movie> fillPublishDate(Site site, List<Movie> movieList) {
+	public static List<Movie> fillPublishDate(Site site, List<Movie> movieList, IProcessMonitor monitor) {
 
 		if (null == site) {
 			return new ArrayList<Movie>();
@@ -391,6 +391,11 @@ public class MovieHelper {
 		Date publishDate = null;
 
 		for (Movie movie : movieList) {
+
+			if (monitor.isCanceled()) {
+				return resultList;
+			}
+
 			if (null != movie.getPublishDate()) {
 				publishDate = movie.getPublishDate();
 			} else {

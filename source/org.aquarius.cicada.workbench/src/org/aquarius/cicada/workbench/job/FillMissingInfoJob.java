@@ -26,17 +26,20 @@ public class FillMissingInfoJob extends AbstractCancelableJob {
 
 	private List<Movie> movieList;
 
+	private boolean forceRefill;
+
 	/**
 	 * 
 	 * @param name
 	 * @param site
 	 * @param movieList
 	 */
-	public FillMissingInfoJob(String name, Site site, List<Movie> movieList) {
+	public FillMissingInfoJob(String name, Site site, List<Movie> movieList, boolean forceRefill) {
 		super(name);
 
 		this.site = site;
 		this.movieList = movieList;
+		this.forceRefill = forceRefill;
 	}
 
 	/**
@@ -53,10 +56,10 @@ public class FillMissingInfoJob extends AbstractCancelableJob {
 
 		ProcessMonitorProxy monitorProxy = new ProcessMonitorProxy(monitor);
 
-		List<Movie> resultMovieList = MovieHelper.fillActors(this.movieList, true, monitorProxy);
+		List<Movie> resultMovieList = MovieHelper.fillActors(this.movieList, this.forceRefill, monitorProxy);
 		RuntimeManager.getInstance().getStoreService().insertOrUpdateMovies(resultMovieList);
 
-		resultMovieList = MovieHelper.fillPublishDate(this.site, this.movieList);
+		resultMovieList = MovieHelper.fillPublishDate(this.site, this.movieList, monitorProxy);
 		RuntimeManager.getInstance().getStoreService().insertOrUpdateMovies(resultMovieList);
 
 		return Status.OK_STATUS;

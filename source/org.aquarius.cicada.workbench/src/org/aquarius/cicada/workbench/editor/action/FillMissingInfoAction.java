@@ -34,9 +34,9 @@ public class FillMissingInfoAction extends AbstractSiteEditorAction {
 		Site site = siteEditor.getAdapter(Site.class);
 
 		if (this.selectAll) {
-			new FillMissingInfoJob(this.getText(), site, site.getMovieList()).schedule();
+			new FillMissingInfoJob(this.getText(), site, site.getMovieList(), false).schedule();
 		} else {
-			new FillMissingInfoJob(this.getText(), site, siteEditor.getSelectedMovieList()).schedule();
+			new FillMissingInfoJob(this.getText(), site, siteEditor.getSelectedMovieList(), true).schedule();
 		}
 
 		return false;

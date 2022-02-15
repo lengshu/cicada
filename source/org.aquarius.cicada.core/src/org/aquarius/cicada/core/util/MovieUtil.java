@@ -42,7 +42,11 @@ import org.slf4j.Logger;
  */
 public final class MovieUtil {
 
-	private static Pattern UniIdPattern = Pattern.compile("[^\\x00-\\xff]{0,10}[0-9a-zA-Z]{0,20}[^\\x00-\\xff]{0,10}[ -]{0,2}[0-9a-zA-Z_]{1,12}");
+	// private static Pattern UniIdPattern =
+	// Pattern.compile("[^\\x00-\\xff]{0,10}[0-9a-zA-Z]{0,20}[^\\x00-\\xff]{0,10}[
+	// -]{0,2}[0-9a-zA-Z_]{1,12}");
+
+	private static Pattern UniIdPattern = Pattern.compile("[0-9a-zA-Z]{2,20}[ -]{0,2}[0-9a-zA-Z_]{2,12}", Pattern.CASE_INSENSITIVE);
 
 	private static Pattern SplitPattern = Pattern.compile(",|\\|");
 
