@@ -149,6 +149,15 @@ public class WorkbenchConfigurationPreferencePage extends FieldEditorPreferenceP
 				Messages.WorkbenchConfigurationPreferencePage_FilterType, entryNamesAndValues, parent);
 		this.addField(filterTypeFieldEditor);
 
+		entryNamesAndValues = new String[][] { { Messages.WorkbenchConfigurationPreferencePage_BrowserZoomSmall, RuntimeConstant.BrowserZoomSmall }, // $NON-NLS-2$
+																																						// //$NON-NLS-1$
+				{ Messages.WorkbenchConfigurationPreferencePage_BrowserZoomNormal, RuntimeConstant.BrowserZoomNormal }, // $NON-NLS-2$ //$NON-NLS-1$
+				{ Messages.WorkbenchConfigurationPreferencePage_BrowserZoomLarge, RuntimeConstant.BrowserZoomLarge + "" } }; // $NON-NLS-2$ //$NON-NLS-1$
+
+		FieldEditor browserZoomFieldEditor = new ComboFieldEditor(WorkbenchConfiguration.Key_BrowserZoom,
+				Messages.WorkbenchConfigurationPreferencePage_BrowserZoom, entryNamesAndValues, parent);
+		this.addField(browserZoomFieldEditor);
+
 		entryNamesAndValues = WorkbenchUtil.createEntryNamesAndValues(SiteMultiPageEditor.getEditorNames());
 
 		FieldEditor defaultEditorFieldEditor = new ComboFieldEditor(WorkbenchConfiguration.Key_DefaultEditor,

@@ -534,6 +534,14 @@ public class Messages extends NLS {
 
 	public static String WorkbenchConfigurationPreferencePage_UseInnerFilter;
 
+	public static String WorkbenchConfigurationPreferencePage_BrowserZoom;
+
+	public static String WorkbenchConfigurationPreferencePage_BrowserZoomSmall;
+
+	public static String WorkbenchConfigurationPreferencePage_BrowserZoomNormal;
+
+	public static String WorkbenchConfigurationPreferencePage_BrowserZoomLarge;
+
 	public static String WorkbenchConfigurationPreferencePage_DisableExtensionTable;
 
 	public static String WorkbenchConfigurationPreferencePage_EnableTableEditable;

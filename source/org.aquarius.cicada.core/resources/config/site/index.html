@@ -10,87 +10,104 @@
 		<script src="./js/index.js"></script>
 		<script src="./js/aquarius.js"></script>
 		<script>
-</script>
+			function loadStyles(url) {
+ 				var link = document.createElement("link");
+ 				link.type = "text/css";
+				 link.rel = "stylesheet";
+				 link.href = url;
+				 link.medai="screen";
+				 
+				 document.getElementsByTagName("head")[0].appendChild(link);
+ 			}
+
+			var currentHref=document.location.href;
+			var index=currentHref.indexOf("zoom=");
+			if(index>-1)
+			{
+				var zoom=currentHref.substring(index+5);
+				loadStyles("./css/style."+zoom+".css");
+			}
+		</script>
 		<script>
 			var currentPageCount = 0;
-			        var currentPageSize = 0;
-			
-			        var totalCountString = "0";
-			         //var totalCountString = queryMovieCountFunction();
-			        var totalCount = parseInt(totalCountString);
-			
-			
-			        function downloadMovieList() {
-			
-			            var selectedElements = $("li.selected");
-			
-			            if ((null == selectedElements) || (selectedElements.length == 0)) {
-			                alert("No movies selected.");
-			                return;
-			            }
-			
-			            var results = [];
-			            for (var i = 0; i < selectedElements.length; i++) {
-			                results.push(selectedElements[i].getAttribute("name"));
-			            }
-			
-			            downloadMovieListFunction(results.join("|"));
-			
-			        };
+	        var currentPageSize = 0;
+	
+	        var totalCountString = "0";
+	         //var totalCountString = queryMovieCountFunction();
+	        var totalCount = parseInt(totalCountString);
+	
+	
+	        function downloadMovieList() {
+	
+	            var selectedElements = $("li.selected");
+	
+	            if ((null == selectedElements) || (selectedElements.length == 0)) {
+	                alert("No movies selected.");
+	                return;
+	            }
+	
+	            var results = [];
+	            for (var i = 0; i < selectedElements.length; i++) {
+	                results.push(selectedElements[i].getAttribute("name"));
+	            }
+	
+	            downloadMovieListFunction(results.join("|"));
+	
+	        };
 		</script>
 		<script>
 			function queryMovieList(pageCount, pageSize) {
 			
-			            if ((currentPageCount == pageCount) && (currentPageSize == pageSize)) {
-			                return;
-			            }
-			
-			            currentPageCount = pageCount;
-			            currentPageSize = pageSize;
-			
-			
-			            var json = queryMovieListFunction(pageCount.toString(), pageSize.toString());
-			
-			            var movieList = JSON.parse(json);
-			
-			            var htmlContent = "";
-			            for (var i = 0; i < movieList.length; i++) {
-			                var movie = movieList[i];
-			                htmlContent = htmlContent + "<li class='portrait'  name='" + movie.id + "' data-url='" + movie.pageUrl + "'  data-title='" + movie.title+"' title='"+movie.title+"'>";
-			                htmlContent = htmlContent + "<img class='pic' src='" + movie.imageUrl + "'  alt='" + movie.title + "'>";
-			                htmlContent = htmlContent + " <div class='foot'>";
-			                htmlContent = htmlContent + "<span>" + movie.title + "</span>";
-			                htmlContent = htmlContent + "</div></li>";
-			            }
-			
-						cancelSelection();
-			            document.getElementById('movieList').innerHTML = htmlContent;
-						
-			            initListeners();
-			
-			            var controlArray = window["Objarr"];
-			
-			
-			            for (var i = 0; controlArray.length; i++) {
-			                controlArray[i].index = currentPageCount;
-			                xian(controlArray[i]);
-			            }
-			        }
+	            if ((currentPageCount == pageCount) && (currentPageSize == pageSize)) {
+	                return;
+	            }
+	
+	            currentPageCount = pageCount;
+	            currentPageSize = pageSize;
+	
+	
+	            var json = queryMovieListFunction(pageCount.toString(), pageSize.toString());
+	
+	            var movieList = JSON.parse(json);
+	
+	            var htmlContent = "";
+	            for (var i = 0; i < movieList.length; i++) {
+	                var movie = movieList[i];
+	                htmlContent = htmlContent + "<li class='portrait'  name='" + movie.id + "' data-url='" + movie.pageUrl + "'  data-title='" + movie.title+"' title='"+movie.title+"'>";
+	                htmlContent = htmlContent + "<img class='pic' src='" + movie.imageUrl + "'  alt='" + movie.title + "'>";
+	                htmlContent = htmlContent + " <div class='foot'>";
+	                htmlContent = htmlContent + "<span>" + movie.title + "</span>";
+	                htmlContent = htmlContent + "</div></li>";
+	            }
+	
+				cancelSelection();
+	            document.getElementById('movieList').innerHTML = htmlContent;
+				
+	            initListeners();
+	
+	            var controlArray = window["Objarr"];
+	
+	
+	            for (var i = 0; controlArray.length; i++) {
+	                controlArray[i].index = currentPageCount;
+	                xian(controlArray[i]);
+	            }
+	        }
 		</script>
 		<script>
 			document.onkeydown = function (e) { //
-			            var keyNum = window.event ? e.keyCode : e.which; //
-			
-			            if (keyNum == 39) {
-			                if (currentPageCount < totalCount) {
-			                    queryMovieList(currentPageCount + 1, currentPageSize);
-			                }
-			            }
-			            if (keyNum == 37) {
-			                if (currentPageCount > 1) {
-			                    queryMovieList(currentPageCount - 1, currentPageSize);
-			                }
-			            }
+	            var keyNum = window.event ? e.keyCode : e.which; //
+	
+	            if (keyNum == 39) {
+	                if (currentPageCount < totalCount) {
+	                    queryMovieList(currentPageCount + 1, currentPageSize);
+	                }
+	            }
+	            if (keyNum == 37) {
+	                if (currentPageCount > 1) {
+	                    queryMovieList(currentPageCount - 1, currentPageSize);
+	                }
+	            }
 			        }
 		</script>
 	</head>
@@ -113,60 +130,60 @@
 		<script>
 			//alert(isFunctionInjected());
 			
-		        totalCountString = queryMovieCountFunction();
-		        totalCount = parseInt(totalCountString);
-		
-		        var runCallback = null;
-		
-		        queryMovieList(1, 40);
-		
-		        dmm({
-		            // index: 1,//
-		            cssStyle: 3, //
-		            size: [40, 80, 120, 160, 200, 400], //
-		
-		            skip: true, //
-		            setSize: true, //
-		            container: "topPaging", //
-		            textShow: ["<<", "<", ">", ">>", "To", "", "Ok", "Page:", "Total:"],
-		
-		            callback: function (e) {
-		                e.index; //
-		                e.pageSize1; //
-		
-		                e.countpage = Math.ceil(totalCount / e.pageSize1);
-		                //
-		                e.infocount = totalCount; //
-		                xian(e); //load controls
-		
-		                runCallback = e; //paging
-		
-		                jumpPage(e);
-		            }
-		        });
-		
-		
-		        function dian() {
-		            runCallback.index = 1;
-		
-		            hui(runCallback); //Call server to fetch data
-		
-		        }
-		
-		        function jumpPage(e) {
-		            cancelSelection();
-		
-		            if (currentPageCount == e.index && (currentPageSize == e.pageSize1)) {
-		                return;
-		            }
-		
-		
-		            pageSize = e.pageSize1;
-		            pageCount = e.index;
-		
-		            queryMovieList(pageCount, pageSize);
-		
-		        }
+	        totalCountString = queryMovieCountFunction();
+	        totalCount = parseInt(totalCountString);
+	
+	        var runCallback = null;
+	
+	        queryMovieList(1, 40);
+	
+	        dmm({
+	            // index: 1,//
+	            cssStyle: 3, //
+	            size: [40, 80, 120, 160, 200, 400], //
+	
+	            skip: true, //
+	            setSize: true, //
+	            container: "topPaging", //
+	            textShow: ["<<", "<", ">", ">>", "To", "", "Ok", "Page:", "Total:"],
+	
+	            callback: function (e) {
+	                e.index; //
+	                e.pageSize1; //
+	
+	                e.countpage = Math.ceil(totalCount / e.pageSize1);
+	                //
+	                e.infocount = totalCount; //
+	                xian(e); //load controls
+	
+	                runCallback = e; //paging
+	
+	                jumpPage(e);
+	            }
+	        });
+	
+	
+	        function dian() {
+	            runCallback.index = 1;
+	
+	            hui(runCallback); //Call server to fetch data
+	
+	        }
+	
+	        function jumpPage(e) {
+	            cancelSelection();
+	
+	            if (currentPageCount == e.index && (currentPageSize == e.pageSize1)) {
+	                return;
+	            }
+	
+	
+	            pageSize = e.pageSize1;
+	            pageCount = e.index;
+	
+	            queryMovieList(pageCount, pageSize);
+	
+	        }
 		</script>
 	</body>
 

@@ -583,6 +583,12 @@ public class SiteBrowserEditor extends BaseTableEditorPart implements IMovieList
 			return (T) this.elementNavigator;
 		}
 
+		if (adapter == Browser.class) {
+			if (SwtUtil.isValid(this.movieListBrowserComposite)) {
+				return (T) this.movieListBrowserComposite.getBrowser();
+			}
+		}
+
 		return super.getAdapter(adapter);
 	}
 

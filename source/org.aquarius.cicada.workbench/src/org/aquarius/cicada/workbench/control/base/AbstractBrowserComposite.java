@@ -14,10 +14,12 @@ import java.util.TimerTask;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.ObjectUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.SystemUtils;
 import org.aquarius.cicada.core.model.Movie;
 import org.aquarius.cicada.core.service.IMovieListService;
 import org.aquarius.cicada.core.util.MovieUtil;
+import org.aquarius.cicada.workbench.WorkbenchActivator;
 import org.aquarius.cicada.workbench.browser.BrowserUtil;
 import org.aquarius.cicada.workbench.control.IMovieListRefreshable;
 import org.eclipse.swt.SWT;
@@ -142,6 +144,9 @@ public abstract class AbstractBrowserComposite extends Composite implements IMov
 			doFresh(this.browser, this.service);
 		}
 
+		/**
+		 * Use this timer to solve the problem that browser load function fail in linux.
+		 */
 		boolean executeTimer = (!injectFunction) || (!SystemUtils.IS_OS_WINDOWS);
 
 		if (executeTimer) {
@@ -213,6 +218,11 @@ public abstract class AbstractBrowserComposite extends Composite implements IMov
 	protected void doFresh(Browser browser, IMovieListService service) {
 
 		String pageUrl = this.getPageUrl();
+		String zoom = WorkbenchActivator.getDefault().getConfiguration().getBrowserZoom();
+
+		if (StringUtils.isNotBlank(zoom)) {
+			pageUrl = pageUrl + "?zoom=" + zoom;
+		}
 
 		String[] header = service.getRequestHeader();
 

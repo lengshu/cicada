@@ -394,6 +394,10 @@ public final class SiteMultiPageEditor extends MultiPageEditorPart implements IM
 			return (T) this.getMovieSite();
 		}
 
+		if (adapter == SiteBrowserEditor.class) {
+			return (T) this.browserEditor;
+		}
+
 		return super.getAdapter(adapter);
 	}
 

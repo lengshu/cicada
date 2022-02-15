@@ -1,10 +1,10 @@
 package org.aquarius.cicada.workbench.editor.action;
 
 import org.aquarius.cicada.workbench.Messages;
+import org.aquarius.cicada.workbench.util.WorkbenchUtil;
 import org.aquarius.util.spi.IRefreshable;
 import org.eclipse.jface.action.Action;
 import org.eclipse.ui.IWorkbenchPart;
-import org.eclipse.ui.PlatformUI;
 
 /**
  * Parse movie info.<BR>
@@ -30,8 +30,8 @@ public class RefreshEditorAction extends Action {
 	 */
 	@Override
 	public void run() {
-		IWorkbenchPart workbenchPart = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActivePart();
 
+		IWorkbenchPart workbenchPart = WorkbenchUtil.getActivePart();
 		if (workbenchPart instanceof IRefreshable) {
 			IRefreshable refreshable = (IRefreshable) workbenchPart;
 			refreshable.refreshContent();

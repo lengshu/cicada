@@ -67,6 +67,8 @@ public class WorkbenchConfiguration extends AbstractStoreableConfiguration {
 
 	public static final String Key_ForceCloseAllPopup = WorkbenchConfiguration.class.getName() + "Key.ForceCloseAllPopup";
 
+	public static final String Key_BrowserZoom = WorkbenchConfiguration.class.getName() + "Key.BrowserZoom";
+
 	public static final int Default_HistoryKeywordCount = 20;
 
 	/**
@@ -76,6 +78,14 @@ public class WorkbenchConfiguration extends AbstractStoreableConfiguration {
 	 */
 	public boolean isTableFullSelection() {
 		return this.getStoreService().getBoolean(Key_TableFullSelection);
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public String getBrowserZoom() {
+		return this.getStoreService().getString(Key_BrowserZoom);
 	}
 
 	/**
@@ -113,6 +123,8 @@ public class WorkbenchConfiguration extends AbstractStoreableConfiguration {
 		storeService.setDefault(Key_HistoryKeywordCount, Default_HistoryKeywordCount);
 		storeService.setDefault(Key_FilterType, RuntimeConstant.FilterTypeSimple);
 		storeService.setDefault(Key_TooltipLevel, TooltipUtil.LevelError);
+
+		storeService.setDefault(Key_BrowserZoom, RuntimeConstant.BrowserZoomNormal);
 
 		if (SystemUtils.IS_OS_WINDOWS) {
 			storeService.setDefault(Key_MediaPlayerCommand, "vlc.exe \"{0}\"");
