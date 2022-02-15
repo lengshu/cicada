@@ -326,14 +326,14 @@ public class MovieHelper {
 			if (StringUtils.isBlank(movie.getActor()) || force) {
 				StringJoiner stringJoiner = new StringJoiner(",");
 
+				String title = movie.getTitle();
+				String newTitle = StringUtils.remove(title, " ");
+
 				for (String actor : actorList) {
 
 					if (StringUtils.isBlank(actor)) {
 						continue;
 					}
-
-					String title = movie.getTitle();
-					String newTitle = StringUtils.remove(title, " ");
 
 					if (StringUtils.containsIgnoreCase(title, actor) || StringUtils.containsIgnoreCase(newTitle, actor)) {
 						stringJoiner.add(actor);
