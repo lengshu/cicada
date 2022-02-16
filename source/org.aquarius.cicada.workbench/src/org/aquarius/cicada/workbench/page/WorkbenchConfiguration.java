@@ -69,6 +69,8 @@ public class WorkbenchConfiguration extends AbstractStoreableConfiguration {
 
 	public static final String Key_BrowserZoom = WorkbenchConfiguration.class.getName() + "Key.BrowserZoom";
 
+	public static final String Key_BrowserPageSize = WorkbenchConfiguration.class.getName() + "Key.BrowserPageSize";
+
 	public static final int Default_HistoryKeywordCount = 20;
 
 	/**
@@ -126,11 +128,17 @@ public class WorkbenchConfiguration extends AbstractStoreableConfiguration {
 
 		storeService.setDefault(Key_BrowserZoom, RuntimeConstant.BrowserZoomNormal);
 
+		storeService.setDefault(Key_BrowserPageSize, 40);
+
 		if (SystemUtils.IS_OS_WINDOWS) {
 			storeService.setDefault(Key_MediaPlayerCommand, "vlc.exe \"{0}\"");
 		} else {
 			storeService.setDefault(Key_MediaPlayerCommand, "vlc \"{0}\"");
 		}
+	}
+
+	public int getBrowserPageSize() {
+		return this.getStoreService().getInt(Key_BrowserPageSize);
 	}
 
 	/**

@@ -536,6 +536,8 @@ public class Messages extends NLS {
 
 	public static String WorkbenchConfigurationPreferencePage_BrowserZoom;
 
+	public static String WorkbenchConfigurationPreferencePage_BrowserPageSize;
+
 	public static String WorkbenchConfigurationPreferencePage_BrowserZoomSmall;
 
 	public static String WorkbenchConfigurationPreferencePage_BrowserZoomNormal;

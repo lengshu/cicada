@@ -220,8 +220,16 @@ public abstract class AbstractBrowserComposite extends Composite implements IMov
 		String pageUrl = this.getPageUrl();
 		String zoom = WorkbenchActivator.getDefault().getConfiguration().getBrowserZoom();
 
+		pageUrl = pageUrl + "?";
+
 		if (StringUtils.isNotBlank(zoom)) {
-			pageUrl = pageUrl + "?zoom=" + zoom;
+			pageUrl = pageUrl + "&zoom=" + zoom;
+		}
+
+		int pageSize = WorkbenchActivator.getDefault().getConfiguration().getBrowserPageSize();
+
+		if (pageSize > 0) {
+			pageUrl = pageUrl + "?pageSize=" + pageSize;
 		}
 
 		String[] header = service.getRequestHeader();

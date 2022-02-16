@@ -19,14 +19,6 @@
 				 
 				 document.getElementsByTagName("head")[0].appendChild(link);
  			}
-
-			var currentHref=document.location.href;
-			var index=currentHref.indexOf("zoom=");
-			if(index>-1)
-			{
-				var zoom=currentHref.substring(index+5);
-				loadStyles("./css/style."+zoom+".css");
-			}
 		</script>
 		<script>
 			var currentPageCount = 0;
@@ -82,16 +74,24 @@
 	
 				cancelSelection();
 	            document.getElementById('movieList').innerHTML = htmlContent;
-				
+	            				
 	            initListeners();
+
+	            try
+	            {
+		            var controlArray = window["Objarr"];	
 	
-	            var controlArray = window["Objarr"];
-	
-	
-	            for (var i = 0; controlArray.length; i++) {
-	                controlArray[i].index = currentPageCount;
-	                xian(controlArray[i]);
+		            for (var i = 0; controlArray.length; i++) {
+		                controlArray[i].index = currentPageCount;
+		                xian(controlArray[i]);
+		            }
 	            }
+	            catch(error)
+	            {
+		            
+	            }	            
+
+	            document.body.scrollTop=document.documentElement.scrollTop=0;
 	        }
 		</script>
 		<script>
@@ -136,11 +136,12 @@
 	        var runCallback = null;
 	
 	        queryMovieList(1, 40);
+	        //changess(2);
 	
 	        dmm({
 	            // index: 1,//
 	            cssStyle: 3, //
-	            size: [40, 80, 120, 160, 200, 400], //
+	            size: [40,60, 80, 120, 160, 200, 400], //
 	
 	            skip: true, //
 	            setSize: true, //
@@ -184,6 +185,36 @@
 	            queryMovieList(pageCount, pageSize);
 	
 	        }
+
+			var regex = /[^&?]*?=[^&?]*/g;
+			var str=document.location.href;
+
+			var m;
+
+			while ((m = regex.exec(str)) !== null) {
+			    // This is necessary to avoid infinite loops with zero-width matches
+			    if (m.index === regex.lastIndex) {
+			        regex.lastIndex++;
+			    }
+				var match=m.toString();
+			    var index=match.toLowerCase().indexOf("zoom=");
+			   
+			        if(index>-1)
+						{
+							var zoom=match.substring(index+5);
+							loadStyles("./css/style."+zoom+".css");
+						}
+
+						index=match.toLowerCase().indexOf("pagesize=");
+
+						 if(index>-1)
+						{
+							var pageSize=match.substring(index+9);
+							document.getElementById("topPaging_w-select").value=pageSize;
+				        	changess(0);
+						}
+			   
+			}
 		</script>
 	</body>
 

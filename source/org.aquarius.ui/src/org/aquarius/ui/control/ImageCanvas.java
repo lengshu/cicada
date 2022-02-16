@@ -58,7 +58,6 @@ public class ImageCanvas extends Canvas {
 	/**
 	 * @param parent
 	 * @param style
-	 * @param image  显示的图像，为null时不显示
 	 */
 	public ImageCanvas(Composite parent, int style) {
 		super(parent, style);
