@@ -100,6 +100,8 @@ public class Messages extends NLS {
 
 	public static String MovieConfigurationPreferencePage_AutoRefreshSite;
 
+	public static String MovieConfigurationPreferencePage_AutoFillActor;
+
 	public static String MovieConfigurationPreferencePage_BrowserVisiblity;
 
 	public static String MovieConfigurationPreferencePage_ChromeDriverPath;

@@ -10,6 +10,7 @@ import org.apache.commons.lang.StringUtils;
 import org.aquarius.cicada.core.RuntimeManager;
 import org.aquarius.cicada.core.helper.MovieParserHelper;
 import org.aquarius.cicada.core.model.Movie;
+import org.aquarius.cicada.core.model.Site;
 import org.aquarius.cicada.core.spi.IProcessMonitor;
 import org.aquarius.cicada.workbench.Messages;
 import org.aquarius.cicada.workbench.RuntimeConstant;
@@ -73,7 +74,7 @@ public class RefreshMovieJob extends AbstractCancelableJob {
 				return new Status(Status.ERROR, WorkbenchActivator.PLUGIN_ID, 1, errorMessage, null); // $NON-NLS-1$
 			}
 
-			RefreshMovieJob.doUpdateDetailedMovieList(todoMovieList);
+			RefreshMovieJob.doUpdateDetailedMovieList(null, todoMovieList);
 			JobUtil.updateMoviesInUI(todoMovieList);
 		}
 
@@ -86,9 +87,13 @@ public class RefreshMovieJob extends AbstractCancelableJob {
 	 * @param movieList
 	 *
 	 */
-	static void doUpdateDetailedMovieList(List<Movie> movieList) {
+	static void doUpdateDetailedMovieList(Site site, List<Movie> movieList) {
 
 		RuntimeManager.getInstance().getStoreService().insertOrUpdateMovies(movieList);
+
+		if (RuntimeManager.getInstance().getConfiguration().isAutoFillActor()) {
+			new FillMissingInfoJob(Messages.FillMissingInfoDropDownAction_FillMissingInfoForSelectedMovie, site, movieList, false).schedule();
+		}
 	}
 
 }

@@ -33,6 +33,8 @@ public final class MovieConfiguration extends AbstractStoreableConfiguration {
 
 	public static final String Key_AutoRefreshMovie = MovieConfiguration.class.getName() + "Key.AutoRefreshMovie";
 
+	public static final String Key_AutoFillActor = MovieConfiguration.class.getName() + "Key.AutoFillActor";
+
 	public static final String Key_CleanPeriod = MovieConfiguration.class.getName() + "Key.CleanPeriod";
 
 	public static final String Key_Pixels = MovieConfiguration.class.getName() + "Key.Pixels";
@@ -187,6 +189,15 @@ public final class MovieConfiguration extends AbstractStoreableConfiguration {
 	 */
 	public boolean isAutoRefreshSite() {
 		return this.getStoreService().getBoolean(Key_AutoRefreshSite);
+	}
+
+	/**
+	 * Return whether fill actor info while refreshing movie.
+	 * 
+	 * @return
+	 */
+	public boolean isAutoFillActor() {
+		return this.getStoreService().getBoolean(Key_AutoFillActor);
 	}
 
 	/**

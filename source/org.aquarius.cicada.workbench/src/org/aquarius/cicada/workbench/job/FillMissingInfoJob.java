@@ -51,6 +51,11 @@ public class FillMissingInfoJob extends AbstractCancelableJob {
 		monitor.beginTask(this.getName(), IProgressMonitor.UNKNOWN);
 
 		if (CollectionUtils.isEmpty(this.movieList)) {
+
+			if (null == this.site) {
+				return Status.OK_STATUS;
+			}
+
 			this.movieList = this.site.getMovieList();
 		}
 
@@ -59,8 +64,10 @@ public class FillMissingInfoJob extends AbstractCancelableJob {
 		List<Movie> resultMovieList = MovieHelper.fillActors(this.movieList, this.forceRefill, monitorProxy);
 		RuntimeManager.getInstance().getStoreService().insertOrUpdateMovies(resultMovieList);
 
-		resultMovieList = MovieHelper.fillPublishDate(this.site, this.movieList, monitorProxy);
-		RuntimeManager.getInstance().getStoreService().insertOrUpdateMovies(resultMovieList);
+		if (null != this.site) {
+			resultMovieList = MovieHelper.fillPublishDate(this.site, this.movieList, monitorProxy);
+			RuntimeManager.getInstance().getStoreService().insertOrUpdateMovies(resultMovieList);
+		}
 
 		return Status.OK_STATUS;
 	}

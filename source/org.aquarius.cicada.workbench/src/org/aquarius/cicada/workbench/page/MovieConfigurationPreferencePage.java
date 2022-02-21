@@ -64,6 +64,9 @@ public class MovieConfigurationPreferencePage extends FieldEditorPreferencePage 
 		FieldEditor autoRefreshMovieFieldEditor = new BooleanFieldEditor(MovieConfiguration.Key_AutoRefreshMovie,
 				Messages.MovieConfigurationPreferencePage_AutoRefreshMovie, parent);
 
+		FieldEditor autoFillActorMovieFieldEditor = new BooleanFieldEditor(MovieConfiguration.Key_AutoFillActor,
+				Messages.MovieConfigurationPreferencePage_AutoFillActor, parent);
+
 		BooleanFieldEditor useTitleAsFileNameFieldEditor = new BooleanFieldEditor(MovieConfiguration.Key_UseTitleAsFileName,
 				Messages.MovieConfigurationPreferencePage_UseTitleAsFileName, parent);
 
@@ -76,6 +79,7 @@ public class MovieConfigurationPreferencePage extends FieldEditorPreferencePage 
 //		this.addField(browserVisibleFieldEditor);
 		this.addField(autoRefreshSiteFieldEditor);
 		this.addField(autoRefreshMovieFieldEditor);
+		this.addField(autoFillActorMovieFieldEditor);
 		this.addField(useTitleAsFileNameFieldEditor);
 		this.addField(pasteContentToClipboardFieldEditor);
 		this.addField(keywordFrequencySortFieldEditor);

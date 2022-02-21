@@ -294,7 +294,7 @@ public class AutoRefreshJob extends AbstractCancelableJob {
 						return new Status(Status.ERROR, WorkbenchActivator.PLUGIN_ID, 1, errorMessage, null); // $NON-NLS-1$
 					}
 
-					RefreshMovieJob.doUpdateDetailedMovieList(todoMovieList);
+					RefreshMovieJob.doUpdateDetailedMovieList(site, todoMovieList);
 				}
 			}
 
