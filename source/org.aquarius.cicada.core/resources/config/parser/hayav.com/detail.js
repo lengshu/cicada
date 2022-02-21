@@ -13,6 +13,15 @@ function internalUpdateMovieTitle(movie) {
 	} else {
 		movie.title = document.title;
 	}
+
+	var regex = /[A-Za-z0-9- ]{4,20}/g;
+
+	var matchResult = regex.exec(movie.title);
+
+	if ((null != matchResult) && (matchResult.length > 0)) {
+		var uniId = matchResult[0].trim();
+		movie.uniId = uniId;
+	}
 }
 
 function internalParseMovieDetailInfo() {
@@ -29,6 +38,8 @@ function internalParseMovieDetailInfo() {
 	if (null != dateElement) {
 		movie.publishDate = dateElement.textContent;
 	}
+
+
 
 	var tagElements = document.querySelectorAll("div.tags-items > a");
 
