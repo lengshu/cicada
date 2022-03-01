@@ -3,18 +3,18 @@ package org.aquarius.cicada.workbench.editor.action;
 import java.util.List;
 
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang.StringUtils;
 import org.aquarius.cicada.core.model.Movie;
+import org.aquarius.cicada.workbench.WorkbenchActivator;
 import org.aquarius.cicada.workbench.action.ICommandIds;
 import org.aquarius.cicada.workbench.editor.action.base.AbstractSelectionAction;
 import org.aquarius.cicada.workbench.util.WorkbenchUtil;
+import org.aquarius.cicada.workbench.view.GalleryView;
 import org.aquarius.util.enu.RefreshType;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.model.application.ui.basic.MPartSashContainerElement;
 import org.eclipse.e4.ui.workbench.modeling.EModelService;
-import org.eclipse.jface.viewers.ISelectionProvider;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IViewPart;
+import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
@@ -26,6 +26,8 @@ import org.eclipse.ui.PartInitException;
  *
  */
 public class ShowImageAction extends AbstractSelectionAction {
+
+	private static final String SecondaryId = "detach";
 
 	/**
 	 *
@@ -39,7 +41,7 @@ public class ShowImageAction extends AbstractSelectionAction {
 		// Associate the action with a pre-defined command, to allow key bindings.
 		setActionDefinitionId(ICommandIds.CMD_EDITOR_SHOW_IMAGE);
 
-		setImageDescriptor(org.aquarius.cicada.workbench.WorkbenchActivator.getImageDescriptor("/icons/showImage.png")); //$NON-NLS-1$
+		setImageDescriptor(WorkbenchActivator.getImageDescriptor("/icons/showImage.png")); //$NON-NLS-1$
 	}
 
 	/**
@@ -54,29 +56,32 @@ public class ShowImageAction extends AbstractSelectionAction {
 		IWorkbenchPage workbenchPage = WorkbenchUtil.getActivePage();
 
 		try {
-			IViewPart viewPart = workbenchPage.showView("org.eclipse.ui.views.PropertySheet", "detach", IWorkbenchPage.VIEW_ACTIVATE);
+
+			IViewReference viewReference = workbenchPage.findViewReference(GalleryView.ViewId, SecondaryId);
+			if (null != viewReference) {
+				IViewPart viewPart = viewReference.getView(false);
+
+				if (null != viewPart) {
+					return RefreshType.None;
+				}
+			}
+
+			IViewPart viewPart = workbenchPage.showView(GalleryView.ViewId, "detach", IWorkbenchPage.VIEW_ACTIVATE);
 
 			IViewSite viewSite = viewPart.getViewSite();
-
-			Shell shell = viewSite.getShell();
-
-			if (StringUtils.isEmpty(shell.getText())) {
-				return RefreshType.None;
-			}
 
 			EModelService modelService = viewSite.getService(EModelService.class);
 			MPartSashContainerElement mpartService = viewSite.getService(MPart.class);
 
 			if (!mpartService.isOnTop()) {
 				modelService.detach(mpartService, 120, 120, 640, 640);
+			}
 
-				ISelectionProvider selectionProvider = this.getSelectionProvider();
+			if (viewPart instanceof GalleryView) {
+				GalleryView galleryView = (GalleryView) viewPart;
 
-				if (null == selectionProvider) {
-					selectionProvider = this.getLastSelectionProvider();
-				}
-
-				viewSite.setSelectionProvider(getSelectionProvider());
+				// IEditorPart editorPart = WorkbenchUtil.getActiveEditor();
+				// galleryView.partActivated(editorPart,);
 			}
 
 		} catch (PartInitException e) {

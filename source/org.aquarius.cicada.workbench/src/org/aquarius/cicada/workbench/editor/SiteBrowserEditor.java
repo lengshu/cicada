@@ -42,7 +42,6 @@ import org.aquarius.util.spi.IElementNavigator;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
-import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.nebula.widgets.opal.promptsupport.PromptSupport;
 import org.eclipse.nebula.widgets.opal.textassist.TextAssist;
@@ -208,6 +207,8 @@ public class SiteBrowserEditor extends BaseTableEditorPart implements IMovieList
 			Browser browser = this.movieListBrowserComposite.getBrowser();
 			updateContextMenu(browser);
 		}
+
+		this.getEditorSite().setSelectionProvider(this.movieListBrowserComposite.getSelectionProvider());
 	}
 
 	/**
@@ -568,10 +569,6 @@ public class SiteBrowserEditor extends BaseTableEditorPart implements IMovieList
 	 */
 	@Override
 	public <T> T getAdapter(Class<T> adapter) {
-
-		if (adapter == ISelectionProvider.class) {
-			return (T) this.movieListBrowserComposite.getSelectionProvider();
-		}
 
 		if (adapter == IContentOutlinePage.class) {
 			if (this.filterType == RuntimeConstant.FilterTypeOutline) {

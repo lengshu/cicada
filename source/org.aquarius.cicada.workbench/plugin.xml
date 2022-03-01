@@ -229,8 +229,17 @@
       <view
             category="org.eclipse.ui"
             class="org.eclipse.ui.internal.progress.ProgressView"
+            icon="icons/properties.png"
             id="org.eclipse.ui.views.ProgressView"
             name="%Progress"
+            restorable="true">
+      </view>
+      <view
+            allowMultiple="true"
+            class="org.aquarius.cicada.workbench.view.GalleryView"
+            icon="icons/gallery.png"
+            id="org.aquarius.cicada.workbench.view.GalleryView"
+            name="Gallery"
             restorable="true">
       </view>
    </extension>
@@ -298,7 +307,7 @@
          </viewShortcut>
          <view
                closeable="true"
-               id="org.eclipse.ui.views.PropertySheet"
+               id="org.aquarius.cicada.workbench.view.GalleryView"
                minimized="false"
                moveable="true"
                relationship="stack"
@@ -308,7 +317,7 @@
                visible="true">
          </view>
          <viewShortcut
-               id="org.eclipse.ui.views.PropertySheet">
+               id="org.aquarius.cicada.workbench.view.GalleryView">
          </viewShortcut>
       </perspectiveExtension>
    </extension>
@@ -318,7 +327,7 @@
             targetID="org.aquarius.cicada.workbench.tablePerspective">
          <view
                closeable="true"
-               id="org.eclipse.ui.views.PropertySheet"
+               id="org.aquarius.cicada.workbench.view.GalleryView"
                minimized="false"
                moveable="true"
                ratio="0.75"
@@ -329,7 +338,7 @@
                visible="true">
          </view>
          <viewShortcut
-               id="org.eclipse.ui.views.PropertySheet">
+               id="org.aquarius.cicada.workbench.view.GalleryView">
          </viewShortcut>
          <view
                closeable="false"

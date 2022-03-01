@@ -6,7 +6,6 @@ package org.aquarius.cicada.workbench.editor;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.map.ListOrderedMap;
 import org.apache.commons.lang.StringUtils;
 import org.aquarius.cicada.core.model.Movie;
@@ -14,10 +13,7 @@ import org.aquarius.cicada.core.model.Site;
 import org.aquarius.cicada.workbench.Messages;
 import org.aquarius.cicada.workbench.WorkbenchActivator;
 import org.aquarius.cicada.workbench.control.IMovieListRefreshable;
-import org.aquarius.cicada.workbench.editor.internal.MoviePropertySheetPage;
-import org.aquarius.cicada.workbench.helper.MovieHelper;
 import org.aquarius.log.LogUtil;
-import org.aquarius.ui.base.SelectionProviderAdapter;
 import org.aquarius.ui.editor.BaseTableEditorPart;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -25,11 +21,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.dialogs.IPageChangedListener;
-import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.ISelectionProvider;
-import org.eclipse.jface.viewers.SelectionChangedEvent;
-import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.IEditorActionBarContributor;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
@@ -37,7 +29,6 @@ import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.MultiPageEditorPart;
 import org.eclipse.ui.part.MultiPageEditorSite;
-import org.eclipse.ui.views.properties.IPropertySheetPage;
 import org.slf4j.Logger;
 
 /**
@@ -47,7 +38,7 @@ import org.slf4j.Logger;
  * @author aquarius.github@gmail.com
  *
  */
-public final class SiteMultiPageEditor extends MultiPageEditorPart implements IMovieListRefreshable, ISelectionChangedListener {
+public final class SiteMultiPageEditor extends MultiPageEditorPart implements IMovieListRefreshable {
 
 	public static final String EditorID = "org.aquarius.cicada.workbench.editor.site"; //$NON-NLS-1$
 
@@ -57,12 +48,6 @@ public final class SiteMultiPageEditor extends MultiPageEditorPart implements IM
 
 	private SiteBrowserEditor browserEditor;
 
-	private MoviePropertySheetPage propertyPage;
-
-	// private FilterSite filterSite;
-
-	private SelectionProviderAdapter selectionProvider;
-
 	private boolean editing = false;
 
 	/**
@@ -71,39 +56,6 @@ public final class SiteMultiPageEditor extends MultiPageEditorPart implements IM
 	public SiteMultiPageEditor() {
 		super();
 
-		this.selectionProvider = new SelectionProviderAdapter() {
-
-			/**
-			 * {@inheritDoc}}
-			 */
-			@Override
-			public ISelection getSelection() {
-
-				List<Movie> movieList = getSelectedMovieList();
-				if (CollectionUtils.isEmpty(movieList)) {
-					return StructuredSelection.EMPTY;
-				}
-
-				return new StructuredSelection(movieList);
-			}
-
-			/**
-			 * {@inheritDoc}
-			 */
-			@Override
-			public void setSelection(ISelection selection) {
-
-				List<Movie> movieList = MovieHelper.getMovieList(selection);
-
-				IEditorPart editorPart = getActiveEditor();
-
-				if (editorPart instanceof IMovieListRefreshable) {
-					IMovieListRefreshable movieListRefreshable = (IMovieListRefreshable) editorPart;
-					movieListRefreshable.setSelectedMovieList(movieList);
-				}
-			}
-
-		};
 	}
 
 	/**
@@ -126,8 +78,6 @@ public final class SiteMultiPageEditor extends MultiPageEditorPart implements IM
 		}
 
 		doUpdateSelectionProvider(this.browserEditor);
-
-		this.propertyPage = new MoviePropertySheetPage();
 
 		String defaultEditor = WorkbenchActivator.getDefault().getConfiguration().getDefaultEditor();
 
@@ -224,7 +174,7 @@ public final class SiteMultiPageEditor extends MultiPageEditorPart implements IM
 	private void doUpdateSelectionProvider(IEditorPart editorPart) {
 		ISelectionProvider selectionProvider = editorPart.getAdapter(ISelectionProvider.class);
 		if (null != selectionProvider) {
-			selectionProvider.addSelectionChangedListener(this);
+			// selectionProvider.addSelectionChangedListener(this);
 		}
 	}
 
@@ -382,14 +332,6 @@ public final class SiteMultiPageEditor extends MultiPageEditorPart implements IM
 	@Override
 	public <T> T getAdapter(Class<T> adapter) {
 
-		if (adapter == IPropertySheetPage.class) {
-			return (T) this.propertyPage;
-		}
-
-		if (adapter == ISelectionProvider.class) {
-			return (T) this.selectionProvider;
-		}
-
 		if (adapter == Site.class) {
 			return (T) this.getMovieSite();
 		}
@@ -399,14 +341,6 @@ public final class SiteMultiPageEditor extends MultiPageEditorPart implements IM
 		}
 
 		return super.getAdapter(adapter);
-	}
-
-	/**
-	 * {@inheritDoc}}
-	 */
-	@Override
-	public void selectionChanged(SelectionChangedEvent event) {
-		this.propertyPage.selectionChanged(this, event.getSelection());
 	}
 
 	/**

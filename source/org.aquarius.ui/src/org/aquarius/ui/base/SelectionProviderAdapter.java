@@ -12,6 +12,7 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.slf4j.Logger;
 
 /**
@@ -22,7 +23,7 @@ public class SelectionProviderAdapter implements ISelectionProvider {
 
 	private List<ISelectionChangedListener> listeners = new ArrayList<>();
 
-	private ISelection selection;
+	private ISelection selection = StructuredSelection.EMPTY;
 
 	private Logger logger = LogUtil.getLogger(getClass());
 
@@ -40,7 +41,7 @@ public class SelectionProviderAdapter implements ISelectionProvider {
 	 */
 	@Override
 	public ISelection getSelection() {
-		return this.selection;
+		return this.wrapSelection(this.selection);
 	}
 
 	/**
@@ -60,15 +61,29 @@ public class SelectionProviderAdapter implements ISelectionProvider {
 		if (this.selection == selection) {
 			return;
 		}
-		this.selection = selection;
+
+		this.selection = this.wrapSelection(selection);
 
 		for (ISelectionChangedListener listener : this.listeners) {
 			try {
-				listener.selectionChanged(new SelectionChangedEvent(this, selection));
+				listener.selectionChanged(new SelectionChangedEvent(this, this.selection));
 			} catch (Exception e) {
 				this.logger.error("setSelection", e);
 			}
 		}
+	}
+
+	/**
+	 * 
+	 * @param selection
+	 * @return
+	 */
+	private ISelection wrapSelection(ISelection selection) {
+		if (null == selection) {
+			return StructuredSelection.EMPTY;
+		}
+
+		return selection;
 	}
 
 }

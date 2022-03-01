@@ -60,7 +60,6 @@ import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.bindings.keys.KeyStroke;
 import org.eclipse.jface.fieldassist.TextContentAdapter;
-import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.nebula.widgets.nattable.NatTable;
 import org.eclipse.nebula.widgets.nattable.config.AbstractRegistryConfiguration;
 import org.eclipse.nebula.widgets.nattable.config.AbstractUiBindingConfiguration;
@@ -325,6 +324,7 @@ public class SiteNatTableEditor extends BaseTableEditorPart implements IMovieLis
 
 		this.elementNavigator = new ListElementNavigator<>(this.bodyLayer.filterList);
 
+		this.getEditorSite().setSelectionProvider(this.rowSelectionProvider);
 	}
 
 	/**
@@ -1106,10 +1106,6 @@ public class SiteNatTableEditor extends BaseTableEditorPart implements IMovieLis
 	 */
 	@Override
 	public <T> T getAdapter(Class<T> adapter) {
-
-		if (adapter == ISelectionProvider.class) {
-			return (T) this.rowSelectionProvider;
-		}
 
 		if (adapter == IElementNavigator.class) {
 			return (T) this.elementNavigator;

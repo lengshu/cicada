@@ -6,7 +6,6 @@ package org.aquarius.cicada.workbench.function.movie;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.ObjectUtils;
 import org.aquarius.cicada.core.model.Movie;
@@ -72,11 +71,9 @@ public class SelectMovieFunction extends AbstractMovieListFunction {
 			if (!idList.isEmpty()) {
 				List<Movie> selectedMovieList = getMovieListSerivce().findMovies(idList);
 
-				if (CollectionUtils.isNotEmpty(selectedMovieList)) {
-					StructuredSelection selection = new StructuredSelection(selectedMovieList);
-					this.selectionProvider.setSelection(selection);
-					return BrowserUtil.Success;
-				}
+				StructuredSelection selection = new StructuredSelection(selectedMovieList);
+				this.selectionProvider.setSelection(selection);
+				return BrowserUtil.Success;
 			}
 		}
 
