@@ -236,10 +236,11 @@
       </view>
       <view
             allowMultiple="true"
+            category="org.eclipse.ui"
             class="org.aquarius.cicada.workbench.view.GalleryView"
             icon="icons/gallery.png"
             id="org.aquarius.cicada.workbench.view.GalleryView"
-            name="Gallery"
+            name="%Gallery"
             restorable="true">
       </view>
    </extension>
