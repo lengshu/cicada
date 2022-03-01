@@ -317,6 +317,8 @@ public class GalleryView extends ViewPart implements ISelectionChangedListener, 
 
 		this.actionList.add(this.pinViewAction);
 		this.actionList.add(this.externalAnalyserDropdownAction);
+		this.actionList.add(this.updateScoreDropDownAction);
+
 		this.actionList.add(this.changeLayoutAction);
 		this.actionList.add(this.showViewAction);
 		this.actionList.add(this.saveImageAction);
@@ -587,17 +589,15 @@ public class GalleryView extends ViewPart implements ISelectionChangedListener, 
 	 */
 	@Override
 	public void partActivated(IWorkbenchPart part) {
-		if (part instanceof SiteMultiPageEditor) {
-			this.elementNavigator = AdapterUtil.getAdapter(part, IElementNavigator.class);
+		switchSelection(part);
+	}
 
-			ISelectionProvider selectionProvider = ((SiteMultiPageEditor) part).getEditorSite().getSelectionProvider();
-			ISelection selection = null;
-			if (null != selectionProvider) {
-				selection = selectionProvider.getSelection();
-			}
-
-			updateSelection(selection);
-		}
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void partBroughtToTop(IWorkbenchPart part) {
+		switchSelection(part);
 	}
 
 	/**
@@ -688,10 +688,9 @@ public class GalleryView extends ViewPart implements ISelectionChangedListener, 
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * @param part
 	 */
-	@Override
-	public void partBroughtToTop(IWorkbenchPart part) {
+	private void switchSelection(IWorkbenchPart part) {
 		if (part instanceof SiteMultiPageEditor) {
 			this.elementNavigator = AdapterUtil.getAdapter(part, IElementNavigator.class);
 
