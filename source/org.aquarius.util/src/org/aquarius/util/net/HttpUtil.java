@@ -15,6 +15,7 @@ import java.util.Map.Entry;
 import java.util.StringJoiner;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.aquarius.util.StringUtil;
 
@@ -437,5 +438,28 @@ public class HttpUtil {
 		} catch (Exception e) {
 			return urlString;
 		}
+	}
+
+	/**
+	 * Get the host of a url.<BR>
+	 * 
+	 * @param urlString
+	 * @return
+	 */
+	public static String getDomain(String urlString) {
+		String host = getHost(urlString);
+
+		String[] segments = StringUtils.split(host, ".");
+
+		if (ArrayUtils.isEmpty(segments)) {
+			return host;
+		}
+
+		if (segments.length < 2) {
+			return host;
+		}
+
+		int length = segments.length;
+		return segments[length - 2] + "." + segments[length - 1];
 	}
 }
