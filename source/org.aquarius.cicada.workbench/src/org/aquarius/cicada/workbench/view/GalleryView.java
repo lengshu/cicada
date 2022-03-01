@@ -33,13 +33,12 @@ import org.aquarius.ui.key.KeyBinder;
 import org.aquarius.ui.key.KeyBinderManager;
 import org.aquarius.ui.util.AdapterUtil;
 import org.aquarius.ui.util.ImageUtil;
+import org.aquarius.ui.util.PersistenceUtil;
 import org.aquarius.ui.util.SwtUtil;
-import org.aquarius.util.StringUtil;
 import org.aquarius.util.net.HttpUtil;
 import org.aquarius.util.spi.IElementNavigator;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.model.application.ui.basic.MPartSashContainerElement;
-import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IContributionItem;
@@ -64,9 +63,9 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IActionBars;
+import org.eclipse.ui.IEditorReference;
 import org.eclipse.ui.IPartListener;
 import org.eclipse.ui.IViewPart;
-import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
@@ -85,7 +84,7 @@ public class GalleryView extends ViewPart implements ISelectionChangedListener, 
 
 	private static String LayoutType = GalleryView.class.getName() + ".LayoutType"; //$NON-NLS-1$
 
-	private static final String SecondaryId = "detach";
+	private static final String SecondaryId = "detach"; //$NON-NLS-1$
 
 	private SashForm rootPane;
 
@@ -104,8 +103,6 @@ public class GalleryView extends ViewPart implements ISelectionChangedListener, 
 	private IAction showViewAction;
 
 	private IAction pinViewAction;
-
-	// private ShowImageAction showImageAction;
 
 	private SaveImageAction saveImageAction;
 
@@ -128,12 +125,28 @@ public class GalleryView extends ViewPart implements ISelectionChangedListener, 
 
 	private boolean pinned = false;
 
+	private String title;
+
 	/**
 	 * 
 	 */
 	public GalleryView() {
 		IWorkbenchPage page = WorkbenchUtil.getActivePage();
 		page.addPartListener(this);
+
+		try {
+
+			IEditorReference[] editorReferences = page.getEditorReferences();
+
+			if (null != editorReferences) {
+				for (IEditorReference editorReference : editorReferences) {
+					editorReference.getPart(false).getSite().getSelectionProvider().addSelectionChangedListener(this);
+				}
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 		makeActions();
 
@@ -186,19 +199,11 @@ public class GalleryView extends ViewPart implements ISelectionChangedListener, 
 		this.infoLabel.setEditable(false);
 
 		{
-			IPreferenceStore store = WorkbenchActivator.getDefault().getPreferenceStore();
-			String weightString = store.getString(SashFormWeights);
 
 			this.rootPane.setWeights(new int[] { 68, 32 });
-			if (StringUtils.isNotEmpty(weightString)) {
-				try {
-					int[] wights = StringUtil.splitIntoInteger(weightString, ",");
-					this.rootPane.setWeights(wights);
 
-				} catch (Exception e) {
-					// Nothing to do
-				}
-			}
+			IPreferenceStore store = WorkbenchActivator.getDefault().getPreferenceStore();
+			PersistenceUtil.restoreUiData(store, SashFormWeights, this.rootPane);
 		}
 
 		this.contextMenuManager = new MenuManager();
@@ -221,34 +226,27 @@ public class GalleryView extends ViewPart implements ISelectionChangedListener, 
 			 */
 			@Override
 			public void mouseDown(MouseEvent e) {
-				Rectangle rect = GalleryView.this.imageCanvas.getBounds();
 
-				if (e.x < (rect.width * 0.3)) {
-					left();
+				if (e.button == 1) {
+					Rectangle rect = GalleryView.this.imageCanvas.getBounds();
+
+					if (e.x < (rect.width * 0.3)) {
+						left();
+					}
+
+					if (e.x > (rect.width * 0.7)) {
+						right();
+					}
 				}
 
-				if (e.x > (rect.width * 0.7)) {
-					right();
-				}
 			}
 
 		});
 
 		KeyBinderManager.bind(this.imageCanvas, this, KeyBinder.LeftKeyBinder, KeyBinder.RightKeyBinder);
 
-		this.rootPane.addDisposeListener(e -> {
-
-			if (SwtUtil.isValid(this.rootPane)) {
-				int[] weights = this.rootPane.getWeights();
-				String weightString = StringUtil.joinInteger(weights, ",");
-
-				IPreferenceStore store = WorkbenchActivator.getDefault().getPreferenceStore();
-				store.setValue(SashFormWeights, weightString);
-			}
-
-		});
-
-		setActionState(null != this.currentMovie);
+		PersistenceUtil.addSaveSupport(preferenceStore, SashFormWeights, this.rootPane);
+		setActionState(false);
 	}
 
 	/**
@@ -256,7 +254,7 @@ public class GalleryView extends ViewPart implements ISelectionChangedListener, 
 	 */
 	private void makeActions() {
 
-		this.pinViewAction = new Action("Pin", IAction.AS_CHECK_BOX) {
+		this.pinViewAction = new Action(Messages.GalleryView_Pin, IAction.AS_CHECK_BOX) {
 
 			/**
 			 * {@inheritDoc}}
@@ -267,7 +265,7 @@ public class GalleryView extends ViewPart implements ISelectionChangedListener, 
 			}
 		};
 
-		this.pinViewAction.setImageDescriptor(WorkbenchActivator.getImageDescriptor("/icons/pin.png"));
+		this.pinViewAction.setImageDescriptor(WorkbenchActivator.getImageDescriptor("/icons/pin.png")); //$NON-NLS-1$
 
 		this.changeLayoutAction = new Action(Messages.MoviePropertySheetPage_ChangeLayoutActionLabel, SWT.None) {
 
@@ -280,7 +278,7 @@ public class GalleryView extends ViewPart implements ISelectionChangedListener, 
 			}
 		};
 
-		this.changeLayoutAction.setImageDescriptor(WorkbenchActivator.getImageDescriptor("/icons/changeLayout.png")); //
+		this.changeLayoutAction.setImageDescriptor(WorkbenchActivator.getImageDescriptor("/icons/changeLayout.png")); // //$NON-NLS-1$
 		this.showViewAction = new Action(Messages.MoviePropertySheetPage_ShowImageActionLabel) {
 
 			/**
@@ -297,7 +295,7 @@ public class GalleryView extends ViewPart implements ISelectionChangedListener, 
 
 		};
 
-		this.showViewAction.setImageDescriptor(WorkbenchActivator.getImageDescriptor("/icons/showImage.png"));
+		this.showViewAction.setImageDescriptor(WorkbenchActivator.getImageDescriptor("/icons/showImage.png")); //$NON-NLS-1$
 
 		this.saveImageAction = new SaveImageAction(Messages.MoviePropertySheetPage_SaveImageActionLabel);
 
@@ -337,6 +335,16 @@ public class GalleryView extends ViewPart implements ISelectionChangedListener, 
 	protected void pin() {
 		this.pinned = !this.pinned;
 		this.pinViewAction.setChecked(this.pinned);
+
+		String partName = this.getPartName();
+		partName = StringUtils.substringBefore(partName, "(");
+
+		if (this.pinned) {
+			this.setPartName(partName + "(" + this.title + ")");
+		} else {
+			this.setPartName(partName);
+		}
+
 	}
 
 	/**
@@ -347,34 +355,50 @@ public class GalleryView extends ViewPart implements ISelectionChangedListener, 
 
 		IWorkbenchPage workbenchPage = WorkbenchUtil.getActivePage();
 
-		IViewReference viewReference = workbenchPage.findViewReference(GalleryView.ViewId, SecondaryId);
-		if (null != viewReference) {
-			IViewPart viewPart = viewReference.getView(false);
-
-			if (null != viewPart) {
-				return;
-			}
-		}
+//		boolean exist = false;
+//
+//		IViewReference viewReference = workbenchPage.findViewReference(GalleryView.ViewId, SecondaryId);
+//		if (null != viewReference) {
+//			IViewPart viewPart = viewReference.getView(false);
+//
+//			if (null != viewPart) {
+//				exist = true;
+//			}
+//		}
 
 		IViewPart viewPart = workbenchPage.showView(GalleryView.ViewId, SecondaryId, IWorkbenchPage.VIEW_ACTIVATE);
 
 		IViewSite viewSite = viewPart.getViewSite();
 
-		EModelService modelService = viewSite.getService(EModelService.class);
+		//
 		MPartSashContainerElement mpartService = viewSite.getService(MPart.class);
+		mpartService.setOnTop(true);
 
-		if (!mpartService.isOnTop()) {
-			modelService.detach(mpartService, 120, 120, 640, 640);
-		}
+//		if (!exist) {
+//
+//			if (!mpartService.isOnTop()) {			
+//				EModelService modelService = viewSite.getService(EModelService.class);
+//				Shell shell = viewSite.getShell();
+//				Rectangle rectangle = shell.getBounds();
+//				modelService.detach(mpartService, rectangle.x, rectangle.y, rectangle.width, rectangle.height);
+//			}
+//		}
 
 		if (viewPart instanceof GalleryView) {
 			GalleryView galleryView = (GalleryView) viewPart;
 
+			if (galleryView.pinned) {
+				galleryView.pinViewAction.run();
+			}
+
 			galleryView.elementNavigator = this.elementNavigator;
+			galleryView.title = this.title;
 
 			galleryView.updateSelection(new StructuredSelection(this.currentMovie));
 
 			galleryView.pinViewAction.run();
+
+			galleryView.getViewSite().getShell().setActive();
 		}
 	}
 
@@ -459,6 +483,8 @@ public class GalleryView extends ViewPart implements ISelectionChangedListener, 
 	 */
 	private void doClearInfo() {
 
+		this.setActionState(false);
+
 		if (!SwtUtil.isValid(this.rootPane)) {
 			return;
 		}
@@ -473,18 +499,18 @@ public class GalleryView extends ViewPart implements ISelectionChangedListener, 
 	 */
 	private void doUpdateInfo(Movie movie) {
 
+		this.currentMovie = movie;
+
+		if (null == this.currentMovie) {
+			this.doClearInfo();
+			return;
+		}
+
 		if (!SwtUtil.isValid(this.rootPane)) {
 			return;
 		}
 
-		this.currentMovie = movie;
-
-		if (null == this.currentMovie) {
-			this.infoLabel.setText(""); //$NON-NLS-1$
-			this.imageCanvas.setImageData(null);
-			return;
-		}
-
+		this.setActionState(true);
 		this.infoLabel.setText(MovieHelper.getInfoForTooltip(movie));
 
 		String imageUrl = this.currentMovie.getImageUrl();
@@ -612,10 +638,10 @@ public class GalleryView extends ViewPart implements ISelectionChangedListener, 
 		if (part instanceof SiteMultiPageEditor) {
 			part.getSite().getSelectionProvider().removeSelectionChangedListener(this);
 
-			this.doClearInfo();
 			this.elementNavigator = null;
-		}
+			this.doClearInfo();
 
+		}
 	}
 
 	/**
@@ -660,14 +686,6 @@ public class GalleryView extends ViewPart implements ISelectionChangedListener, 
 
 		doUpdateInfo(movie);
 
-//		if (this.currentMovie != movie) {
-//			doUpdateInfo(movie);
-//		} else {
-//			doClearInfo();
-//		}
-
-		setActionState(null != this.currentMovie);
-
 		if ((null != this.elementNavigator) && (null != movie)) {
 			this.elementNavigator.locate(movie);
 		}
@@ -695,12 +713,11 @@ public class GalleryView extends ViewPart implements ISelectionChangedListener, 
 			this.elementNavigator = AdapterUtil.getAdapter(part, IElementNavigator.class);
 
 			ISelectionProvider selectionProvider = ((SiteMultiPageEditor) part).getEditorSite().getSelectionProvider();
-			ISelection selection = null;
-			if (null != selectionProvider) {
-				selection = selectionProvider.getSelection();
-			}
+			ISelection selection = SwtUtil.getSelection(selectionProvider);
 
 			updateSelection(selection);
+
+			this.title = part.getTitle();
 		}
 	}
 

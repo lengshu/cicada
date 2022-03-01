@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.aquarius.log.LogUtil;
+import org.aquarius.ui.util.SwtUtil;
 import org.aquarius.util.AssertUtil;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -41,7 +42,7 @@ public class SelectionProviderAdapter implements ISelectionProvider {
 	 */
 	@Override
 	public ISelection getSelection() {
-		return this.wrapSelection(this.selection);
+		return SwtUtil.wrapSelection(this.selection);
 	}
 
 	/**
@@ -62,7 +63,7 @@ public class SelectionProviderAdapter implements ISelectionProvider {
 			return;
 		}
 
-		this.selection = this.wrapSelection(selection);
+		this.selection = SwtUtil.wrapSelection(selection);
 
 		for (ISelectionChangedListener listener : this.listeners) {
 			try {
@@ -71,19 +72,6 @@ public class SelectionProviderAdapter implements ISelectionProvider {
 				this.logger.error("setSelection", e);
 			}
 		}
-	}
-
-	/**
-	 * 
-	 * @param selection
-	 * @return
-	 */
-	private ISelection wrapSelection(ISelection selection) {
-		if (null == selection) {
-			return StructuredSelection.EMPTY;
-		}
-
-		return selection;
 	}
 
 }

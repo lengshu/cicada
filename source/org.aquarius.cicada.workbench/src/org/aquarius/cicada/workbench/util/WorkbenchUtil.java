@@ -15,7 +15,7 @@ import org.eclipse.ui.PlatformUI;
  * @author aquarius.github@hotmail.com
  *
  */
-public class WorkbenchUtil {
+public final class WorkbenchUtil {
 
 	private static final String InitMarker = "_Key_._Init_";
 

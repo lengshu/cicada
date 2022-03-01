@@ -28,7 +28,9 @@ import org.eclipse.jface.fieldassist.ControlDecoration;
 import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.Bullet;
 import org.eclipse.swt.custom.LineStyleEvent;
@@ -90,6 +92,37 @@ public class SwtUtil {
 	 */
 	private SwtUtil() {
 		// No instances will be created.
+	}
+
+	/**
+	 * 
+	 * @param selectionProvider
+	 * @return
+	 */
+	public static ISelection getSelection(ISelectionProvider selectionProvider) {
+		if (null == selectionProvider) {
+			return StructuredSelection.EMPTY;
+		}
+
+		ISelection selection = selectionProvider.getSelection();
+		if (null == selection) {
+			return StructuredSelection.EMPTY;
+		} else {
+			return selection;
+		}
+	}
+
+	/**
+	 * 
+	 * @param selection
+	 * @return
+	 */
+	public static ISelection wrapSelection(ISelection selection) {
+		if (null == selection) {
+			return StructuredSelection.EMPTY;
+		}
+
+		return selection;
 	}
 
 	/**

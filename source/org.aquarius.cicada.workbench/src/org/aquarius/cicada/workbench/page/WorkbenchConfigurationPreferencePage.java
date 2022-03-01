@@ -7,10 +7,10 @@ import org.aquarius.cicada.workbench.Messages;
 import org.aquarius.cicada.workbench.RuntimeConstant;
 import org.aquarius.cicada.workbench.WorkbenchActivator;
 import org.aquarius.cicada.workbench.editor.SiteMultiPageEditor;
-import org.aquarius.cicada.workbench.util.WorkbenchUtil;
 import org.aquarius.ui.message.preference.KeyStrokeFieldEditor;
 import org.aquarius.ui.util.SwtUtil;
 import org.aquarius.ui.util.TooltipUtil;
+import org.aquarius.util.StringUtil;
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.ComboFieldEditor;
 import org.eclipse.jface.preference.FieldEditor;
@@ -165,7 +165,7 @@ public class WorkbenchConfigurationPreferencePage extends FieldEditorPreferenceP
 				Messages.WorkbenchConfigurationPreferencePage_BrowserPageSize, entryNamesAndValues, parent);
 		this.addField(browserPageSizeFieldEditor);
 
-		entryNamesAndValues = WorkbenchUtil.createEntryNamesAndValues(SiteMultiPageEditor.getEditorNames());
+		entryNamesAndValues = StringUtil.createEntryNamesAndValues(SiteMultiPageEditor.getEditorNames());
 
 		FieldEditor defaultEditorFieldEditor = new ComboFieldEditor(WorkbenchConfiguration.Key_DefaultEditor,
 				Messages.WorkbenchConfigurationPreferencePage_DefaultEditor, entryNamesAndValues, parent);

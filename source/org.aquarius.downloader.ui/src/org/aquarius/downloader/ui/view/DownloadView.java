@@ -37,6 +37,7 @@ import org.aquarius.ui.table.label.ImageLabelProvider;
 import org.aquarius.ui.table.label.IndexLabelProvider;
 import org.aquarius.ui.table.label.NumberPropertyColumnLableProvider;
 import org.aquarius.ui.tree.TreeNodeContentProvider;
+import org.aquarius.ui.util.PersistenceUtil;
 import org.aquarius.ui.util.SwtUtil;
 import org.aquarius.util.DesktopUtil;
 import org.aquarius.util.SystemUtil;
@@ -47,6 +48,7 @@ import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelection;
@@ -86,7 +88,13 @@ public class DownloadView extends ViewPart implements ITaskService {
 
 	public static final String PluginId = "org.aquarius.downloader.ui"; //$NON-NLS-1$
 
+	private static final String TaskTableColumnWidthKey = DownloadView.class.getName() + "TaskTableColumnWidthKey.1";
+
+	private static final String SplitRatioKey = DownloadView.class.getName() + ".SashFormWeights";
+
 	private static final int StateAll = -1;
+
+	private SashForm sashForm;
 
 	private TableViewer taskTableViewer;
 
@@ -149,13 +157,13 @@ public class DownloadView extends ViewPart implements ITaskService {
 //				DownloadActivator.getImageDescriptor("/icons/resume.png").createImage()); //$NON-NLS-1$
 		this.imageMapping.put(DownloadTask.StateRunning, DownloadActivator.getImageDescriptor("/icons/running.png").createImage()); //$NON-NLS-1$
 
-		SashForm sashForm = new SashForm(parent, SWT.NONE);
-		sashForm.setSashWidth(8);
+		this.sashForm = new SashForm(parent, SWT.NONE);
+		this.sashForm.setSashWidth(8);
 
-		buildTree(sashForm);
-		buildTable(sashForm);
+		buildTree(this.sashForm);
+		buildTable(this.sashForm);
 
-		sashForm.setWeights(new int[] { 16, 84 });
+		this.sashForm.setWeights(new int[] { 8, 92 });
 
 		makeActions();
 		hookContextMenu();
@@ -166,6 +174,13 @@ public class DownloadView extends ViewPart implements ITaskService {
 		changeTaskState(StateAll);
 
 		initKeyListeners();
+
+		this.restoreUiData();
+
+		IPreferenceStore store = DownloadActivator.getDefault().getPreferenceStore();
+
+		PersistenceUtil.addSaveSupport(store, TaskTableColumnWidthKey, this.taskTableViewer.getTable());
+		PersistenceUtil.addSaveSupport(store, SplitRatioKey, this.sashForm);
 	}
 
 	/**
@@ -354,48 +369,48 @@ public class DownloadView extends ViewPart implements ITaskService {
 
 		final TableViewerColumn titleTableColumn = new TableViewerColumn(this.taskTableViewer, SWT.NONE);
 		titleTableColumn.setLabelProvider(new BeanPropertyColumnLableProvider("title")); //$NON-NLS-1$
-		titleTableColumn.getColumn().setWidth(80);
+		titleTableColumn.getColumn().setWidth(600);
 		titleTableColumn.getColumn().setText(Messages.DownloadView_ColumnTitle);
 		titleTableColumn.getColumn().setAlignment(SWT.LEFT);
 
 		final TableViewerColumn sourceHostTableColumn = new TableViewerColumn(this.taskTableViewer, SWT.NONE);
 		sourceHostTableColumn.setLabelProvider(new BeanPropertyColumnLableProvider("sourceHost")); //$NON-NLS-1$
-		sourceHostTableColumn.getColumn().setWidth(80);
+		sourceHostTableColumn.getColumn().setWidth(100);
 		sourceHostTableColumn.getColumn().setText(Messages.DownloadView_ColumnSourceHost);
 
 		final TableViewerColumn downloadHostTableColumn = new TableViewerColumn(this.taskTableViewer, SWT.NONE);
 		downloadHostTableColumn.setLabelProvider(new BeanPropertyColumnLableProvider("downloadHost")); //$NON-NLS-1$
-		downloadHostTableColumn.getColumn().setWidth(120);
+		downloadHostTableColumn.getColumn().setWidth(140);
 		downloadHostTableColumn.getColumn().setText(Messages.DownloadView_ColumnDownloadHost);
 
 		final TableViewerColumn totalLengthTableColumn = new TableViewerColumn(this.taskTableViewer, SWT.NONE);
 		totalLengthTableColumn.setLabelProvider(new LengthColumnLabelProvider("remoteFileLength")); //$NON-NLS-1$
-		totalLengthTableColumn.getColumn().setWidth(100);
+		totalLengthTableColumn.getColumn().setWidth(90);
 		totalLengthTableColumn.getColumn().setText(Messages.DownloadView_ColumnFileLength);
 
 		final TableViewerColumn finishedLengthTableColumn = new TableViewerColumn(this.taskTableViewer, SWT.NONE);
 		finishedLengthTableColumn.setLabelProvider(new LengthColumnLabelProvider("finishedLength")); //$NON-NLS-1$
-		finishedLengthTableColumn.getColumn().setWidth(100);
+		finishedLengthTableColumn.getColumn().setWidth(90);
 		finishedLengthTableColumn.getColumn().setText(Messages.DownloadView_ColumnFinishedLength);
 
 		final TableViewerColumn remaingTimeTableColumn = new TableViewerColumn(this.taskTableViewer, SWT.NONE);
 		remaingTimeTableColumn.setLabelProvider(new RemaingTimeColumnLabelProvider()); // $NON-NLS-1$
-		remaingTimeTableColumn.getColumn().setWidth(100);
+		remaingTimeTableColumn.getColumn().setWidth(90);
 		remaingTimeTableColumn.getColumn().setText(Messages.DownloadView_ColumnRemaingTime);
 
 		final TableViewerColumn speedTableColumn = new TableViewerColumn(this.taskTableViewer, SWT.NONE);
 		speedTableColumn.setLabelProvider(new NumberPropertyColumnLableProvider("speed", "# K", SystemUtil.DiskSizeInK)); //$NON-NLS-1$ //$NON-NLS-2$
-		speedTableColumn.getColumn().setWidth(100);
+		speedTableColumn.getColumn().setWidth(90);
 		speedTableColumn.getColumn().setText(Messages.DownloadView_ColumnSpeed);
 
 		final TableViewerColumn percentTableColumn = new TableViewerColumn(this.taskTableViewer, SWT.NONE);
 		percentTableColumn.setLabelProvider(new NumberPropertyColumnLableProvider("percent", "#.##%", 100)); //$NON-NLS-1$ //$NON-NLS-2$
-		percentTableColumn.getColumn().setWidth(100);
+		percentTableColumn.getColumn().setWidth(90);
 		percentTableColumn.getColumn().setText(Messages.DownloadView_ColumnPercent);
 
 		final TableViewerColumn retryCountTableColumn = new TableViewerColumn(this.taskTableViewer, SWT.NONE);
 		retryCountTableColumn.setLabelProvider(new BeanPropertyColumnLableProvider("retryCount")); //$NON-NLS-1$
-		retryCountTableColumn.getColumn().setWidth(60);
+		retryCountTableColumn.getColumn().setWidth(40);
 		retryCountTableColumn.getColumn().setText(Messages.DownloadView_ColumnRetry);
 
 		final TableViewerColumn currentThreadCountTableColumn = new TableViewerColumn(this.taskTableViewer, SWT.NONE);
@@ -826,6 +841,15 @@ public class DownloadView extends ViewPart implements ITaskService {
 		DownloadManager.getInstance().moveBottom(takskList);
 
 		this.refreshTasks();
+
+	}
+
+	private void restoreUiData() {
+		IPreferenceStore store = DownloadActivator.getDefault().getPreferenceStore();
+
+		PersistenceUtil.restoreUiData(store, TaskTableColumnWidthKey, this.taskTableViewer.getTable());
+
+		PersistenceUtil.restoreUiData(store, SplitRatioKey, this.sashForm);
 
 	}
 

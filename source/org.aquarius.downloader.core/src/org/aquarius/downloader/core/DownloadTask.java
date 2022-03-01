@@ -188,7 +188,7 @@ public final class DownloadTask {
 		}
 
 		this.downloadHost = HttpUtil.getDomain(this.downloadUrl);
-		this.sourceHost = HttpUtil.getDomain(this.refererUrl);
+		this.sourceHost = HttpUtil.getDomain(this.pageUrl);
 	}
 
 	/**
