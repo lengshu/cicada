@@ -355,7 +355,7 @@ public class DownloadManager extends CompositeProgressListener implements Closea
 		List<DownloadTask> resultList = new ArrayList<DownloadTask>();
 
 		for (DownloadTask downloadTask : downloadTasks) {
-			if (this.downloadTaskList.contains(downloadTask)) {
+			if (this.downloadTaskList.contains(downloadTask) && (downloadTask.getState() != DownloadTask.StateFinish)) {
 				downloadTask.setState(DownloadTask.StatePause);
 				resultList.add(downloadTask);
 			}
