@@ -24,6 +24,8 @@ public class SearchMovieByKeywordDropDownAction extends AbstractDropDownAction {
 
 	private IWorkbenchWindow window;
 
+	private SearchMovieByKeywordAction searchAction;
+
 	/**
 	 * 
 	 * @param window
@@ -36,6 +38,8 @@ public class SearchMovieByKeywordDropDownAction extends AbstractDropDownAction {
 
 		setImageDescriptor(org.aquarius.cicada.workbench.WorkbenchActivator.getImageDescriptor("/icons/search.png")); //$NON-NLS-1$
 
+		this.searchAction = new SearchMovieByKeywordAction(SearchMovieByKeywordDropDownAction.this.window,
+				Messages.SearchMovieByKeywordDropDownAction_NewSearch, null);
 	}
 
 	/**
@@ -48,9 +52,8 @@ public class SearchMovieByKeywordDropDownAction extends AbstractDropDownAction {
 		List<IContributionItem> list = new ArrayList<>();
 
 		{
-			SearchMovieByKeywordAction searchAction = new SearchMovieByKeywordAction(SearchMovieByKeywordDropDownAction.this.window,
-					Messages.SearchMovieByKeywordDropDownAction_NewSearch, null);
-			ActionContributionItem item = new ActionContributionItem(searchAction);
+
+			ActionContributionItem item = new ActionContributionItem(this.searchAction);
 
 			list.add(item);
 			list.add(new Separator());
@@ -79,6 +82,14 @@ public class SearchMovieByKeywordDropDownAction extends AbstractDropDownAction {
 		}
 
 		return list;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void run() {
+		this.searchAction.run();
 	}
 
 }
