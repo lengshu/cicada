@@ -333,7 +333,7 @@ public class DownloadManager extends CompositeProgressListener implements Closea
 					continue;
 				}
 
-				downloadTask.setState(DownloadTask.StateRunning);
+				downloadTask.setState(DownloadTask.StateWaiting);
 				downloadTask.reset();
 				resultList.add(downloadTask);
 			}

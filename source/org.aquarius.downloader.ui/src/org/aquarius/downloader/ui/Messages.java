@@ -74,6 +74,8 @@ public class Messages extends NLS {
 	public static String DownloadView_ActionMoveTop;
 	public static String DownloadView_ActionMoveBottom;
 
+	public static String DownloadView_ColumnSourceHost;
+	public static String DownloadView_ColumnDownloadHost;
 	public static String DownloadView_ColumnFileLength;
 	public static String DownloadView_ColumnFinishedLength;
 	public static String DownloadView_ColumnRemaingTime;
@@ -83,6 +85,7 @@ public class Messages extends NLS {
 	public static String DownloadView_ColumnThreads;
 	public static String DownloadView_ColumnTitle;
 	public static String DownloadView_ColumnErrorMessage;
+
 	public static String DownloadView_StateAll;
 	public static String DownloadView_StateDelete;
 	public static String DownloadView_StateError;

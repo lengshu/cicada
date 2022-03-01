@@ -354,9 +354,19 @@ public class DownloadView extends ViewPart implements ITaskService {
 
 		final TableViewerColumn titleTableColumn = new TableViewerColumn(this.taskTableViewer, SWT.NONE);
 		titleTableColumn.setLabelProvider(new BeanPropertyColumnLableProvider("title")); //$NON-NLS-1$
-		titleTableColumn.getColumn().setWidth(800);
+		titleTableColumn.getColumn().setWidth(80);
 		titleTableColumn.getColumn().setText(Messages.DownloadView_ColumnTitle);
 		titleTableColumn.getColumn().setAlignment(SWT.LEFT);
+
+		final TableViewerColumn sourceHostTableColumn = new TableViewerColumn(this.taskTableViewer, SWT.NONE);
+		sourceHostTableColumn.setLabelProvider(new BeanPropertyColumnLableProvider("sourceHost")); //$NON-NLS-1$
+		sourceHostTableColumn.getColumn().setWidth(80);
+		sourceHostTableColumn.getColumn().setText(Messages.DownloadView_ColumnSourceHost);
+
+		final TableViewerColumn downloadHostTableColumn = new TableViewerColumn(this.taskTableViewer, SWT.NONE);
+		downloadHostTableColumn.setLabelProvider(new BeanPropertyColumnLableProvider("downloadHost")); //$NON-NLS-1$
+		downloadHostTableColumn.getColumn().setWidth(120);
+		downloadHostTableColumn.getColumn().setText(Messages.DownloadView_ColumnDownloadHost);
 
 		final TableViewerColumn totalLengthTableColumn = new TableViewerColumn(this.taskTableViewer, SWT.NONE);
 		totalLengthTableColumn.setLabelProvider(new LengthColumnLabelProvider("remoteFileLength")); //$NON-NLS-1$

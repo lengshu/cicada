@@ -20,6 +20,7 @@ import org.aquarius.downloader.core.spi.AbstractSegmentDownloader;
 import org.aquarius.util.AssertUtil;
 import org.aquarius.util.StringUtil;
 import org.aquarius.util.SystemUtil;
+import org.aquarius.util.net.HttpUtil;
 import org.aquarius.util.security.SecretKey;
 
 /**
@@ -147,6 +148,10 @@ public final class DownloadTask {
 
 	private transient AbstractSegmentDownloader segmentDownloader;
 
+	private transient String downloadHost;
+
+	private transient String sourceHost;
+
 	/**
 	 *
 	 */
@@ -181,6 +186,9 @@ public final class DownloadTask {
 				this.finishedLength = this.finishedLength + segment.getDownloadedLength();
 			}
 		}
+
+		this.downloadHost = HttpUtil.getDomain(this.downloadUrl);
+		this.sourceHost = HttpUtil.getDomain(this.refererUrl);
 	}
 
 	/**
@@ -830,6 +838,34 @@ public final class DownloadTask {
 		if (null != requestHeaders) {
 			this.requestHeaders.putAll(requestHeaders);
 		}
+	}
+
+	/**
+	 * @return the downloadHost
+	 */
+	public String getDownloadHost() {
+		return this.downloadHost;
+	}
+
+	/**
+	 * @param downloadHost the downloadHost to set
+	 */
+	public void setDownloadHost(String downloadHost) {
+		this.downloadHost = downloadHost;
+	}
+
+	/**
+	 * @return the sourceHost
+	 */
+	public String getSourceHost() {
+		return this.sourceHost;
+	}
+
+	/**
+	 * @param sourceHost the sourceHost to set
+	 */
+	public void setSourceHost(String sourceHost) {
+		this.sourceHost = sourceHost;
 	}
 
 	/**
