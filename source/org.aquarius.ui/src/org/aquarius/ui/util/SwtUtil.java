@@ -92,6 +92,23 @@ public class SwtUtil {
 		// No instances will be created.
 	}
 
+	/**
+	 * Return whether the selection is null or empty.<BR>
+	 * 
+	 * @param selection
+	 * @return
+	 */
+	public static boolean isEmpty(ISelection selection) {
+		return ((null == selection) || (selection.isEmpty()));
+	}
+
+	/**
+	 * If the selection is null or empty,return null.<BR>
+	 * Otherwise return the first element.<BR>
+	 * 
+	 * @param selection
+	 * @return
+	 */
 	public static Object findFirstElement(ISelection selection) {
 		if ((null == selection) || (selection.isEmpty())) {
 			return null;
