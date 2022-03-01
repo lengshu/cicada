@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Stack;
 import java.util.StringJoiner;
 import java.util.regex.Matcher;
@@ -453,6 +454,26 @@ public class StringUtil {
 		} else {
 			return new int[0];
 		}
+	}
+
+	/**
+	 * 
+	 * @param map
+	 * @return
+	 */
+	public static final String[][] createEntryNamesAndValues(Map<String, String> map) {
+		String[][] entryNamesAndValues = new String[map.size()][2];
+		int index = 0;
+
+		for (Entry<String, String> entry : map.entrySet()) {
+
+			entryNamesAndValues[index][0] = entry.getValue();
+			entryNamesAndValues[index][1] = entry.getKey();
+
+			index++;
+		}
+
+		return entryNamesAndValues;
 	}
 
 }

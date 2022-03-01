@@ -3,9 +3,6 @@
  */
 package org.aquarius.cicada.workbench.util;
 
-import java.util.Map;
-import java.util.Map.Entry;
-
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
@@ -111,26 +108,6 @@ public class WorkbenchUtil {
 		}
 
 		return workbenchPage.getActiveEditor();
-	}
-
-	/**
-	 * 
-	 * @param map
-	 * @return
-	 */
-	public static final String[][] createEntryNamesAndValues(Map<String, String> map) {
-		String[][] entryNamesAndValues = new String[map.size()][2];
-		int index = 0;
-
-		for (Entry<String, String> entry : map.entrySet()) {
-
-			entryNamesAndValues[index][0] = entry.getValue();
-			entryNamesAndValues[index][1] = entry.getKey();
-
-			index++;
-		}
-
-		return entryNamesAndValues;
 	}
 
 }
