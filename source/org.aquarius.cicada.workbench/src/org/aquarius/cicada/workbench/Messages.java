@@ -264,6 +264,8 @@ public class Messages extends NLS {
 
 	public static String FilterContentComposite_Tag;
 
+	public static String GalleryView_Pin;
+
 	public static String GenerateDownloadUrlJob_DialogTitle;
 
 	public static String GenerateDownloadUrlsAction_GenerateDownloadUrlsJob;
