@@ -172,6 +172,10 @@ public final class DownloadTask {
 	 * After the task was loaded,this method should be invoked to keep consistency.
 	 */
 	public void restore() {
+
+		this.downloadHost = HttpUtil.getDomain(this.downloadUrl);
+		this.sourceHost = HttpUtil.getDomain(this.pageUrl);
+
 		if (this.state == StateFinish) {
 			this.finishedLength = this.remoteFileLength;
 			return;
@@ -186,9 +190,6 @@ public final class DownloadTask {
 				this.finishedLength = this.finishedLength + segment.getDownloadedLength();
 			}
 		}
-
-		this.downloadHost = HttpUtil.getDomain(this.downloadUrl);
-		this.sourceHost = HttpUtil.getDomain(this.pageUrl);
 	}
 
 	/**
@@ -433,6 +434,8 @@ public final class DownloadTask {
 	 */
 	public void setDownloadUrl(String downloadUrl) {
 		this.downloadUrl = downloadUrl;
+		this.downloadHost = HttpUtil.getDomain(this.downloadUrl);
+		this.sourceHost = HttpUtil.getDomain(this.pageUrl);
 	}
 
 	/**
@@ -447,6 +450,8 @@ public final class DownloadTask {
 	 */
 	public void setPageUrl(String getPageUrl) {
 		this.pageUrl = getPageUrl;
+
+		this.sourceHost = HttpUtil.getDomain(this.pageUrl);
 	}
 
 	/**
@@ -848,24 +853,10 @@ public final class DownloadTask {
 	}
 
 	/**
-	 * @param downloadHost the downloadHost to set
-	 */
-	public void setDownloadHost(String downloadHost) {
-		this.downloadHost = downloadHost;
-	}
-
-	/**
 	 * @return the sourceHost
 	 */
 	public String getSourceHost() {
 		return this.sourceHost;
-	}
-
-	/**
-	 * @param sourceHost the sourceHost to set
-	 */
-	public void setSourceHost(String sourceHost) {
-		this.sourceHost = sourceHost;
 	}
 
 	/**
