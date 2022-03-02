@@ -47,17 +47,8 @@ public class ListElementNavigator<T> implements IElementNavigator<T> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public T nextElement() {
-		int index = this.currentLocation + 1;
-		return movieLocation(index);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public T previousElement() {
-		int index = this.currentLocation - 1;
+	public T skipElement(int step) {
+		int index = this.currentLocation + step;
 		return movieLocation(index);
 	}
 

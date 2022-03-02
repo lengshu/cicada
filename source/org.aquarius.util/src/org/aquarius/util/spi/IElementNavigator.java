@@ -13,10 +13,16 @@ public interface IElementNavigator<T> {
 
 	public boolean hasNextElement();
 
-	public T nextElement();
+	public default T nextElement() {
+		return skipElement(1);
+	}
 
-	public T previousElement();
+	public default T previousElement() {
+		return skipElement(-1);
+	}
 
 	public boolean locate(T element);
+
+	public T skipElement(int step);
 
 }
