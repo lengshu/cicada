@@ -238,8 +238,8 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 		perspectiveMenu.add(new Separator());
 		perspectiveMenu.add(perspectiveList);
 
-		windowMenu.add(viewMenu);
 		windowMenu.add(perspectiveMenu);
+		windowMenu.add(viewMenu);
 
 		windowMenu.add(this.preferenceAction);
 
