@@ -102,7 +102,7 @@ public class KeyStrokeFieldEditor extends FieldEditor {
 	 */
 	@Override
 	protected void doStore() {
-		this.getPreferenceStore().setValue(this.getPreferenceName(), isValid());
+		this.getPreferenceStore().setValue(this.getPreferenceName(), this.textTriggerSequence.getText());
 	}
 
 	/**
