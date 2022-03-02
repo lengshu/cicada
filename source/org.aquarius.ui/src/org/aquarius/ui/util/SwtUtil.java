@@ -136,6 +136,21 @@ public class SwtUtil {
 	}
 
 	/**
+	 * Return whether the selection provider is null or has empty selection.<BR>
+	 * 
+	 * @param selection
+	 * @return
+	 */
+	public static boolean isEmpty(ISelectionProvider selectionProvider) {
+
+		if (null == selectionProvider) {
+			return true;
+		}
+
+		return isEmpty(selectionProvider.getSelection());
+	}
+
+	/**
 	 * If the selection is null or empty,return null.<BR>
 	 * Otherwise return the first element.<BR>
 	 * 
