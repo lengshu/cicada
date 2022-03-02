@@ -26,8 +26,6 @@ import org.eclipse.ui.IWorkbenchPart;
  */
 public abstract class AbstractSelectionAction extends Action {
 
-	private ISelectionProvider lastSelectionProvider;
-
 	/**
 	 * @param text
 	 */
@@ -96,16 +94,7 @@ public abstract class AbstractSelectionAction extends Action {
 			selectionProvider = AdapterUtil.getAdapter(workbenchPart, ISelectionProvider.class);
 		}
 
-		this.lastSelectionProvider = selectionProvider;
-
 		return selectionProvider;
-	}
-
-	/**
-	 * @return the lastSelectionProvider
-	 */
-	public ISelectionProvider getLastSelectionProvider() {
-		return this.lastSelectionProvider;
 	}
 
 	/**
