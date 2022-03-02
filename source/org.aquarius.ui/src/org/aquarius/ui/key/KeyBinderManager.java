@@ -8,6 +8,7 @@ import java.util.Map;
 import org.apache.commons.lang.reflect.MethodUtils;
 import org.aquarius.log.LogUtil;
 import org.aquarius.util.AssertUtil;
+import org.aquarius.util.ObjectHolder;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.bindings.keys.KeyStroke;
 import org.eclipse.swt.events.KeyAdapter;
@@ -25,6 +26,8 @@ public class KeyBinderManager {
 
 	private static final Logger logger = LogUtil.getLogger(KeyBinderManager.class);
 
+	private static final ObjectHolder<Boolean> AlwaysOn = new ObjectHolder<Boolean>(Boolean.TRUE);
+
 	/**
 	 *
 	 */
@@ -38,6 +41,16 @@ public class KeyBinderManager {
 	 * @param mapping
 	 */
 	public static void bind(Control control, Map<KeyBinder, IAction> mapping) {
+		bind(AlwaysOn, control, mapping);
+	}
+
+	/**
+	 * 
+	 * @param userSwitch
+	 * @param control
+	 * @param mapping
+	 */
+	public static void bind(ObjectHolder<Boolean> userSwitch, Control control, Map<KeyBinder, IAction> mapping) {
 		AssertUtil.assertNotNull(control);
 		AssertUtil.assertNotNull(mapping);
 
@@ -49,6 +62,10 @@ public class KeyBinderManager {
 			@Override
 			public void keyReleased(KeyEvent event) {
 
+				if (!userSwitch.getValue()) {
+					return;
+				}
+
 				for (Map.Entry<KeyBinder, IAction> entry : mapping.entrySet()) {
 
 					KeyBinder keyBinder = entry.getKey();
@@ -57,7 +74,6 @@ public class KeyBinderManager {
 						try {
 
 							entry.getValue().run();
-
 							event.doit = true;
 							return;
 						} catch (Exception e) {
@@ -77,6 +93,16 @@ public class KeyBinderManager {
 	 * @param mapping
 	 */
 	public static void bindKeyStrokes(Control control, Map<KeyStroke, IAction> mapping) {
+		bindKeyStrokes(AlwaysOn, control, mapping);
+	}
+
+	/**
+	 * 
+	 * @param userSwitch
+	 * @param control
+	 * @param mapping
+	 */
+	public static void bindKeyStrokes(ObjectHolder<Boolean> userSwitch, Control control, Map<KeyStroke, IAction> mapping) {
 		AssertUtil.assertNotNull(control);
 		AssertUtil.assertNotNull(mapping);
 
@@ -87,6 +113,10 @@ public class KeyBinderManager {
 			 */
 			@Override
 			public void keyReleased(KeyEvent event) {
+
+				if (!userSwitch.getValue()) {
+					return;
+				}
 
 				for (Map.Entry<KeyStroke, IAction> entry : mapping.entrySet()) {
 
@@ -110,17 +140,34 @@ public class KeyBinderManager {
 		});
 	}
 
+	/**
+	 * 
+	 * @param keyStroke
+	 * @param event
+	 * @return
+	 */
 	private static final boolean isMatch(KeyStroke keyStroke, KeyEvent event) {
 		return event.keyCode == keyStroke.getNaturalKey() && event.stateMask == keyStroke.getModifierKeys();
 	}
 
 	/**
-	 *
+	 * 
 	 * @param control
 	 * @param executor
 	 * @param keyBinders
 	 */
 	public static void bind(Control control, Object executor, KeyBinder... keyBinders) {
+		bind(AlwaysOn, control, executor, keyBinders);
+	}
+
+	/**
+	 * 
+	 * @param userSwitch
+	 * @param control
+	 * @param executor
+	 * @param keyBinders
+	 */
+	public static void bind(ObjectHolder<Boolean> userSwitch, Control control, Object executor, KeyBinder... keyBinders) {
 		AssertUtil.assertNotNull(control);
 		AssertUtil.assertNotNull(keyBinders);
 
@@ -131,6 +178,10 @@ public class KeyBinderManager {
 			 */
 			@Override
 			public void keyReleased(KeyEvent event) {
+
+				if (!userSwitch.getValue()) {
+					return;
+				}
 
 				for (KeyBinder keyBinder : keyBinders) {
 
