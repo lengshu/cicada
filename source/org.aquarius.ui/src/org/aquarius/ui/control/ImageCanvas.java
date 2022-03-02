@@ -40,9 +40,6 @@ public class ImageCanvas extends Canvas {
 	// The image to display
 	private Image image;
 
-	// the zoom for the current image.
-	private float zoom = 1f;
-
 	/**
 	 * whether the control is checked.<BR>
 	 */
@@ -186,7 +183,7 @@ public class ImageCanvas extends Canvas {
 	protected void paintImage(GC gc) {
 		if (null == this.image)
 			return;
-		this.zoom = fitZoom();
+
 		Rectangle rect = getPaintRect();
 		gc.drawImage(this.image, 0, 0, this.image.getBounds().width, this.image.getBounds().height, rect.x, rect.y, rect.width, rect.height);
 	}
@@ -222,14 +219,17 @@ public class ImageCanvas extends Canvas {
 	 *
 	 * @return
 	 */
-	private Rectangle getPaintRect() {
+	public Rectangle getPaintRect() {
+
+		float zoom = fitZoom();
+
 		Point size = getSize();
 
 		if (SwtUtil.isValid(this.image)) {
 			Rectangle imgSize = this.image.getBounds();
-			if (this.zoom > 0) {
-				imgSize.width *= this.zoom;
-				imgSize.height *= this.zoom;
+			if (zoom > 0) {
+				imgSize.width *= zoom;
+				imgSize.height *= zoom;
 			}
 			imgSize.x = (size.x - imgSize.width) / 2;
 			imgSize.y = (size.y - imgSize.height) / 2;
