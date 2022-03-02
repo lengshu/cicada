@@ -128,6 +128,8 @@ public class WorkbenchConfiguration extends AbstractStoreableConfiguration {
 
 		storeService.setDefault(Key_BrowserZoom, RuntimeConstant.BrowserZoomNormal);
 
+		storeService.setDefault(Key_AutoActivationKey, "Ctrl+.");
+
 		storeService.setDefault(Key_BrowserPageSize, 40);
 
 		if (SystemUtils.IS_OS_WINDOWS) {
