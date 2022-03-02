@@ -20,6 +20,8 @@ import org.eclipse.jface.action.Action;
  */
 public class CopyInfoDropDownAction extends Action {
 
+	private CopyInfoAction copyAllAction;
+
 	/**
 	 * @param text
 	 */
@@ -33,13 +35,21 @@ public class CopyInfoDropDownAction extends Action {
 		CopyInfoAction copyTitleAction = new CopyInfoAction(Messages.CopyInfoDropDownAction_CopyTitles, Movie.PropertyTitle);
 		CopyInfoAction copyPageUrlAction = new CopyInfoAction(Messages.CopyInfoDropDownAction_CopyPageUrls, Movie.PropertyPageUrl);
 
-		CopyInfoAction copyAllAction = new CopyInfoAction(Messages.CopyInfoDropDownAction_CopyAll, ""); // $NON-NLS-2$
+		this.copyAllAction = new CopyInfoAction(Messages.CopyInfoDropDownAction_CopyAll, ""); // $NON-NLS-2$
 
 		actionList.add(copyTitleAction);
 		actionList.add(copyPageUrlAction);
-		actionList.add(copyAllAction);
+		actionList.add(this.copyAllAction);
 
 		this.setMenuCreator(new ActionListMenuCreator(actionList));
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void run() {
+		this.copyAllAction.run();
 	}
 
 }
