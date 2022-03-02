@@ -28,6 +28,7 @@ import org.aquarius.cicada.workbench.editor.action.factory.EditorActionFactory;
 import org.aquarius.cicada.workbench.helper.MovieHelper;
 import org.aquarius.cicada.workbench.util.WorkbenchUtil;
 import org.aquarius.service.IHttpCacheService.LoadFinishListener;
+import org.aquarius.ui.base.SelectionProviderAdapter;
 import org.aquarius.ui.control.ImageCanvas;
 import org.aquarius.ui.key.KeyBinder;
 import org.aquarius.ui.key.KeyBinderManager;
@@ -35,10 +36,12 @@ import org.aquarius.ui.util.AdapterUtil;
 import org.aquarius.ui.util.ImageUtil;
 import org.aquarius.ui.util.PersistenceUtil;
 import org.aquarius.ui.util.SwtUtil;
+import org.aquarius.util.ObjectHolder;
 import org.aquarius.util.net.HttpUtil;
 import org.aquarius.util.spi.IElementNavigator;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.model.application.ui.basic.MPartSashContainerElement;
+import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IContributionItem;
@@ -61,6 +64,7 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IEditorReference;
@@ -80,9 +84,11 @@ public class GalleryView extends ViewPart implements ISelectionChangedListener, 
 
 	public static String ViewId = GalleryView.class.getName();
 
-	private static String SashFormWeights = GalleryView.class.getName() + ".SashFormWeights"; //$NON-NLS-1$
+	private static String SashFormWeightsKey = GalleryView.class.getName() + ".SashFormWeightsKey"; //$NON-NLS-1$
 
-	private static String LayoutType = GalleryView.class.getName() + ".LayoutType"; //$NON-NLS-1$
+	private static String LayoutTypeKey = GalleryView.class.getName() + ".LayoutType"; //$NON-NLS-1$
+
+	private static String UseKeyboardKey = GalleryView.class.getName() + ".UseKeyboardKey"; //$NON-NLS-1$
 
 	private static final String SecondaryId = "detach"; //$NON-NLS-1$
 
@@ -103,6 +109,8 @@ public class GalleryView extends ViewPart implements ISelectionChangedListener, 
 	private IAction showViewAction;
 
 	private IAction pinViewAction;
+
+	private IAction useKeyboardAction;
 
 	private SaveImageAction saveImageAction;
 
@@ -126,6 +134,8 @@ public class GalleryView extends ViewPart implements ISelectionChangedListener, 
 	private boolean pinned = false;
 
 	private String title;
+
+	private ObjectHolder<Boolean> useKeyboard = new ObjectHolder<Boolean>(Boolean.TRUE);
 
 	/**
 	 * 
@@ -162,6 +172,8 @@ public class GalleryView extends ViewPart implements ISelectionChangedListener, 
 		IWorkbenchPage page = WorkbenchUtil.getActivePage();
 		page.removePartListener(this);
 
+		IPreferenceStore preferenceStore = WorkbenchActivator.getDefault().getPreferenceStore();
+		preferenceStore.setValue(UseKeyboardKey, this.useKeyboard.getValue());
 	}
 
 	/**
@@ -173,6 +185,22 @@ public class GalleryView extends ViewPart implements ISelectionChangedListener, 
 
 		IActionBars actionBars = site.getActionBars();
 		this.makeContributions(actionBars.getMenuManager(), actionBars.getToolBarManager());
+
+		site.setSelectionProvider(new SelectionProviderAdapter() {
+
+			/**
+			 * {@inheritDoc}
+			 */
+			@Override
+			public ISelection getSelection() {
+
+				if (null == GalleryView.this.currentMovie) {
+					return super.getSelection();
+				} else {
+					return new StructuredSelection(GalleryView.this.currentMovie);
+				}
+			}
+		});
 	}
 
 	/**
@@ -181,9 +209,10 @@ public class GalleryView extends ViewPart implements ISelectionChangedListener, 
 	@Override
 	public void createPartControl(Composite parent) {
 		IPreferenceStore preferenceStore = WorkbenchActivator.getDefault().getPreferenceStore();
-		preferenceStore.setDefault(LayoutType, SWT.VERTICAL);
+		preferenceStore.setDefault(LayoutTypeKey, SWT.VERTICAL);
+		preferenceStore.setDefault(UseKeyboardKey, true);
 
-		this.layoutType = preferenceStore.getInt(LayoutType);
+		this.layoutType = preferenceStore.getInt(LayoutTypeKey);
 
 		this.rootPane = new SashForm(parent, SWT.NONE | this.layoutType);
 		this.rootPane.setSashWidth(8);
@@ -203,7 +232,7 @@ public class GalleryView extends ViewPart implements ISelectionChangedListener, 
 			this.rootPane.setWeights(new int[] { 68, 32 });
 
 			IPreferenceStore store = WorkbenchActivator.getDefault().getPreferenceStore();
-			PersistenceUtil.restoreUiData(store, SashFormWeights, this.rootPane);
+			PersistenceUtil.restoreUiData(store, SashFormWeightsKey, this.rootPane);
 		}
 
 		this.contextMenuManager = new MenuManager();
@@ -229,6 +258,7 @@ public class GalleryView extends ViewPart implements ISelectionChangedListener, 
 
 				if (e.button == 1) {
 					Rectangle rect = GalleryView.this.imageCanvas.getBounds();
+					// Rectangle rect = GalleryView.this.imageCanvas.getPaintRect();
 
 					if (e.x < (rect.width * 0.3)) {
 						left();
@@ -243,10 +273,21 @@ public class GalleryView extends ViewPart implements ISelectionChangedListener, 
 
 		});
 
-		KeyBinderManager.bind(this.imageCanvas, this, KeyBinder.LeftKeyBinder, KeyBinder.RightKeyBinder);
+		KeyBinderManager.bind(this.useKeyboard, this.imageCanvas, this, KeyBinder.LeftKeyBinder, KeyBinder.RightKeyBinder, KeyBinder.PageDownKeyBinder,
+				KeyBinder.PageUpKeyBinder, KeyBinder.UpKeyBinder, KeyBinder.DownKeyBinder);
 
-		PersistenceUtil.addSaveSupport(preferenceStore, SashFormWeights, this.rootPane);
+		Map<KeyBinder, IAction> mapping = new HashMap<>();
+		mapping.put(KeyBinder.CtrlEnterKeyBinder, this.downloadAction);
+		mapping.put(KeyBinder.EnterKeyBinder, this.openMovieUrlAction);
+		mapping.put(KeyBinder.CopyKeyBinder, this.copyInfoDropDownAction);
+
+		KeyBinderManager.bind(this.useKeyboard, this.imageCanvas, mapping);
+
+		PersistenceUtil.addSaveSupport(preferenceStore, SashFormWeightsKey, this.rootPane);
 		setActionState(false);
+
+		this.useKeyboard.setValue(preferenceStore.getBoolean(UseKeyboardKey));
+		this.useKeyboardAction.setChecked(this.useKeyboard.getValue());
 	}
 
 	/**
@@ -254,6 +295,43 @@ public class GalleryView extends ViewPart implements ISelectionChangedListener, 
 	 */
 	private void makeActions() {
 
+		makeNewActions();
+
+		this.showViewAction.setImageDescriptor(WorkbenchActivator.getImageDescriptor("/icons/showImage.png")); //$NON-NLS-1$
+
+		this.saveImageAction = new SaveImageAction(Messages.MoviePropertySheetPage_SaveImageActionLabel);
+
+		this.refreshMovieAction = new RefreshMovieAction(Messages.SiteEditorActionBarContributor_RefreshMovie);
+		this.openMovieUrlAction = new OpenMovieUrlAction(Messages.SiteEditorActionBarContributor_OpenSelectedMovies);
+		this.downloadAction = new DownloadAction(Messages.SiteEditorActionBarContributor_DownloadSelectedMovies, false);
+		this.playMovieAction = new PlayMovieAction(Messages.SiteEditorActionBarContributor_PlayMovie);
+		this.copyInfoDropDownAction = new CopyInfoDropDownAction(Messages.SiteEditorActionBarContributor_Copy);
+		this.generateDownloadUrlsDropDownAction = new GenerateDownloadUrlsDropDownAction(Messages.SiteEditorActionBarContributor_GenerateDownloadUrls);
+
+		this.updateStateDropDownAction = new UpdateStateDropDownAction(Messages.SiteEditorActionBarContributor_ChangeState);
+
+		this.updateScoreDropDownAction = new UpdateScoreDropDownAction(Messages.SiteEditorActionBarContributor_ChangeScore);
+
+		this.externalAnalyserDropdownAction = EditorActionFactory.getInstance()
+				.createExternalAnalyserAction(Messages.SiteEditorActionBarContributor_ExternalAnalyser);
+
+		this.actionList.add(this.externalAnalyserDropdownAction);
+		this.actionList.add(this.updateScoreDropDownAction);
+
+		this.actionList.add(this.saveImageAction);
+
+		this.actionList.add(this.refreshMovieAction);
+		this.actionList.add(this.openMovieUrlAction);
+		this.actionList.add(this.downloadAction);
+		this.actionList.add(this.playMovieAction);
+		this.actionList.add(this.copyInfoDropDownAction);
+		this.actionList.add(this.generateDownloadUrlsDropDownAction);
+	}
+
+	/**
+	 * 
+	 */
+	private void makeNewActions() {
 		this.pinViewAction = new Action(Messages.GalleryView_Pin, IAction.AS_CHECK_BOX) {
 
 			/**
@@ -266,6 +344,22 @@ public class GalleryView extends ViewPart implements ISelectionChangedListener, 
 		};
 
 		this.pinViewAction.setImageDescriptor(WorkbenchActivator.getImageDescriptor("/icons/pin.png")); //$NON-NLS-1$
+
+		this.useKeyboardAction = new Action(Messages.GalleryView_UseKeyboard, IAction.AS_CHECK_BOX) {
+
+			/**
+			 * {@inheritDoc}}
+			 */
+			@Override
+			public void run() {
+
+				GalleryView.this.useKeyboard.setValue(this.isChecked());
+			}
+		};
+
+		this.useKeyboardAction.setImageDescriptor(WorkbenchActivator.getImageDescriptor("/icons/keyboard.png"));
+		this.useKeyboardAction.setToolTipText(Messages.GalleryView_UseKeyboardDescription);
+		this.useKeyboardAction.setDescription(Messages.GalleryView_UseKeyboardDescription);
 
 		this.changeLayoutAction = new Action(Messages.MoviePropertySheetPage_ChangeLayoutActionLabel, SWT.None) {
 
@@ -295,38 +389,10 @@ public class GalleryView extends ViewPart implements ISelectionChangedListener, 
 
 		};
 
-		this.showViewAction.setImageDescriptor(WorkbenchActivator.getImageDescriptor("/icons/showImage.png")); //$NON-NLS-1$
-
-		this.saveImageAction = new SaveImageAction(Messages.MoviePropertySheetPage_SaveImageActionLabel);
-
-		this.refreshMovieAction = new RefreshMovieAction(Messages.SiteEditorActionBarContributor_RefreshMovie);
-		this.openMovieUrlAction = new OpenMovieUrlAction(Messages.SiteEditorActionBarContributor_OpenSelectedMovies);
-		this.downloadAction = new DownloadAction(Messages.SiteEditorActionBarContributor_DownloadSelectedMovies, false);
-		this.playMovieAction = new PlayMovieAction(Messages.SiteEditorActionBarContributor_PlayMovie);
-		this.copyInfoDropDownAction = new CopyInfoDropDownAction(Messages.SiteEditorActionBarContributor_Copy);
-		this.generateDownloadUrlsDropDownAction = new GenerateDownloadUrlsDropDownAction(Messages.SiteEditorActionBarContributor_GenerateDownloadUrls);
-
-		this.updateStateDropDownAction = new UpdateStateDropDownAction(Messages.SiteEditorActionBarContributor_ChangeState);
-
-		this.updateScoreDropDownAction = new UpdateScoreDropDownAction(Messages.SiteEditorActionBarContributor_ChangeScore);
-
-		this.externalAnalyserDropdownAction = EditorActionFactory.getInstance()
-				.createExternalAnalyserAction(Messages.SiteEditorActionBarContributor_ExternalAnalyser);
-
 		this.actionList.add(this.pinViewAction);
-		this.actionList.add(this.externalAnalyserDropdownAction);
-		this.actionList.add(this.updateScoreDropDownAction);
-
-		this.actionList.add(this.changeLayoutAction);
 		this.actionList.add(this.showViewAction);
-		this.actionList.add(this.saveImageAction);
-
-		this.actionList.add(this.refreshMovieAction);
-		this.actionList.add(this.openMovieUrlAction);
-		this.actionList.add(this.downloadAction);
-		this.actionList.add(this.playMovieAction);
-		this.actionList.add(this.copyInfoDropDownAction);
-		this.actionList.add(this.generateDownloadUrlsDropDownAction);
+		this.actionList.add(this.useKeyboardAction);
+		this.actionList.add(this.changeLayoutAction);
 	}
 
 	/**
@@ -370,19 +436,13 @@ public class GalleryView extends ViewPart implements ISelectionChangedListener, 
 
 		IViewSite viewSite = viewPart.getViewSite();
 
-		//
 		MPartSashContainerElement mpartService = viewSite.getService(MPart.class);
 		mpartService.setOnTop(true);
 
-//		if (!exist) {
-//
-//			if (!mpartService.isOnTop()) {			
-//				EModelService modelService = viewSite.getService(EModelService.class);
-//				Shell shell = viewSite.getShell();
-//				Rectangle rectangle = shell.getBounds();
-//				modelService.detach(mpartService, rectangle.x, rectangle.y, rectangle.width, rectangle.height);
-//			}
-//		}
+		EModelService modelService = viewSite.getService(EModelService.class);
+		Shell shell = viewSite.getShell();
+		Rectangle rectangle = shell.getBounds();
+		modelService.detach(mpartService, rectangle.x, rectangle.y, rectangle.width, rectangle.height);
 
 		if (viewPart instanceof GalleryView) {
 			GalleryView galleryView = (GalleryView) viewPart;
@@ -414,7 +474,7 @@ public class GalleryView extends ViewPart implements ISelectionChangedListener, 
 		}
 
 		IPreferenceStore preferenceStore = WorkbenchActivator.getDefault().getPreferenceStore();
-		preferenceStore.setValue(LayoutType, this.layoutType);
+		preferenceStore.setValue(LayoutTypeKey, this.layoutType);
 
 		this.rootPane.setOrientation(this.layoutType);
 
@@ -427,6 +487,8 @@ public class GalleryView extends ViewPart implements ISelectionChangedListener, 
 	 * @param toolBarManager
 	 */
 	private void makeContributions(IMenuManager menuManager, IToolBarManager toolBarManager) {
+
+		addAction(menuManager, null, this.useKeyboardAction);
 
 		addAction(menuManager, toolBarManager, this.pinViewAction);
 		addAction(menuManager, toolBarManager, this.showViewAction);
@@ -588,28 +650,6 @@ public class GalleryView extends ViewPart implements ISelectionChangedListener, 
 		}
 	}
 
-	public void left() {
-		if (null == this.elementNavigator) {
-			return;
-		}
-
-		Movie movie = this.elementNavigator.previousElement();
-		if (null != movie) {
-			this.doUpdateInfo(movie);
-		}
-	}
-
-	public void right() {
-		if (null == this.elementNavigator) {
-			return;
-		}
-
-		Movie movie = this.elementNavigator.nextElement();
-		if (null != movie) {
-			this.doUpdateInfo(movie);
-		}
-	}
-
 	/**
 	 * {@inheritDoc}
 	 */
@@ -722,11 +762,67 @@ public class GalleryView extends ViewPart implements ISelectionChangedListener, 
 	}
 
 	/**
+	 * 
+	 */
+	public void left() {
+		skip(-1);
+	}
+
+	/**
+	 * 
+	 */
+	public void right() {
+		skip(1);
+	}
+
+	/**
+	 * 
+	 */
+	public void pageUp() {
+		skip(-20);
+	}
+
+	/**
+	 * 
+	 */
+	public void pageDown() {
+		skip(20);
+	}
+
+	/**
+	 * 
+	 */
+	public void up() {
+		pageUp();
+	}
+
+	/**
+	 * 
+	 */
+	public void down() {
+		pageDown();
+	}
+
+	/**
+	 * 
+	 */
+	public void skip(int step) {
+		if (null == this.elementNavigator) {
+			return;
+		}
+
+		Movie movie = this.elementNavigator.skipElement(step);
+		if (null != movie) {
+			this.doUpdateInfo(movie);
+		}
+	}
+
+	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public void partDeactivated(IWorkbenchPart part) {
-		// TODO Auto-generated method stub
+		// Nothing to do
 
 	}
 
@@ -735,7 +831,8 @@ public class GalleryView extends ViewPart implements ISelectionChangedListener, 
 	 */
 	@Override
 	public void setFocus() {
-		// TODO Auto-generated method stub
+		// TODO Nothing to do
 
 	}
+
 }
