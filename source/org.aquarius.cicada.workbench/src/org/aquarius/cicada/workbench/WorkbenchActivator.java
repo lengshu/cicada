@@ -6,6 +6,7 @@ import java.net.URL;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.BooleanUtils;
 import org.aquarius.cicada.core.RuntimeManager;
 import org.aquarius.cicada.core.config.MovieConfiguration;
 import org.aquarius.cicada.core.config.ServiceFilterConfiguration;
@@ -242,7 +243,13 @@ public class WorkbenchActivator extends AbstractUIPlugin {
 	private void startJobs() {
 		MovieConfiguration movieConfiguration = RuntimeManager.getInstance().getConfiguration();
 		if (movieConfiguration.isAutoRefreshMovie() || movieConfiguration.isAutoRefreshSite()) {
-			new AutoRefreshJob(Messages.WorkbenchActivator_AutoRefresh).schedule(5000);
+
+			String value = System.getProperty("aquarius.disableRefresh");
+			boolean disableRefresh = BooleanUtils.toBoolean(value);
+
+			if (!disableRefresh) {
+				new AutoRefreshJob(Messages.WorkbenchActivator_AutoRefresh).schedule(5000);
+			}
 		}
 
 		new InitCookieJob(Messages.WorkbenchActivator_InitCookie).schedule(5000);
