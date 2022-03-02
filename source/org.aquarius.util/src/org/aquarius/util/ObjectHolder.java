@@ -10,11 +10,26 @@ package org.aquarius.util;
  * @author aquarius.github@gmail.com
  *
  */
-public class ObjectHolder<T> {
+public final class ObjectHolder<T> {
 
 	private T value;
 
 	private boolean updated;
+
+	/**
+	 * 
+	 */
+	public ObjectHolder() {
+		super();
+	}
+
+	/**
+	 * @param value
+	 */
+	public ObjectHolder(T value) {
+		super();
+		this.value = value;
+	}
 
 	/**
 	 * @return the value
