@@ -82,6 +82,7 @@ public final class KeyBinder {
 		keyMapping.put("return", 13);
 	}
 
+	public static final KeyBinder AltEnterKeyBinder = KeyBinder.createKeyBinder("alt+enter", "altEnter");
 	public static final KeyBinder CtrlEnterKeyBinder = KeyBinder.createKeyBinder("ctrl+enter", "ctrlEnter");
 
 	public static final KeyBinder ShiftEnterKeyBinder = KeyBinder.createKeyBinder("shift+enter", "shiftEnter");
