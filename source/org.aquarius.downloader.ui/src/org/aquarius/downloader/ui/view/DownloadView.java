@@ -700,7 +700,7 @@ public class DownloadView extends ViewPart implements ITaskService {
 			DesktopUtil.openFile(downloadTask.getFolder());
 		}
 
-		if (downloadTask.getState() == DownloadTask.StateRunning) {
+		if (downloadTask.isAllowDownload()) {
 			DownloadManager.getInstance().pauseDownloadTask(downloadTask);
 		} else {
 			DownloadManager.getInstance().resumeDownloadTask(downloadTask);
