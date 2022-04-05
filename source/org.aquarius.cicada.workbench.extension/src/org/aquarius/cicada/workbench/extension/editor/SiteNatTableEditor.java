@@ -18,6 +18,7 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 import org.aquarius.cicada.core.RuntimeManager;
 import org.aquarius.cicada.core.model.Movie;
 import org.aquarius.cicada.core.model.Site;
@@ -51,6 +52,7 @@ import org.aquarius.ui.editor.BaseTableEditorPart;
 import org.aquarius.ui.key.KeyBinder;
 import org.aquarius.ui.key.KeyBinderManager;
 import org.aquarius.util.DesktopUtil;
+import org.aquarius.util.StringUtil;
 import org.aquarius.util.collection.ListElementNavigator;
 import org.aquarius.util.nls.NlsResource;
 import org.aquarius.util.spi.IElementNavigator;
@@ -1120,6 +1122,7 @@ public class SiteNatTableEditor extends BaseTableEditorPart implements IMovieLis
 	 * @param actor
 	 */
 	public void filterByActor(String actor) {
+		actor = StringUtils.replace(actor, ",", "|");
 		this.filterRowHeaderLayer.getFilterRowDataLayer().getFilterRowDataProvider().setDataValue(COLUMN_POSITION_ACTOR, 0, actor);
 	}
 
