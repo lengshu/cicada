@@ -100,6 +100,11 @@ public class HttpSegmentDownloader extends AbstractSegmentDownloader {
 					}
 				}
 
+				if (!downloadTask.shouldRetry()) {
+					downloadTask.setState(DownloadTask.StateError);
+					DownloadManager.getInstance().onError(downloadTask);
+				}
+
 			}
 			throw e;
 		} finally {

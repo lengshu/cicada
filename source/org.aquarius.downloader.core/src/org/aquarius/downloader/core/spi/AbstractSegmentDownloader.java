@@ -133,11 +133,6 @@ public abstract class AbstractSegmentDownloader implements Runnable {
 				// When error happened, retry count will be increased and check where the task
 				// can be continued or not/
 
-				if (!this.downloadTask.shouldRetry()) {
-					this.downloadTask.setState(DownloadTask.StateError);
-					DownloadManager.getInstance().onError(this.downloadTask);
-				}
-
 				if (!StringUtil.containsAnyIgnoreCase(e.getLocalizedMessage(), "403", "429")) {
 					this.downloadTask.increaseRetryCount();
 					this.logger.error("download the url " + this.downloadTask.getDownloadUrl(), e);
@@ -149,6 +144,11 @@ public abstract class AbstractSegmentDownloader implements Runnable {
 					// 1/10 possibility to log and increase retry count.
 				}
 				// 403 error is not needed to log.
+
+				if (!this.downloadTask.shouldRetry()) {
+					this.downloadTask.setState(DownloadTask.StateError);
+					DownloadManager.getInstance().onError(this.downloadTask);
+				}
 
 				for (int i = 0; i < 10; i++) {
 					if (this.downloadTask.getState() == DownloadTask.StateRunning) {
