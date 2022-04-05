@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -415,16 +416,20 @@ public class MovieStoreService implements IMovieStoreService {
 	public List<String> queryAllActors() {
 
 		List<String> actorList = this.sqlSession.selectList("selectActors");
+		List<String> resultList = new ArrayList<>();
 
-		for (int i = actorList.size() - 1; i >= 0; i--) {
-			String actor = actorList.get(i);
+		for (String actor : actorList) {
+			if (StringUtils.length(actor) >= 2) {
 
-			if (StringUtils.length(actor) < 2) {
-				actorList.remove(i);
+				actor = actor.trim();
+
+				if (!resultList.contains(actor)) {
+					resultList.add(actor);
+				}
 			}
 		}
 
-		return actorList;
+		return resultList;
 	}
 
 	/**
