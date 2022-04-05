@@ -6,9 +6,7 @@ package org.aquarius.cicada.workbench.extension;
 import java.util.List;
 
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang.ArrayUtils;
 import org.aquarius.cicada.core.model.Movie;
-import org.aquarius.cicada.core.util.MovieUtil;
 import org.aquarius.cicada.workbench.extension.editor.SiteNatTableEditor;
 import org.eclipse.jface.action.Action;
 
@@ -43,19 +41,9 @@ public class FilterByActorAction extends Action {
 			return;
 		}
 
-		if (movieList.size() > 1) {
-			return;
-		}
-
 		Movie movie = movieList.get(0);
 
-		String[] actors = MovieUtil.split(movie.getActor());
-
-		if (ArrayUtils.isEmpty(actors)) {
-			return;
-		}
-
-		this.siteNatTableEditor.filterByActor(actors[0]);
+		this.siteNatTableEditor.filterByActor(movie.getActor());
 
 		super.run();
 	}
