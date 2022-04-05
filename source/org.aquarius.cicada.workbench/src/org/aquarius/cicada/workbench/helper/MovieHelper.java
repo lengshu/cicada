@@ -6,12 +6,16 @@ package org.aquarius.cicada.workbench.helper;
 import java.text.DateFormat;
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.StringJoiner;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.collections4.CollectionUtils;
@@ -25,8 +29,10 @@ import org.aquarius.cicada.core.model.SiteConfig;
 import org.aquarius.cicada.core.model.VirtualSite;
 import org.aquarius.cicada.core.nls.MovieNlsMessageConstant;
 import org.aquarius.cicada.core.spi.IProcessMonitor;
+import org.aquarius.cicada.core.util.MovieUtil;
 import org.aquarius.cicada.workbench.Messages;
 import org.aquarius.cicada.workbench.manager.SiteConfigManager;
+import org.aquarius.util.StringUtil;
 import org.aquarius.util.nls.NlsResource;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -38,6 +44,16 @@ import org.eclipse.jface.viewers.IStructuredSelection;
  *
  */
 public class MovieHelper {
+
+	private static Comparator<String> StringLengthComparator = new Comparator<String>() {
+
+		/** {@inheritDoc} */
+		@Override
+		public int compare(String s1, String s2) {
+			int result = s1.length() - s2.length();
+			return result == 0 ? s1.compareTo(s2) : result;
+		}
+	};
 
 	/**
 	 *
@@ -237,56 +253,6 @@ public class MovieHelper {
 	/**
 	 * 
 	 * @param site
-	 * @param movieList
-	 * @return
-	 */
-	private static List<Movie> fillActors(Site site, List<Movie> movieList) {
-
-		List<Movie> resultList = new ArrayList<>();
-
-		if (null == site || null == movieList) {
-			return resultList;
-		}
-
-		List<String> actorList = site.getActors();
-
-		for (Movie movie : movieList) {
-
-			if (StringUtils.isBlank(movie.getActor())) {
-				StringJoiner stringJoiner = new StringJoiner(",");
-
-				for (String actor : actorList) {
-
-					if (StringUtils.isBlank(actor)) {
-						continue;
-					}
-
-					if (StringUtils.containsIgnoreCase(movie.getTitle(), actor)) {
-						stringJoiner.add(actor);
-					}
-
-					if (StringUtils.containsIgnoreCase(movie.getTag(), actor)) {
-						stringJoiner.add(actor);
-					}
-
-					if (StringUtils.containsIgnoreCase(movie.getCategory(), actor)) {
-						stringJoiner.add(actor);
-					}
-				}
-
-				if (stringJoiner.length() > 0) {
-					movie.setActor(stringJoiner.toString());
-					resultList.add(movie);
-				}
-			}
-		}
-
-		return resultList;
-	}
-
-	/**
-	 * 
-	 * @param site
 	 * @param processMonitor
 	 * @return
 	 */
@@ -314,13 +280,14 @@ public class MovieHelper {
 			return new ArrayList<Movie>();
 		}
 
-		List<Movie> resultList = new ArrayList<>();
+		Set<Movie> resultSet = new HashSet<>();
 		List<String> actorList = RuntimeManager.getInstance().getStoreService().queryAllActors();
+		// actorList = cleanActors(actorList);
 
 		for (Movie movie : movieList) {
 
 			if (processMonitor.isCanceled()) {
-				return resultList;
+				break;
 			}
 
 			if (StringUtils.isBlank(movie.getActor()) || force) {
@@ -350,14 +317,74 @@ public class MovieHelper {
 
 				if (stringJoiner.length() > 0) {
 					movie.setActor(stringJoiner.toString());
-					resultList.add(movie);
+					resultSet.add(movie);
 				}
 			}
 
+			String oldActor = movie.getActor();
+			String actor = cleanActor(oldActor);
+			if ((!StringUtils.isEmpty(actor)) && (!StringUtils.equalsIgnoreCase(actor, oldActor))) {
+				movie.setActor(actor);
+				resultSet.add(movie);
+			}
 		}
 
-		return resultList;
+		return new ArrayList<>(resultSet);
 
+	}
+
+	/**
+	 * 
+	 * @param actor
+	 * @return
+	 */
+	public static String cleanActor(String actor) {
+		if (StringUtils.isBlank(actor)) {
+			return "";
+		}
+
+		String upperCaseActor = actor.toUpperCase();
+		String[] actors = MovieUtil.split(actor);
+		Set<String> actorSet = new TreeSet<String>(StringLengthComparator);
+
+		CollectionUtils.addAll(actorSet, actors);
+
+		Set<String> resultSet = new TreeSet<>(actorSet);
+
+		boolean modified = false;
+
+		for (String string : actorSet) {
+			if (StringUtils.countMatches(upperCaseActor, string.toUpperCase()) > 1) {
+				resultSet.remove(string);
+				modified = true;
+			}
+		}
+
+		if (modified) {
+			return StringUtils.join(resultSet, StringUtil.ContentSeparator);
+		} else {
+			return actor;
+		}
+	}
+
+	public static List<String> cleanActors(List<String> actorList) {
+		Set<String> actorSet = new TreeSet<String>(StringLengthComparator);
+
+		CollectionUtils.addAll(actorSet, actorList);
+
+		Set<String> resultSet = new TreeSet<>();
+
+		String upperCaseActor = StringUtils.join(actorSet, StringUtil.ContentSeparator).toUpperCase();
+
+		for (String string : actorSet) {
+			if (StringUtils.countMatches(upperCaseActor, string.toUpperCase()) > 1) {
+				actorList.remove(string);
+			}
+		}
+
+		// actorList.removeAll(resultSet);
+
+		return actorList;
 	}
 
 	/**
