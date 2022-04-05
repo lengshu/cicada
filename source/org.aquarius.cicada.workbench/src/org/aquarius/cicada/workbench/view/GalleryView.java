@@ -247,7 +247,7 @@ public class GalleryView extends ViewPart implements ISelectionChangedListener, 
 			 */
 			@Override
 			public void mouseDoubleClick(MouseEvent e) {
-				GalleryView.this.showViewAction.run();
+				// GalleryView.this.showViewAction.run();
 			}
 
 			/**
