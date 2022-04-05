@@ -77,10 +77,7 @@ public class SelectMovieFunction extends AbstractMovieListFunction {
 			}
 		}
 
-		if (null != this.selectionProvider) {
-			this.selectionProvider.setSelection(StructuredSelection.EMPTY);
-
-		}
+		this.selectionProvider.setSelection(StructuredSelection.EMPTY);
 
 		return BrowserUtil.Success;
 
