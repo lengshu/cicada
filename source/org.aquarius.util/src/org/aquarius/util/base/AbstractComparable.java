@@ -14,6 +14,12 @@ import org.apache.commons.lang.math.NumberUtils;
  */
 public class AbstractComparable<T> implements Comparable<T> {
 
+	public static int Greatest = 16000;
+
+	public static int Greater = 14000;
+
+	public static int Great = 12000;
+
 	public static int Highest = 10000;
 
 	public static int Higher = 8000;
@@ -26,9 +32,11 @@ public class AbstractComparable<T> implements Comparable<T> {
 
 	public static int Lower = 2000;
 
+	public static int Default = 1000;
+
 	public static int Lowest = 0;
 
-	private int priority = Medium;
+	private int priority = Default;
 
 	/**
 	 * @return the priority
@@ -84,6 +92,19 @@ public class AbstractComparable<T> implements Comparable<T> {
 	 * @return
 	 */
 	public static int getPriority(String name, int defaultValue) {
+
+		if (StringUtils.equalsIgnoreCase(name, "Greatest")) {
+			return Greatest;
+		}
+
+		if (StringUtils.equalsIgnoreCase(name, "Greater")) {
+			return Greater;
+		}
+
+		if (StringUtils.equalsIgnoreCase(name, "Great")) {
+			return Great;
+		}
+
 		if (StringUtils.equalsIgnoreCase(name, "Highest")) {
 			return Highest;
 		}
