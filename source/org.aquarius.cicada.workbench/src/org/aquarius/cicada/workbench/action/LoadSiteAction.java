@@ -41,8 +41,6 @@ public class LoadSiteAction extends Action {
 	@Override
 	public void run() {
 
-		RuntimeManager.getInstance().getStoreService().queryAllActors();
-
 		try {
 
 			Site site = RuntimeManager.getInstance().loadSite(this.siteName);
