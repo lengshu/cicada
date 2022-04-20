@@ -399,6 +399,11 @@ public class GalleryView extends ViewPart implements ISelectionChangedListener, 
 	 * 
 	 */
 	protected void pin() {
+
+		if (null == this.elementNavigator) {
+			return;
+		}
+
 		this.pinned = !this.pinned;
 		this.pinViewAction.setChecked(this.pinned);
 
@@ -446,10 +451,6 @@ public class GalleryView extends ViewPart implements ISelectionChangedListener, 
 
 		if (viewPart instanceof GalleryView) {
 			GalleryView galleryView = (GalleryView) viewPart;
-
-			if (galleryView.pinned) {
-				galleryView.pinViewAction.run();
-			}
 
 			galleryView.elementNavigator = this.elementNavigator;
 			galleryView.title = this.title;
@@ -749,7 +750,13 @@ public class GalleryView extends ViewPart implements ISelectionChangedListener, 
 	 * @param part
 	 */
 	private void switchSelection(IWorkbenchPart part) {
+
+		if (this.isPinned()) {
+			return;
+		}
+
 		if (part instanceof SiteMultiPageEditor) {
+
 			this.elementNavigator = AdapterUtil.getAdapter(part, IElementNavigator.class);
 
 			ISelectionProvider selectionProvider = ((SiteMultiPageEditor) part).getEditorSite().getSelectionProvider();

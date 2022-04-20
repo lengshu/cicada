@@ -247,7 +247,15 @@ public class MovieHelper {
 		if (null != movie.getPublishDate()) {
 			publishDate = DateFormat.getDateInstance().format(movie.getPublishDate());
 		}
-		return MessageFormat.format(message, title, uniId, actor, tag, category, producer, publishDate);
+
+		Map<Integer, String> statesMap = MovieHelper.getMovieStateMap();
+		String state = statesMap.get(movie.getState());
+
+		if (null == state) {
+			state = "Error";
+		}
+
+		return MessageFormat.format(message, title, uniId, actor, tag, category, producer, publishDate, state);
 	}
 
 	/**
