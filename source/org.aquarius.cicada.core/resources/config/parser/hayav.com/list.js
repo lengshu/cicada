@@ -19,6 +19,24 @@ function internalParseMovieList() {
 			var imageElement = element.querySelector("img");
 			movie.imageUrl = imageElement.getAttribute("data-src");
 
+            titleElement = element.querySelector("div.blog-pic-wrap > a");
+            
+            if(null!=titleElement)
+            {
+                if(null==movie.title)
+                {
+            	    movie.title=titleElement.title;            	
+                }
+
+                if(null==movie.imageUrl)
+                {
+                	imageElement = titleElement.querySelector("img");
+            	    movie.imageUrl=imageElement.src;            	
+                }
+            }
+          
+
+
 			movies.push(movie);
 
 			var dateElement = element.querySelector("time.published");

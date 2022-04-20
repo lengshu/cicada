@@ -13,6 +13,9 @@ function internalUpdateMovieTitle(movie) {
 	} else {
 		movie.title = document.title;
 	}
+	
+	var imageElement = document.querySelector('div.entry-content > img');
+	movie.imageUrl = imageElement.src;	
 
 	var regex = /[A-Za-z0-9- ]{4,20}/g;
 
