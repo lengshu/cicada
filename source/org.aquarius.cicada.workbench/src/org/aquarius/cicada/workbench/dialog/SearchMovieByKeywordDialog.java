@@ -162,6 +162,8 @@ public class SearchMovieByKeywordDialog extends TitleAreaDialog implements IRunn
 		gridData.horizontalSpan = 2;
 
 		composite.setLayoutData(gridData);
+
+		this.keywordText.setFocus();
 	}
 
 	/**
