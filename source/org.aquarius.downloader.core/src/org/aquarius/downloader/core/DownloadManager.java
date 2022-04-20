@@ -392,7 +392,7 @@ public class DownloadManager extends CompositeProgressListener implements Closea
 			DownloadTask[] tasks = resultList.toArray(new DownloadTask[resultList.size()]);
 
 			if (alsoDeleteFile) {
-				doDeleteResources(tasks);
+				doCleanResources(tasks, null);
 			}
 
 			onDelete(tasks);
@@ -404,7 +404,7 @@ public class DownloadManager extends CompositeProgressListener implements Closea
 	 *
 	 * @param tasks
 	 */
-	private void doDeleteResources(DownloadTask[] tasks) {
+	private void doCleanResources(DownloadTask[] tasks, Runnable taskHandler) {
 
 		TimerTask task = new TimerTask() {
 
@@ -457,6 +457,9 @@ public class DownloadManager extends CompositeProgressListener implements Closea
 						}
 					}
 
+					if (null != taskHandler) {
+						taskHandler.run();
+					}
 				}
 			}
 		};
@@ -927,6 +930,29 @@ public class DownloadManager extends CompositeProgressListener implements Closea
 			}
 		}
 
+	}
+
+	/**
+	 * Remove downloaded contents and refresh the tasks.
+	 * 
+	 * @param taskList
+	 */
+	public void reloadTasks(List<DownloadTask> taskList) {
+
+		DownloadTask[] tasks = taskList.toArray(new DownloadTask[taskList.size()]);
+
+		doCleanResources(tasks, new Runnable() {
+
+			@Override
+			public void run() {
+				for (DownloadTask task : tasks) {
+					task.setLastValidTime(null);
+					task.setState(DownloadTask.StateWaiting);
+				}
+
+				onUpdate(tasks);
+			}
+		});
 	}
 
 	/**
