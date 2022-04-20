@@ -63,9 +63,9 @@ public class WorkbenchActivator extends AbstractUIPlugin {
 
 	public static final String HELP_PLUGIN_ID = "org.aquarius.cicada.help"; //$NON-NLS-1$
 
-	public static final String CORE_PLUGIN_ID = "org.aquarius.cicada.core"; //$NON-NLS-1$
+	private static final String CORE_PLUGIN_ID = "org.aquarius.cicada.core"; //$NON-NLS-1$
 
-	public static final String LOG_PLUGIN_ID = "org.eclipse.ui.views.log"; //$NON-NLS-1$
+	private static final String LOG_PLUGIN_ID = "org.eclipse.ui.views.log"; //$NON-NLS-1$
 
 	private static final String DeployedMarker = "Deployed.Marker"; //$NON-NLS-1$
 
@@ -112,7 +112,7 @@ public class WorkbenchActivator extends AbstractUIPlugin {
 		 * When the application first run.<BR>
 		 * Init the application.<BR>
 		 */
-		deployResources(workingFolderPath);
+		deployResources(workingFolderPath, false);
 
 		initSecurity();
 
@@ -170,13 +170,23 @@ public class WorkbenchActivator extends AbstractUIPlugin {
 	/**
 	 * 
 	 * @param workingFolderPath
+	 * @param overwrite
 	 * @throws IOException
 	 */
-	private void deployResources(String workingFolderPath) throws IOException {
+	public void deployResources(String workingFolderPath, boolean overwrite) throws IOException {
 		IPreferenceStore store = this.getPreferenceStore();
 
 		File destDir = new File(workingFolderPath);
 		File configDir = new File(workingFolderPath + File.separator + "config");
+
+		if (configDir.exists() && overwrite) {
+
+			try {
+				configDir.delete();
+			} catch (Exception e) {
+				this.logger.error("deployResources", e);
+			}
+		}
 
 		if (store.getBoolean(DeployedMarker) == false || (!configDir.exists())) {
 			Bundle bundle = Platform.getBundle(CORE_PLUGIN_ID);

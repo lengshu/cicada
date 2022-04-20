@@ -20,9 +20,9 @@ public class ClearCacheAction extends Action {
 		super(label);
 
 		// The id is used to refer to the action in a menu or toolbar
-		setId(ICommandIds.CMD_EDITOR_CLEAR_CACHE);
+		setId(ICommandIds.CMD_CLEAR_CACHE);
 		// Associate the action with a pre-defined command, to allow key bindings.
-		setActionDefinitionId(ICommandIds.CMD_EDITOR_CLEAR_CACHE);
+		setActionDefinitionId(ICommandIds.CMD_CLEAR_CACHE);
 
 		setImageDescriptor(WorkbenchActivator.getImageDescriptor("/icons/clearCache.png")); //$NON-NLS-1$
 	}

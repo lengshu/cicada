@@ -21,6 +21,10 @@ public interface ICommandIds {
 
 	public static final String CMD_PARSER_CREATE = "org.aquarius.cicada.workbench.action.createParser";
 
+	public static final String CMD_CLEAR_CACHE = "org.aquarius.cicada.workbench.action.clearCache";
+
+	public static final String CMD_RESET_RESOURCE = "org.aquarius.cicada.workbench.action.deplayResource";
+
 	public static final String CMD_EDITOR_REMOVE_DUPLICATED_MOVIES = "org.aquarius.cicada.workbench.action.editor.removeDuplicatedMovies";
 
 	public static final String CMD_EDITOR_RELOAD_BROWSER = "org.aquarius.cicada.workbench.action.editor.reloadBrowser";
@@ -42,8 +46,6 @@ public interface ICommandIds {
 	public static final String CMD_EDITOR_LOCK = "org.aquarius.cicada.workbench.action.editor.lock";
 
 	public static final String CMD_EDITOR_ADD_CHANNEL = "org.aquarius.cicada.workbench.action.editor.addChannel";
-
-	public static final String CMD_EDITOR_CLEAR_CACHE = "org.aquarius.cicada.workbench.action.editor.clearCache";
 
 	public static final String CMD_EDITOR_DELETE = "org.aquarius.cicada.workbench.action.editor.delete";
 

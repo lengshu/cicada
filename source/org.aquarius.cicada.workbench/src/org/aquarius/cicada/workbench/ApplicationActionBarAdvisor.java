@@ -18,6 +18,7 @@ import org.aquarius.cicada.workbench.action.OpenSiteDropDownAction;
 import org.aquarius.cicada.workbench.action.OpenUrlAction;
 import org.aquarius.cicada.workbench.action.ParseMovieAction;
 import org.aquarius.cicada.workbench.action.ResetPerspectiveAction;
+import org.aquarius.cicada.workbench.action.ResetResourceAction;
 import org.aquarius.cicada.workbench.action.ShowBrowserAction;
 import org.aquarius.cicada.workbench.action.debug.HotReloadAction;
 import org.aquarius.cicada.workbench.action.debug.ShowLocalScriptEditorAction;
@@ -83,6 +84,8 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 	private SearchMovieByKeywordDropDownAction searchMovieByKeywordAction;
 
 	private IAction clearCacheAction;
+
+	private IAction resetResourceAction;
 
 	private IAction hotReloadAction;
 
@@ -180,6 +183,8 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 		this.clearCacheAction = new ClearCacheAction(Messages.ApplicationActionBarAdvisor_ClearCache);
 		register(this.clearCacheAction);
 
+		this.resetResourceAction = new ResetResourceAction(Messages.ApplicationActionBarAdvisor_ResetResource);
+
 		this.parseMovieAction = new ParseMovieAction(window, Messages.ApplicationActionBarAdvisor_ParseMovie);
 		register(this.parseMovieAction);
 
@@ -276,6 +281,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 
 		operationMenu.add(this.compactDatabaseAction);
 		operationMenu.add(this.clearCacheAction);
+		operationMenu.add(this.resetResourceAction);
 		operationMenu.add(new Separator());
 
 		operationMenu.add(this.createSiteConfigAction);

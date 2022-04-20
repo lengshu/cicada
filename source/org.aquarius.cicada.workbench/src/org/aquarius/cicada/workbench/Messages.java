@@ -202,6 +202,8 @@ public class Messages extends NLS {
 
 	public static String ApplicationActionBarAdvisor_ClearCache;
 
+	public static String ApplicationActionBarAdvisor_ResetResource;
+
 	public static String ApplicationActionBarAdvisor_Window;
 
 	public static String ApplicationWorkbenchWindowAdvisor_SaveDownloadTasks;
@@ -331,6 +333,12 @@ public class Messages extends NLS {
 	public static String RemoveDuplicatedMovieAction_TooltipMessage;
 
 	public static String RemoveDuplicatedMovieAction_TooltipTitle;
+
+	public static String ResetResourceAction_ConfirmMessage;
+
+	public static String ResetResourceAction_ConfirmTitle;
+
+	public static String ResetResourceAction_ErrorTitle;
 
 	public static String SaveImageAction_UnsupportImageFormatMessage;
 

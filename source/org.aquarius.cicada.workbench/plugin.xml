@@ -53,7 +53,7 @@
             name="Compact Database">
       </command>
       <command
-            id="org.aquarius.cicada.workbench.action.editor.clearCache"
+            id="org.aquarius.cicada.workbench.action.clearCache"
             name="Clear Cache">
       </command>
       <command
