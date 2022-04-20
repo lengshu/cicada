@@ -69,6 +69,7 @@ public class Messages extends NLS {
 	public static String DownloadView_ActionImport;
 	public static String DownloadView_ActionExport;
 
+	public static String DownloadView_ActionReloadTasks;
 	public static String DownloadView_ActionMoveUp;
 	public static String DownloadView_ActionMoveDown;
 	public static String DownloadView_ActionMoveTop;

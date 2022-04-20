@@ -127,6 +127,8 @@ public class DownloadView extends ViewPart implements ITaskService {
 
 	// private Action updateAction;
 
+	private Action reloadTaskAction;
+
 	private Action moveUpAction;
 
 	private Action moveDownAction;
@@ -528,6 +530,7 @@ public class DownloadView extends ViewPart implements ITaskService {
 
 		manager.add(this.deleteAction);
 		manager.add(this.deleteFileAction);
+		manager.add(this.reloadTaskAction);
 		// Other plug-ins can contribute there actions here
 		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
 
@@ -601,6 +604,10 @@ public class DownloadView extends ViewPart implements ITaskService {
 		// this.updateAction.setText(Messages.DownloadView_ActionUpdate);
 		// this.updateAction.setImageDescriptor(AbstractUIPlugin.imageDescriptorFromPlugin(PluginId,
 		// "/icons/update.png")); //$NON-NLS-1$
+
+		this.reloadTaskAction = new ReflectionAction(this, "reloadTasks");
+		this.reloadTaskAction.setText(Messages.DownloadView_ActionReloadTasks);
+		this.reloadTaskAction.setImageDescriptor(AbstractUIPlugin.imageDescriptorFromPlugin(PluginId, "/icons/reloadTasks.png")); //$NON-NLS-1$
 
 		this.moveUpAction = new ReflectionAction(this, "moveUp");
 		this.moveUpAction.setText(Messages.DownloadView_ActionMoveUp);
@@ -790,6 +797,17 @@ public class DownloadView extends ViewPart implements ITaskService {
 		SwtUtil.disposeResourceQuietly(this.imageMapping.values());
 
 		super.dispose();
+	}
+
+	/**
+	 * 
+	 */
+	public void reloadTasks() {
+		List<DownloadTask> takskList = this.taskTableViewer.getStructuredSelection().toList();
+
+		DownloadManager.getInstance().reloadTasks(takskList);
+
+		this.refreshTasks();
 	}
 
 	/**
