@@ -24,6 +24,7 @@ import org.aquarius.downloader.core.spi.AbstractProgressListener;
 import org.aquarius.downloader.core.spi.AbstractSegmentDownloader;
 import org.aquarius.util.StringUtil;
 import org.aquarius.util.SystemUtil;
+import org.aquarius.util.net.HttpUtil;
 import org.aquarius.util.net.UrlUtil;
 import org.aquarius.util.security.SecretKey;
 import org.aquarius.util.security.SecurityUtil;
@@ -143,6 +144,10 @@ public class HlsSegmentDownloader extends AbstractSegmentDownloader {
 			urlConnection.setRequestProperty("Accept-Language", "en-US,en;q=0.8");
 			urlConnection.setRequestProperty("User-Agent",
 					"Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36");
+
+			if (StringUtils.isNotBlank(downloadTask.getRefererUrl())) {
+				urlConnection.setRequestProperty(HttpUtil.Referer, downloadTask.getRefererUrl());
+			}
 
 			inputStream = urlConnection.getInputStream();
 			fileOutputStream = new FileOutputStream(segmentFile);

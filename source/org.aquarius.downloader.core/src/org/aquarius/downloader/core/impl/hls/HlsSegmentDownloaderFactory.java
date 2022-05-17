@@ -84,7 +84,7 @@ public class HlsSegmentDownloaderFactory extends AbstractSegmentDownloaderFactor
 
 		HlsModel hlsModel = null;
 		try {
-			hlsModel = this.parse(downloadTask.getDownloadUrl());
+			hlsModel = this.parse(downloadTask);
 		} catch (IOException e) {
 			this.logger.error("doChecl", e);
 
@@ -268,13 +268,20 @@ public class HlsSegmentDownloaderFactory extends AbstractSegmentDownloaderFactor
 	/**
 	 * Parse the m3u8 file and save the model to HlsModel.<BR>
 	 *
-	 * @param urlString
+	 * @param downloadTask
 	 * @return
 	 * @throws IOException
 	 */
-	private HlsModel parse(String urlString) throws IOException {
+	private HlsModel parse(DownloadTask downloadTask) throws IOException {
 
-		String content = HttpUtil.doGet(urlString, null);
+		Map<String, String> headers = new HashMap<String, String>();
+
+		if (StringUtils.isNotBlank(downloadTask.getRefererUrl())) {
+			headers.put(HttpUtil.Referer, downloadTask.getRefererUrl());
+		}
+
+		String urlString = downloadTask.getDownloadUrl();
+		String content = HttpUtil.doGet(urlString, headers);
 
 		if (StringUtils.contains(content, "#EXT-X-STREAM-INF:")) {
 
@@ -289,7 +296,8 @@ public class HlsSegmentDownloaderFactory extends AbstractSegmentDownloaderFactor
 					for (Map.Entry<String, String> entry : map.entrySet()) {
 						if ("RESOLUTION".equalsIgnoreCase(entry.getKey())) {
 							String pixel = StringUtils.substringAfter(entry.getValue(), "x");
-							urls.put(pixel.toUpperCase(), lines[i++]);
+							int nextLineNumber = i + 1;
+							urls.put(pixel.toUpperCase() + "P", lines[nextLineNumber]);
 						}
 					}
 				}
@@ -300,7 +308,16 @@ public class HlsSegmentDownloaderFactory extends AbstractSegmentDownloaderFactor
 			for (String pixel : pixelList) {
 				if (urls.containsKey(pixel.toUpperCase())) {
 					String url = urls.get(pixel.toUpperCase());
-					content = HttpUtil.doGet(urlString, null);
+
+					if (!StringUtils.startsWith(url.toLowerCase(), "http")) {
+						String newUrlString = StringUtils.substringBeforeLast(urlString, "/");
+						newUrlString = newUrlString + "/" + url;
+						content = HttpUtil.doGet(newUrlString, headers);
+
+						downloadTask.setDownloadUrl(newUrlString);
+					} else {
+						content = HttpUtil.doGet(urlString, headers);
+					}
 
 					return doParseModel(url, content);
 				}
