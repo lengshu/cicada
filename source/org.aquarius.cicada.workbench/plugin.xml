@@ -160,6 +160,10 @@
             id="org.aquarius.cicada.workbench.action.editSiteConfig"
             name="Edit Site Config">
       </command>
+      <command
+            id="org.aquarius.cicada.workbench.action.resetResource"
+            name="Reset Resource">
+      </command>
    </extension>
    <extension
          id="product"

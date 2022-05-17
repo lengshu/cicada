@@ -23,7 +23,7 @@ public interface ICommandIds {
 
 	public static final String CMD_CLEAR_CACHE = "org.aquarius.cicada.workbench.action.clearCache";
 
-	public static final String CMD_RESET_RESOURCE = "org.aquarius.cicada.workbench.action.deplayResource";
+	public static final String CMD_RESET_RESOURCE = "org.aquarius.cicada.workbench.action.resetResource";
 
 	public static final String CMD_EDITOR_REMOVE_DUPLICATED_MOVIES = "org.aquarius.cicada.workbench.action.editor.removeDuplicatedMovies";
 
