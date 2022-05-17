@@ -23,6 +23,7 @@ import org.aquarius.cicada.core.model.Site;
 import org.aquarius.cicada.core.service.IMovieStoreService;
 import org.aquarius.cicada.core.spi.AbstractDownloadListGenerator;
 import org.aquarius.cicada.core.spi.AbstractDownloadUrlAnalyser;
+import org.aquarius.cicada.core.spi.AbstractHttpHeaderProcessor;
 import org.aquarius.cicada.core.spi.AbstractMovieInfoProcssor;
 import org.aquarius.cicada.core.spi.AbstractMovieParser;
 import org.aquarius.cicada.core.spi.AbstractUrlRedirector;
@@ -56,6 +57,8 @@ public final class RuntimeManager {
 	private ServiceManager<AbstractUrlRedirector> urlRedirectorManager = new ServiceManager<>();
 
 	private ServiceManager<AbstractMovieInfoProcssor> movieInfoProcessorManager = new ServiceManager<>();
+
+	private ServiceManager<AbstractHttpHeaderProcessor> httpHeaderProcessorManager = new ServiceManager<>();
 
 	private IMovieStoreService storeService;
 
@@ -275,6 +278,17 @@ public final class RuntimeManager {
 		this.movieInfoProcessorManager.registerServices(movieTagProcessors);
 
 		this.checkFilter(this.movieInfoProcessorManager, true, movieTagProcessors);
+	}
+
+	/**
+	 * Register a new http header processor to access the remote http url.
+	 *
+	 * @param movieParser
+	 */
+	public void registerMovieProcessors(AbstractHttpHeaderProcessor... httpHeaderProcessor) {
+		this.httpHeaderProcessorManager.registerServices(httpHeaderProcessor);
+
+		this.checkFilter(this.httpHeaderProcessorManager, true, httpHeaderProcessor);
 	}
 
 	/**
