@@ -16,14 +16,6 @@ public abstract class AbstractMovieInfoProcssor extends AbstractComparable<Abstr
 		implements IUrlAcceptable, INameService<AbstractMovieInfoProcssor> {
 
 	/**
-	 * Return whether the renamer can support the specified site.<BR>
-	 * 
-	 * @param urlString
-	 * @return
-	 */
-	public abstract boolean isAcceptable(String urlString);
-
-	/**
 	 * 
 	 * @param movie
 	 * @return
