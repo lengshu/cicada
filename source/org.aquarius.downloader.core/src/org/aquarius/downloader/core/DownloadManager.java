@@ -334,7 +334,7 @@ public class DownloadManager extends CompositeProgressListener implements Closea
 				}
 
 				downloadTask.setState(DownloadTask.StateWaiting);
-				downloadTask.reset();
+				downloadTask.clearInfo();
 				resultList.add(downloadTask);
 			}
 		}
@@ -457,9 +457,10 @@ public class DownloadManager extends CompositeProgressListener implements Closea
 						}
 					}
 
-					if (null != taskHandler) {
-						taskHandler.run();
-					}
+				}
+
+				if (null != taskHandler) {
+					taskHandler.run();
 				}
 			}
 		};
@@ -509,9 +510,15 @@ public class DownloadManager extends CompositeProgressListener implements Closea
 	 * @param tagId
 	 * @return
 	 */
-	public Optional<DownloadTask> findTaskByTagId(String tagId) {
-		return this.downloadTaskList.stream().filter(task -> StringUtils.equalsIgnoreCase(tagId, task.getTagId())).findFirst();
+	public DownloadTask findTaskByTagId(String tagId) {
 
+		Optional<DownloadTask> result = this.downloadTaskList.stream().filter(task -> StringUtils.equalsIgnoreCase(tagId, task.getTagId())).findFirst();
+
+		if (result.isPresent()) {
+			return result.get();
+		} else {
+			return null;
+		}
 	}
 
 	/**
@@ -940,6 +947,20 @@ public class DownloadManager extends CompositeProgressListener implements Closea
 	public void reloadTasks(List<DownloadTask> taskList) {
 
 		DownloadTask[] tasks = taskList.toArray(new DownloadTask[taskList.size()]);
+		this.pauseDownloadTask(tasks);
+
+		for (DownloadTask task : tasks) {
+
+			for (int i = 0; i < 3; i++) {
+				try {
+					task.reset();
+					break;
+				} catch (Exception e) {
+					this.logger.error("reloadTasks", e);
+					SystemUtil.sleepQuietly(2000);
+				}
+			}
+		}
 
 		doCleanResources(tasks, new Runnable() {
 

@@ -12,9 +12,9 @@ import org.eclipse.osgi.util.NLS;
 public class Messages extends NLS {
 	private static final String BUNDLE_NAME = "org.aquarius.downloader.ui.messages"; //$NON-NLS-1$
 
-	public static String DeleteTableAction_ConfirmDeleteDialogMessage;
+	public static String WarnDialogTitle;
 
-	public static String DeleteTableAction_ConfirmDeleteDialogTitle;
+	public static String DeleteTableAction_ConfirmDeleteDialogMessage;
 
 	public static String DownloadConfigurationPreferencePage_FfmpegMergeFile;
 	public static String DownloadConfigurationPreferencePage_FfmpegMergeCommand;
@@ -68,6 +68,8 @@ public class Messages extends NLS {
 	public static String DownloadView_ActionUpdate;
 	public static String DownloadView_ActionImport;
 	public static String DownloadView_ActionExport;
+
+	public static String DownloadView_ConfirmReloadTasks;
 
 	public static String DownloadView_ActionReloadTasks;
 	public static String DownloadView_ActionMoveUp;

@@ -803,11 +803,15 @@ public class DownloadView extends ViewPart implements ITaskService {
 	 * 
 	 */
 	public void reloadTasks() {
-		List<DownloadTask> takskList = this.taskTableViewer.getStructuredSelection().toList();
 
-		DownloadManager.getInstance().reloadTasks(takskList);
+		if (SwtUtil.openConfirm(Messages.WarnDialogTitle, Messages.DownloadView_ConfirmReloadTasks)) {
+			List<DownloadTask> takskList = this.taskTableViewer.getStructuredSelection().toList();
 
-		this.refreshTasks();
+			DownloadManager.getInstance().reloadTasks(takskList);
+
+			this.refreshTasks();
+		}
+
 	}
 
 	/**

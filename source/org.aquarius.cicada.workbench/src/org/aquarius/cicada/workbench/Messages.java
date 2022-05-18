@@ -136,6 +136,8 @@ public class Messages extends NLS {
 
 	public static String DownloadMovieJob_DuplicatedTasks;
 
+	public static String DownloadMovieJob_ReloadTasks;
+
 	public static String DownloadMovieJob_ErrorLinkIsNotAccessible;
 
 	public static String DownloadMovieJob_NoDownloadLinkAvaiable;

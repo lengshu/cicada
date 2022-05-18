@@ -6,7 +6,6 @@ package org.aquarius.cicada.workbench.job;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.aquarius.cicada.core.RuntimeManager;
@@ -23,6 +22,7 @@ import org.aquarius.cicada.workbench.monitor.ProcessMonitorProxy;
 import org.aquarius.downloader.core.DownloadManager;
 import org.aquarius.downloader.core.DownloadTask;
 import org.aquarius.ui.job.AbstractCancelableJob;
+import org.aquarius.ui.util.SwtUtil;
 import org.aquarius.ui.util.TooltipUtil;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -90,10 +90,24 @@ public class DownloadMovieJob extends AbstractCancelableJob {
 
 				String tagId = MovieUtil.getDownloadTag(movie, downloadInfo, i);
 
-				Optional<DownloadTask> existDownloadTask = DownloadManager.getInstance().findTaskByTagId(tagId);
-				if (existDownloadTask.isPresent()) {
-					String message = MessageFormat.format(Messages.DownloadMovieJob_DuplicatedTasks, movie.getTitle());
-					TooltipUtil.showErrorTip(Messages.DownloadMovieJob_TitleError, message);
+				DownloadTask existDownloadTask = DownloadManager.getInstance().findTaskByTagId(tagId);
+				if (null != existDownloadTask) {
+
+					if (existDownloadTask.getState() == DownloadTask.StateFinish) {
+						String message = MessageFormat.format(Messages.DownloadMovieJob_ReloadTasks, movie.getTitle());
+
+						if (SwtUtil.openConfirm(Messages.WarnDialogTitle, message)) {
+							List<DownloadTask> newTaskList = new ArrayList<>();
+							newTaskList.add(existDownloadTask);
+
+							DownloadManager.getInstance().reloadTasks(newTaskList);
+						}
+					} else {
+						String message = MessageFormat.format(Messages.DownloadMovieJob_DuplicatedTasks, movie.getTitle());
+						TooltipUtil.showErrorTip(Messages.DownloadMovieJob_TitleError, message);
+
+					}
+
 					continue;
 				}
 

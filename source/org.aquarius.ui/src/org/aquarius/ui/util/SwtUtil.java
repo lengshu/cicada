@@ -18,6 +18,7 @@ import org.aquarius.log.LogUtil;
 import org.aquarius.ui.Messages;
 import org.aquarius.util.AssertUtil;
 import org.aquarius.util.DesktopUtil;
+import org.aquarius.util.ObjectHolder;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.Dialog;
@@ -644,6 +645,37 @@ public class SwtUtil {
 				SWT.NONE);
 
 		return dialog.getReturnCode() == Dialog.OK;
+	}
+
+	/**
+	 * 
+	 * @param title
+	 * @param message
+	 * @return
+	 */
+	public static boolean openConfirm(String title, String message) {
+
+		if (isUThread()) {
+			Shell parent = findShell();
+			return MessageDialog.openConfirm(parent, title, message);
+		}
+
+		ObjectHolder<Boolean> result = new ObjectHolder<>();
+		findDisplay().syncExec(new Runnable() {
+
+			/**
+			 * {@inheritDoc}
+			 */
+			@Override
+			public void run() {
+				Shell parent = findShell();
+				boolean confirmed = MessageDialog.openConfirm(parent, title, message);
+				result.setValue(confirmed);
+			}
+		});
+
+		return result.getValue();
+
 	}
 
 	/**

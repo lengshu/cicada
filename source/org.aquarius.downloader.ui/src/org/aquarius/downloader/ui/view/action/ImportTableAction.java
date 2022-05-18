@@ -7,7 +7,6 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.apache.commons.lang.StringUtils;
 import org.aquarius.downloader.core.DownloadManager;
@@ -49,9 +48,9 @@ public class ImportTableAction extends AbstractTableAction {
 				List<String> stringList = new ArrayList<>();
 
 				for (DownloadTask downloadTask : taskList) {
-					Optional<DownloadTask> oldTask = downloadManager.findTaskByTagId(downloadTask.getTagId());
-					if (oldTask.isPresent()) {
-						stringList.add(oldTask.get().getTitle());
+					DownloadTask oldTask = downloadManager.findTaskByTagId(downloadTask.getTagId());
+					if (null != oldTask) {
+						stringList.add(oldTask.getTitle());
 					} else {
 						downloadManager.addDownloadTask(downloadTask);
 					}

@@ -44,7 +44,7 @@ public class DeleteTableAction extends AbstractTableAction {
 
 			IPreferenceStore store = DownloadActivator.getDefault().getPreferenceStore();
 
-			if (SwtUtil.openConfirm(getShell(), Messages.DeleteTableAction_ConfirmDeleteDialogTitle, Messages.DeleteTableAction_ConfirmDeleteDialogMessage,
+			if (SwtUtil.openConfirm(getShell(), Messages.WarnDialogTitle, Messages.DeleteTableAction_ConfirmDeleteDialogMessage,
 					store, DownloadConfiguration.Key_ConfirmDelete)) {
 				this.getTaskService().deleteTasks(downloadTaskList, this.alsoDeleteFiles);
 			}

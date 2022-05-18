@@ -582,10 +582,26 @@ public final class DownloadTask {
 	/**
 	 *
 	 */
-	public synchronized void reset() {
+	public synchronized void clearInfo() {
 		this.retryCount = 0;
 		this.currentThreadCount = 0;
 		this.rejectErrorCount = 0;
+		this.speed = 0;
+		this.lengthForspeed = 0;
+	}
+
+	/**
+	 *
+	 */
+	public synchronized void reset() {
+		this.clearInfo();
+		this.finishedLength = 0;
+		this.remoteFileLength = 0;
+
+		if (null != this.segmentList) {
+			this.segmentList.clear();
+		}
+
 	}
 
 	public synchronized void increateRejectErrorCount() {
