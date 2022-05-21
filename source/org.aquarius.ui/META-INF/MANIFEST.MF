@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Aquarius UI
 Bundle-SymbolicName: org.aquarius.ui;singleton:=true
-Bundle-Version: 0.1
+Bundle-Version: 0.12
 Automatic-Module-Name: org.aquarius.cicada.ui
 Bundle-ClassPath: lib/common-io-3.8.1.jar,
  lib/common-lang-3.8.1.jar,

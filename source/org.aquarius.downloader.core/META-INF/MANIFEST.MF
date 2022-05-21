@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Aquarius Downloader Core
 Bundle-SymbolicName: org.aquarius.downloader.core
-Bundle-Version: 0.1
+Bundle-Version: 0.12
 Bundle-Vendor: aquarius.github@gmail.com
 Automatic-Module-Name: org.aquarius.downloader.core
 Export-Package: org.aquarius.downloader.core,

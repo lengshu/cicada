@@ -2,7 +2,7 @@
 <feature
       id="org.aquarius.cicada.feature"
       label="Cicada Feature"
-      version="0.1"
+      version="0.12"
       provider-name="aquarius.github@gmail.com"
       os="linux,macosx,win32"
       ws="cocoa,gtk,win32"
@@ -40,86 +40,86 @@
          id="org.aquarius.util"
          download-size="0"
          install-size="0"
-         version="0.0.0"
+         version="0.12"
          unpack="false"/>
 
    <plugin
          id="org.aquarius.cicada.workbench.extension"
          download-size="0"
          install-size="0"
-         version="0.0.0"
+         version="0.12"
          unpack="false"/>
 
    <plugin
          id="org.aquarius.downloader.ui"
          download-size="0"
          install-size="0"
-         version="0.0.0"
+         version="0.12"
          unpack="false"/>
 
    <plugin
          id="org.aquarius.nebula"
          download-size="0"
          install-size="0"
-         version="0.0.0"
+         version="0.12"
          unpack="false"/>
 
    <plugin
          id="org.aquarius.library"
          download-size="0"
          install-size="0"
-         version="0.0.0"/>
+         version="0.12"/>
 
    <plugin
          id="org.aquarius.ui"
          download-size="0"
          install-size="0"
-         version="0.0.0"/>
+         version="0.12"/>
 
    <plugin
          id="org.aquarius.cicada.extension"
          download-size="0"
          install-size="0"
-         version="0.0.0"
+         version="0.12"
          unpack="false"/>
 
    <plugin
          id="org.aquarius.cicada.core"
          download-size="0"
          install-size="0"
-         version="0.0.0"/>
+         version="0.12"/>
 
    <plugin
          id="org.aquarius.downloader.core"
          download-size="0"
          install-size="0"
-         version="0.0.0"
+         version="0.12"
          unpack="false"/>
 
    <plugin
          id="org.aquarius.cicada.help"
          download-size="0"
          install-size="0"
-         version="0.0.0"/>
+         version="0.12"/>
 
    <plugin
          id="org.aquarius.cicada.workbench"
          download-size="0"
          install-size="0"
-         version="0.0.0"
+         version="0.12"
          unpack="false"/>
 
    <plugin
          id="org.aquarius.log"
          download-size="0"
          install-size="0"
-         version="0.0.0"/>
+         version="0.12"/>
 
    <plugin
          id="org.aquarius.service"
          download-size="0"
          install-size="0"
-         version="0.0.0"
+         version="0.12"
          unpack="false"/>
 
 </feature>
