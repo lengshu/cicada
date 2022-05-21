@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.BooleanUtils;
+import org.apache.commons.lang.StringUtils;
 import org.aquarius.cicada.core.RuntimeManager;
 import org.aquarius.cicada.core.config.MovieConfiguration;
 import org.aquarius.cicada.core.config.ServiceFilterConfiguration;
@@ -49,6 +50,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.Version;
 import org.slf4j.Logger;
 
 import com.alibaba.fastjson.JSON;
@@ -67,7 +69,9 @@ public class WorkbenchActivator extends AbstractUIPlugin {
 
 	private static final String LOG_PLUGIN_ID = "org.eclipse.ui.views.log"; //$NON-NLS-1$
 
-	private static final String DeployedMarker = "Deployed.Marker"; //$NON-NLS-1$
+	private static final String BUNDLE_VERSION = "Bundle.Version"; //$NON-NLS-1$
+
+	// private static final String DeployedMarker = "Deployed.Marker"; //$NON-NLS-1$
 
 	private static final String LoaderExtensionId = "org.aquarius.cicada.loader"; //$NON-NLS-1$
 
@@ -83,6 +87,21 @@ public class WorkbenchActivator extends AbstractUIPlugin {
 	private Logger logger = LogUtil.getLogger(getClass());
 
 	private boolean compactDatabase = false;
+
+	private boolean validateVersion() {
+		IPreferenceStore store = this.getPreferenceStore();
+
+		String oldVersionString = store.getString(BUNDLE_VERSION);
+
+		if (StringUtils.isEmpty(oldVersionString)) {
+			oldVersionString = "0.1";
+		}
+
+		Version currentVersion = this.getBundle().getVersion();
+		Version oldVersion = Version.parseVersion(oldVersionString);
+
+		return (currentVersion.compareTo(oldVersion) < 0);
+	}
 
 	/**
 	 *
@@ -188,7 +207,11 @@ public class WorkbenchActivator extends AbstractUIPlugin {
 			}
 		}
 
-		if (store.getBoolean(DeployedMarker) == false || (!configDir.exists())) {
+		if (this.validateVersion() && configDir.exists()) {
+			return;
+		}
+
+		{
 			Bundle bundle = Platform.getBundle(CORE_PLUGIN_ID);
 			{
 				URL resourceUrl = bundle.getEntry("resources");
@@ -212,7 +235,7 @@ public class WorkbenchActivator extends AbstractUIPlugin {
 				}
 			}
 
-			store.setValue(DeployedMarker, true);
+			store.setValue(BUNDLE_VERSION, this.getBundle().getVersion().toString());
 		}
 	}
 
