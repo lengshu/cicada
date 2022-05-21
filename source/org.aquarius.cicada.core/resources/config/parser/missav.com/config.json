@@ -10,6 +10,14 @@
 			"nlsDisplayName":"Release,zh_CN:新作,zh_TW:新作,ja:新作",
 			"supportPaging":true,
 			"urlPattern":"https://missav.com/ja/release?page={0}"
+		},
+		{
+			"autoRefreshDetail":true,
+			"autoRefreshList":true,
+			"name":"FC2",
+			"nlsDisplayName":"FC2,zh_CN:新作,zh_TW:無碼,ja:無碼",
+			"supportPaging":true,
+			"urlPattern":"https://missav.com/ja/fc2?page={0}"
 		}
 	],
 	"parseMovieIdRegex":"",
