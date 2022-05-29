@@ -22,6 +22,7 @@ import org.aquarius.cicada.workbench.editor.action.OpenMovieUrlAction;
 import org.aquarius.cicada.workbench.editor.action.PlayMovieAction;
 import org.aquarius.cicada.workbench.editor.action.RefreshMovieAction;
 import org.aquarius.cicada.workbench.editor.action.SaveImageAction;
+import org.aquarius.cicada.workbench.editor.action.UpdateScoreAction;
 import org.aquarius.cicada.workbench.editor.action.UpdateScoreDropDownAction;
 import org.aquarius.cicada.workbench.editor.action.UpdateStateDropDownAction;
 import org.aquarius.cicada.workbench.editor.action.factory.EditorActionFactory;
@@ -37,6 +38,7 @@ import org.aquarius.ui.util.ImageUtil;
 import org.aquarius.ui.util.PersistenceUtil;
 import org.aquarius.ui.util.SwtUtil;
 import org.aquarius.util.ObjectHolder;
+import org.aquarius.util.StringUtil;
 import org.aquarius.util.net.HttpUtil;
 import org.aquarius.util.spi.IElementNavigator;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
@@ -57,6 +59,8 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.ImageData;
@@ -281,6 +285,8 @@ public class GalleryView extends ViewPart implements ISelectionChangedListener, 
 		mapping.put(KeyBinder.EnterKeyBinder, this.openMovieUrlAction);
 		mapping.put(KeyBinder.CopyKeyBinder, this.copyInfoDropDownAction);
 
+		addScoreListener();
+
 		KeyBinderManager.bind(this.useKeyboard, this.imageCanvas, mapping);
 
 		PersistenceUtil.addSaveSupport(preferenceStore, SashFormWeightsKey, this.rootPane);
@@ -288,6 +294,37 @@ public class GalleryView extends ViewPart implements ISelectionChangedListener, 
 
 		this.useKeyboard.setValue(preferenceStore.getBoolean(UseKeyboardKey));
 		this.useKeyboardAction.setChecked(this.useKeyboard.getValue());
+	}
+
+	/**
+	 * 
+	 */
+	private void addScoreListener() {
+
+		Map<Character, IAction> actions = new HashMap<>();
+
+		for (byte i = 0; i <= 5; i++) {
+			String scoreLabel = StringUtil.repeatSymbol(StringUtil.Star, i);
+			UpdateScoreAction scoreAction = new UpdateScoreAction(scoreLabel, i);
+
+			actions.put((i + "").charAt(0), scoreAction);
+		}
+
+		this.imageCanvas.addKeyListener(new KeyAdapter() {
+
+			/**
+			 * {@inheritDoc}
+			 */
+			@Override
+			public void keyReleased(KeyEvent e) {
+
+				IAction action = actions.get(e.character);
+				if (null != action) {
+					action.run();
+				}
+			}
+
+		});
 	}
 
 	/**
@@ -840,6 +877,13 @@ public class GalleryView extends ViewPart implements ISelectionChangedListener, 
 	public void setFocus() {
 		// TODO Nothing to do
 
+	}
+
+	public void updateLabel() {
+
+		if (SwtUtil.isValid(this.infoLabel)) {
+			this.infoLabel.setText(MovieHelper.getInfoForTooltip(this.currentMovie));
+		}
 	}
 
 }
