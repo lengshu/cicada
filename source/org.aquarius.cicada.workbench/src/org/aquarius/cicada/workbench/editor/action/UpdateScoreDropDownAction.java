@@ -28,8 +28,8 @@ public class UpdateScoreDropDownAction extends Action {
 
 		for (int i = 0; i <= 5; i++) {
 			String scoreLabel = StringUtil.repeatSymbol(StringUtil.Star, i);
-			UpdateScoreAction stateAction = new UpdateScoreAction(scoreLabel, i);
-			actionList.add(stateAction);
+			UpdateScoreAction scoreAction = new UpdateScoreAction(scoreLabel, i);
+			actionList.add(scoreAction);
 		}
 
 		this.setMenuCreator(new ActionListMenuCreator(actionList));

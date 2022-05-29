@@ -255,7 +255,9 @@ public class MovieHelper {
 			state = "Error";
 		}
 
-		return MessageFormat.format(message, title, uniId, actor, tag, category, producer, publishDate, state);
+		String scoreLabel = StringUtil.repeatSymbol(StringUtil.Star, movie.getScore());
+
+		return MessageFormat.format(message, title, uniId, actor, tag, category, producer, publishDate, state, scoreLabel);
 	}
 
 	/**
