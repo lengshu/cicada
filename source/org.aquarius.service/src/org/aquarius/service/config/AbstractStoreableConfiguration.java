@@ -13,7 +13,7 @@ import org.aquarius.service.IPropertyStoreService;
  */
 public abstract class AbstractStoreableConfiguration {
 
-	private static final String InitMarker = "._Key_._Init_";
+	// private static final String InitMarker = "._Key_._Init_";
 
 	private IPropertyStoreService storeService;
 
@@ -38,7 +38,7 @@ public abstract class AbstractStoreableConfiguration {
 	 * load defaults
 	 */
 	private void loadDefaults() {
-		this.doLoadDefaults(storeService);
+		this.doLoadDefaults(this.storeService);
 	}
 
 	/**

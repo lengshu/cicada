@@ -412,6 +412,11 @@
             id="org.aquarius.cicada.workbench.page.pluginManage"
             name="%PluginManage">
       </page>
+      <page
+            class="org.aquarius.cicada.workbench.page.NetworkConfigurationPreferencePage"
+            id="org.aquarius.cicada.workbench.page.network"
+            name="%Network">
+      </page>
    </extension>
    <extension
          point="org.eclipse.core.contenttype.contentTypes">

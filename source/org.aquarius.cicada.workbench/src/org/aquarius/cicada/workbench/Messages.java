@@ -296,6 +296,8 @@ public class Messages extends NLS {
 
 	public static String LockAction_UnlockLabel;
 
+	public static String NetworkConfigurationPreferencePage_NetworkRefererToolTip;
+
 	public static String OpenSiteDropDownAction_OpenAllSites;
 
 	public static String ParseMovieAction_DownloadDialogMessage;

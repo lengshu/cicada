@@ -43,6 +43,12 @@ public class NetworkConfiguration extends AbstractStoreableConfiguration {
 		storeService.setDefault(Key_Mapping, JSON.toJSONString(mapping));
 	}
 
+	public void resetDefaults() {
+		this.getStoreService().setValue(Key_Mapping, "");
+
+		this.load();
+	}
+
 	public void load() {
 		String mappingString = this.getStoreService().getString(Key_Mapping);
 
@@ -54,7 +60,10 @@ public class NetworkConfiguration extends AbstractStoreableConfiguration {
 
 		if (null == this.refererMapping) {
 			this.refererMapping = new HashMap<>();
-			this.refererMapping.put(Key_Mapping, JSON.toJSONString(this.refererMapping));
+
+			this.refererMapping.put("pornimg.xyz", "https://hpjav.tv");
+
+			this.getStoreService().setValue(Key_Mapping, JSON.toJSONString(this.refererMapping));
 		}
 	}
 
@@ -63,6 +72,15 @@ public class NetworkConfiguration extends AbstractStoreableConfiguration {
 	 */
 	public Map<String, String> getRefererMapping() {
 		return this.refererMapping;
+	}
+
+	/**
+	 * @param refererMapping the refererMapping to set
+	 */
+	public void setRefererMapping(Map<String, String> refererMapping) {
+		this.refererMapping = refererMapping;
+
+		this.getStoreService().setValue(Key_Mapping, JSON.toJSONString(this.refererMapping));
 	}
 
 	/**
