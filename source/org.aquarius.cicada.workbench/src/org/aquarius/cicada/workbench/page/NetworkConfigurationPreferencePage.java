@@ -3,13 +3,11 @@
  */
 package org.aquarius.cicada.workbench.page;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.io.IOException;
+import java.io.StringReader;
 import java.util.Map;
-import java.util.Map.Entry;
+import java.util.Properties;
 
-import org.apache.commons.lang.StringUtils;
 import org.aquarius.cicada.workbench.Messages;
 import org.aquarius.cicada.workbench.WorkbenchActivator;
 import org.eclipse.jface.preference.PreferencePage;
@@ -63,21 +61,24 @@ public class NetworkConfigurationPreferencePage extends PreferencePage implement
 		return rootPane;
 	}
 
+	/**
+	 * 
+	 */
 	private void doLoad() {
 
-		List<String> list = new ArrayList<>();
+		Properties refererMapping = this.configuration.getRefererMapping();
 
-		Map<String, String> refererMapping = this.configuration.getRefererMapping();
+		StringBuilder stringBuilder = new StringBuilder();
 
-		for (Entry<String, String> entry : refererMapping.entrySet()) {
-			list.add(entry.getKey());
-			list.add(entry.getValue());
+		for (Map.Entry<Object, Object> e : refererMapping.entrySet()) {
+			String key = (String) e.getKey();
+			String val = (String) e.getValue();
+
+			stringBuilder.append(key + "=" + val);
+			stringBuilder.append(System.lineSeparator());
 		}
 
-		String referString = StringUtils.join(list, "\r\n"); //$NON-NLS-1$
-
-		this.styledText.setText(referString);
-
+		this.styledText.setText(stringBuilder.toString());
 	}
 
 	/**
@@ -100,21 +101,15 @@ public class NetworkConfigurationPreferencePage extends PreferencePage implement
 
 		String referString = this.styledText.getText();
 
-		String[] results = StringUtils.split(referString);
+		StringReader reader = new StringReader(referString);
+		Properties refererMapping = new Properties();
 
-		int lineNumber = 0;
-		Map<String, String> refererMapping = new HashMap<>();
-
-		while ((lineNumber + 1) < results.length) {
-			String key = results[lineNumber];
-			lineNumber++;
-			String value = results[lineNumber];
-			lineNumber++;
-
-			refererMapping.put(key, value);
+		try {
+			refererMapping.load(reader);
+			WorkbenchActivator.getDefault().getNetworkConfiguration().setRefererMapping(refererMapping);
+		} catch (IOException e) {
+			// Nothing to do
 		}
-
-		WorkbenchActivator.getDefault().getNetworkConfiguration().setRefererMapping(refererMapping);
 
 		return super.performOk();
 	}

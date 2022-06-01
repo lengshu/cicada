@@ -3,9 +3,7 @@
  */
 package org.aquarius.cicada.workbench.page;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
+import java.util.Properties;
 
 import org.apache.commons.lang.StringUtils;
 import org.aquarius.service.IPropertyStoreService;
@@ -21,7 +19,7 @@ public class NetworkConfiguration extends AbstractStoreableConfiguration {
 
 	public static final String Key_Mapping = WorkbenchConfiguration.class.getName() + ".Key.Mapping";
 
-	private Map<String, String> refererMapping;
+	private Properties refererMapping;
 
 	/**
 	 * @param storeService
@@ -37,47 +35,55 @@ public class NetworkConfiguration extends AbstractStoreableConfiguration {
 	 */
 	@Override
 	protected void doLoadDefaults(IPropertyStoreService storeService) {
-		Map<String, String> mapping = new HashMap<>();
+		this.createDefaultValues(storeService);
+	}
+
+	private Properties createDefaultValues(IPropertyStoreService storeService) {
+		Properties mapping = new Properties();
 		mapping.put("pornimg.xyz", "https://hpjav.tv");
 
 		storeService.setDefault(Key_Mapping, JSON.toJSONString(mapping));
+
+		return mapping;
 	}
 
+	/**
+	 * 
+	 */
 	public void resetDefaults() {
 		this.getStoreService().setValue(Key_Mapping, "");
 
 		this.load();
 	}
 
+	/**
+	 * 
+	 */
 	public void load() {
 		String mappingString = this.getStoreService().getString(Key_Mapping);
 
 		try {
-			this.refererMapping = JSON.parseObject(mappingString, HashMap.class);
+			this.refererMapping = JSON.parseObject(mappingString, Properties.class);
 		} catch (Exception e) {
 			// Nothing to do
 		}
 
 		if (null == this.refererMapping) {
-			this.refererMapping = new HashMap<>();
-
-			this.refererMapping.put("pornimg.xyz", "https://hpjav.tv");
-
-			this.getStoreService().setValue(Key_Mapping, JSON.toJSONString(this.refererMapping));
+			this.refererMapping = this.createDefaultValues(getStoreService());
 		}
 	}
 
 	/**
 	 * @return the refererMapping
 	 */
-	public Map<String, String> getRefererMapping() {
+	public Properties getRefererMapping() {
 		return this.refererMapping;
 	}
 
 	/**
 	 * @param refererMapping the refererMapping to set
 	 */
-	public void setRefererMapping(Map<String, String> refererMapping) {
+	public void setRefererMapping(Properties refererMapping) {
 		this.refererMapping = refererMapping;
 
 		this.getStoreService().setValue(Key_Mapping, JSON.toJSONString(this.refererMapping));
@@ -96,9 +102,9 @@ public class NetworkConfiguration extends AbstractStoreableConfiguration {
 
 		url = url.toLowerCase();
 
-		for (Entry<String, String> entry : this.refererMapping.entrySet()) {
-			if (StringUtils.contains(url, entry.getKey())) {
-				return entry.getValue();
+		for (String key : this.refererMapping.stringPropertyNames()) {
+			if (StringUtils.contains(url, key)) {
+				return this.refererMapping.getProperty(key);
 			}
 		}
 
