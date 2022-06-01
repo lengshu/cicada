@@ -161,6 +161,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 		register(this.aboutAction);
 
 		this.updateConfigAction = new UpdateConfigAction(Messages.ApplicationActionBarAdvisor_UpdateConfig);
+		this.updateConfigAction.setImageDescriptor(WorkbenchActivator.getImageDescriptor("/icons/updateConfig.png"));
 		this.updateConfigAction.setToolTipText(Messages.ApplicationActionBarAdvisor_UpdateConfigToolTip);
 
 		this.helpAction = new HelpAction(Messages.ApplicationActionBarAdvisor_Help);
@@ -288,6 +289,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 		operationMenu.add(this.compactDatabaseAction);
 		operationMenu.add(this.clearCacheAction);
 		operationMenu.add(this.resetResourceAction);
+		operationMenu.add(this.updateConfigAction);
 		operationMenu.add(new Separator());
 
 		operationMenu.add(this.createSiteConfigAction);
@@ -330,9 +332,6 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 		helpMenu.add(this.onlineHelpAction);
 		helpMenu.add(this.openOfficalSiteAction);
 		helpMenu.add(this.openIssuesAction);
-		helpMenu.add(new Separator());
-
-		helpMenu.add(this.updateConfigAction);
 		helpMenu.add(new Separator());
 
 		helpMenu.add(new GroupMarker(IWorkbenchActionConstants.MB_ADDITIONS));
