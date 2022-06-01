@@ -3,6 +3,9 @@
  */
 package org.aquarius.cicada.workbench.page;
 
+import java.text.MessageFormat;
+
+import org.apache.commons.lang.StringUtils;
 import org.aquarius.cicada.workbench.Messages;
 import org.aquarius.cicada.workbench.WorkbenchActivator;
 import org.aquarius.cicada.workbench.job.UpdateConfigJob;
@@ -10,7 +13,6 @@ import org.eclipse.jface.preference.ComboFieldEditor;
 import org.eclipse.jface.preference.FieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.IPreferenceStore;
-import org.eclipse.jface.preference.IntegerFieldEditor;
 import org.eclipse.jface.preference.StringFieldEditor;
 import org.eclipse.nebula.widgets.opal.titledseparator.TitledSeparator;
 import org.eclipse.swt.SWT;
@@ -18,6 +20,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
+import org.osgi.framework.Version;
 
 /**
  * Preference page for update configuration.<BR>
@@ -34,6 +37,8 @@ public class UpdateConfigurationPreferencePage extends FieldEditorPreferencePage
 		super(FieldEditorPreferencePage.GRID);
 
 		IPreferenceStore store = WorkbenchActivator.getDefault().getPreferenceStore();
+		store.setDefault(UpdateConfigJob.KeyUpdateInterval, "7");
+
 		this.setPreferenceStore(store);
 	}
 
@@ -45,7 +50,9 @@ public class UpdateConfigurationPreferencePage extends FieldEditorPreferencePage
 		Composite parent = this.getFieldEditorParent();
 
 		TitledSeparator configTitledSeparator = new TitledSeparator(parent, SWT.None);
-		configTitledSeparator.setText(Messages.UpdateConfigurationPreferencePage_UpdateConfigTitleSeparator);
+
+		String title = computeTitle();
+		configTitledSeparator.setText(title);
 
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 2;
@@ -55,21 +62,34 @@ public class UpdateConfigurationPreferencePage extends FieldEditorPreferencePage
 				parent);
 		this.addField(updateUrlFieldEditor);
 
-		IntegerFieldEditor updateIntervalFieldEditor = new IntegerFieldEditor(UpdateConfigJob.KeyUpdateInterval,
-				Messages.UpdateConfigurationPreferencePage_UpdateInterval, parent);
-		updateIntervalFieldEditor.setValidRange(1, 30);
-		this.addField(updateIntervalFieldEditor);
-
 		String[][] entryNamesAndValues = new String[][] { { Messages.UpdateConfigurationPreferencePage_IntervalDay0, "0" },
 				{ Messages.UpdateConfigurationPreferencePage_IntervalDay1, "1" }, // $NON-NLS-2$ //$NON-NLS-2$
 				{ Messages.UpdateConfigurationPreferencePage_IntervalDay3, "3" }, // $NON-NLS-2$ //$NON-NLS-2$
 				{ Messages.UpdateConfigurationPreferencePage_IntervalDay7, "7" }, { Messages.UpdateConfigurationPreferencePage_IntervalDay15, "15" }, //$NON-NLS-2$
 				{ Messages.UpdateConfigurationPreferencePage_IntervalDay30, "30" } }; // $NON-NLS-2$ //$NON-NLS-4$ //$NON-NLS-6$
 
-		FieldEditor filterTypeFieldEditor = new ComboFieldEditor(WorkbenchConfiguration.Key_FilterType,
-				Messages.WorkbenchConfigurationPreferencePage_FilterType, entryNamesAndValues, parent);
-		this.addField(filterTypeFieldEditor);
+		FieldEditor updateIntervalFieldEditor = new ComboFieldEditor(UpdateConfigJob.KeyUpdateInterval,
+				Messages.UpdateConfigurationPreferencePage_UpdateInterval, entryNamesAndValues, parent);
+		this.addField(updateIntervalFieldEditor);
 
+	}
+
+	/**
+	 * @return
+	 */
+	private String computeTitle() {
+		String title = null;
+
+		IPreferenceStore store = WorkbenchActivator.getDefault().getPreferenceStore();
+		String versionString = store.getString(UpdateConfigJob.KeyLastVersion);
+
+		if (StringUtils.isEmpty(versionString)) {
+			Version bundleVersion = WorkbenchActivator.getDefault().getBundle().getVersion();
+			versionString = bundleVersion.toString();
+		}
+
+		title = MessageFormat.format(Messages.UpdateConfigurationPreferencePage_UpdateConfigTitleSeparator, versionString);
+		return title;
 	}
 
 	/**

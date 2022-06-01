@@ -95,7 +95,7 @@ public class UpdateConfigJob extends AbstractCancelableJob {
 		long lastUpdate = store.getLong(KeyLastUpdate);
 		int updateInterval = store.getInt(KeyUpdateInterval);
 
-		if ((updateInterval < 0) && (!this.force)) {
+		if ((updateInterval <= 0) && (!this.force)) {
 			return Status.CANCEL_STATUS;
 		}
 
