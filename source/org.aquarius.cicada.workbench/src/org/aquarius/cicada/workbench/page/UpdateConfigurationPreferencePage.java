@@ -38,8 +38,21 @@ public class UpdateConfigurationPreferencePage extends FieldEditorPreferencePage
 
 		IPreferenceStore store = WorkbenchActivator.getDefault().getPreferenceStore();
 		store.setDefault(UpdateConfigJob.KeyUpdateInterval, "7");
+		store.setDefault(UpdateConfigJob.KeyLastVersion, "");
 
 		this.setPreferenceStore(store);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected void performDefaults() {
+
+		IPreferenceStore store = this.getPreferenceStore();
+		store.setToDefault(UpdateConfigJob.KeyLastVersion);
+
+		super.performDefaults();
 	}
 
 	/**
@@ -80,7 +93,7 @@ public class UpdateConfigurationPreferencePage extends FieldEditorPreferencePage
 	private String computeTitle() {
 		String title = null;
 
-		IPreferenceStore store = WorkbenchActivator.getDefault().getPreferenceStore();
+		IPreferenceStore store = this.getPreferenceStore();
 		String versionString = store.getString(UpdateConfigJob.KeyLastVersion);
 
 		if (StringUtils.isEmpty(versionString)) {
