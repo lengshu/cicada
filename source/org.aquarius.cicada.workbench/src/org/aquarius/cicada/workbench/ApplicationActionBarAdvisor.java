@@ -20,6 +20,7 @@ import org.aquarius.cicada.workbench.action.ParseMovieAction;
 import org.aquarius.cicada.workbench.action.ResetPerspectiveAction;
 import org.aquarius.cicada.workbench.action.ResetResourceAction;
 import org.aquarius.cicada.workbench.action.ShowBrowserAction;
+import org.aquarius.cicada.workbench.action.UpdateConfigAction;
 import org.aquarius.cicada.workbench.action.debug.HotReloadAction;
 import org.aquarius.cicada.workbench.action.debug.ShowLocalScriptEditorAction;
 import org.aquarius.cicada.workbench.action.search.SearchMovieByKeywordDropDownAction;
@@ -107,6 +108,8 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 
 	private IAction preferenceAction;
 
+	private IAction updateConfigAction;
+
 	/**
 	 *
 	 * @param configurer
@@ -156,6 +159,9 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 		this.aboutAction = ActionFactory.ABOUT.create(window);
 		this.aboutAction.setText(Messages.ApplicationActionBarAdvisor_About);
 		register(this.aboutAction);
+
+		this.updateConfigAction = new UpdateConfigAction(Messages.ApplicationActionBarAdvisor_UpdateConfig);
+		this.updateConfigAction.setToolTipText(Messages.ApplicationActionBarAdvisor_UpdateConfigToolTip);
 
 		this.helpAction = new HelpAction(Messages.ApplicationActionBarAdvisor_Help);
 		register(this.helpAction);
@@ -324,6 +330,9 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 		helpMenu.add(this.onlineHelpAction);
 		helpMenu.add(this.openOfficalSiteAction);
 		helpMenu.add(this.openIssuesAction);
+		helpMenu.add(new Separator());
+
+		helpMenu.add(this.updateConfigAction);
 		helpMenu.add(new Separator());
 
 		helpMenu.add(new GroupMarker(IWorkbenchActionConstants.MB_ADDITIONS));

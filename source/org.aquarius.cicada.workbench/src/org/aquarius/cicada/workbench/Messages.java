@@ -206,6 +206,10 @@ public class Messages extends NLS {
 
 	public static String ApplicationActionBarAdvisor_ResetResource;
 
+	public static String ApplicationActionBarAdvisor_UpdateConfig;
+
+	public static String ApplicationActionBarAdvisor_UpdateConfigToolTip;
+
 	public static String ApplicationActionBarAdvisor_Window;
 
 	public static String ApplicationWorkbenchWindowAdvisor_SaveDownloadTasks;
@@ -515,6 +519,26 @@ public class Messages extends NLS {
 	public static String SitePreferencePage_ResetWarnMessage;
 
 	public static String SitePreferencePage_ResetWarnTitle;
+
+	public static String UpdateConfigJob_UpdateSuccessMessage;
+
+	public static String UpdateConfigurationPreferencePage_IntervalDay0;
+
+	public static String UpdateConfigurationPreferencePage_IntervalDay1;
+
+	public static String UpdateConfigurationPreferencePage_IntervalDay15;
+
+	public static String UpdateConfigurationPreferencePage_IntervalDay3;
+
+	public static String UpdateConfigurationPreferencePage_IntervalDay30;
+
+	public static String UpdateConfigurationPreferencePage_IntervalDay7;
+
+	public static String UpdateConfigurationPreferencePage_UpdateConfigTitleSeparator;
+
+	public static String UpdateConfigurationPreferencePage_UpdateInterval;
+
+	public static String UpdateConfigurationPreferencePage_UpdateUrl;
 
 	public static String WorkbenchActivator_AutoRefresh;
 

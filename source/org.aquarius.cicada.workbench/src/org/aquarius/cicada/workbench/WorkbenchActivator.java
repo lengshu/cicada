@@ -23,6 +23,7 @@ import org.aquarius.cicada.core.web.WebAccessorManager;
 import org.aquarius.cicada.workbench.internal.BrowserFunctionInitializer;
 import org.aquarius.cicada.workbench.job.AutoRefreshJob;
 import org.aquarius.cicada.workbench.job.InitCookieJob;
+import org.aquarius.cicada.workbench.job.UpdateConfigJob;
 import org.aquarius.cicada.workbench.page.NetworkConfiguration;
 import org.aquarius.cicada.workbench.page.WorkbenchConfiguration;
 import org.aquarius.cicada.workbench.spi.ExtensionLoader;
@@ -113,6 +114,7 @@ public class WorkbenchActivator extends AbstractUIPlugin {
 		plugin = this;
 
 		loadWorkbenchConfiguration();
+		loadNetworkConfiguration();
 
 		File workingFile = Platform.getLocation().toFile().getParentFile();
 		String workingFolderPath = workingFile.getAbsolutePath() + File.separator + "workspace"; //$NON-NLS-1$
@@ -140,6 +142,7 @@ public class WorkbenchActivator extends AbstractUIPlugin {
 
 		loadRuntimeConfiguration(workingFolderPath);
 		loadDownloadConfiguration(workingFolderPath);
+		loadUpdateConfiguration();
 
 		List<String> pixelList = RuntimeManager.getInstance().getConfiguration().getPixelList();
 		DownloadManager.getInstance().getConfiguration().setPixels(pixelList);
@@ -177,12 +180,28 @@ public class WorkbenchActivator extends AbstractUIPlugin {
 	/**
 	 * 
 	 */
-	private void loadWorkbenchConfiguration() {
+	private void loadUpdateConfiguration() {
+
 		IPreferenceStore store = WorkbenchActivator.getDefault().getPreferenceStore();
+		store.setDefault(UpdateConfigJob.KeyUpdateInterval, 7);
+
+	}
+
+	/**
+	 * 
+	 */
+	private void loadWorkbenchConfiguration() {
 
 		this.configuration = new WorkbenchConfiguration();
 		TooltipUtil.setLevel(this.configuration.getTooltipLevel());
 
+	}
+
+	/**
+	 * @param store
+	 */
+	private void loadNetworkConfiguration() {
+		IPreferenceStore store = WorkbenchActivator.getDefault().getPreferenceStore();
 		this.networkConfiguration = new NetworkConfiguration(new EclipsePropertyStoreService(store));
 	}
 
@@ -286,6 +305,8 @@ public class WorkbenchActivator extends AbstractUIPlugin {
 		}
 
 		new InitCookieJob(Messages.WorkbenchActivator_InitCookie).schedule(5000);
+
+		new UpdateConfigJob(Messages.ApplicationActionBarAdvisor_UpdateConfig).schedule(5000);
 	}
 
 	/**
