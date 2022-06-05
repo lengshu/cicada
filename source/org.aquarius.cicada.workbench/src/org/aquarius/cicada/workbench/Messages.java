@@ -522,6 +522,12 @@ public class Messages extends NLS {
 
 	public static String UpdateConfigJob_UpdateSuccessMessage;
 
+	public static String UpdateConfigJob_UpdateErrorMessage;
+
+	public static String UpdateConfigJob_CheckNewVersionMessage;
+
+	public static String UpdateConfigJob_UpdateToNewVersionMessage;
+
 	public static String UpdateConfigurationPreferencePage_IntervalDay0;
 
 	public static String UpdateConfigurationPreferencePage_IntervalDay1;

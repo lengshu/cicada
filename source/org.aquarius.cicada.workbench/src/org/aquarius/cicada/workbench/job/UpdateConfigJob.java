@@ -4,7 +4,6 @@
 package org.aquarius.cicada.workbench.job;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.MessageFormat;
 import java.util.Date;
@@ -76,7 +75,18 @@ public class UpdateConfigJob extends AbstractCancelableJob {
 	protected IStatus run(IProgressMonitor monitor) {
 
 		try {
-			return doRun();
+			monitor.beginTask(this.getName(), IProgressMonitor.UNKNOWN);
+			IStatus status = doRun(monitor);
+
+			if (status.getCode() == IStatus.OK) {
+				TooltipUtil.showInfoTip(Messages.SuccessDialogTitle, Messages.UpdateConfigJob_UpdateSuccessMessage);
+			} else {
+				if (this.force) {
+					TooltipUtil.showInfoTip(Messages.ErrorDialogTitle, Messages.UpdateConfigJob_UpdateErrorMessage);
+				}
+			}
+
+			return status;
 		} catch (Exception e) {
 			return new Status(IStatus.ERROR, WorkbenchActivator.PLUGIN_ID, 1, e.getMessage(), e);
 		} finally {
@@ -86,10 +96,12 @@ public class UpdateConfigJob extends AbstractCancelableJob {
 	}
 
 	/**
+	 * 
+	 * @param monitor
+	 * @return
 	 * @throws IOException
-	 * @throws MalformedURLException
 	 */
-	private IStatus doRun() throws IOException {
+	private IStatus doRun(IProgressMonitor monitor) throws IOException {
 		IPreferenceStore store = WorkbenchActivator.getDefault().getPreferenceStore();
 
 		long lastUpdate = store.getLong(KeyLastUpdate);
@@ -113,11 +125,14 @@ public class UpdateConfigJob extends AbstractCancelableJob {
 		if (StringUtils.isEmpty(updateUrl)) {
 			updateUrl = getDefaultUpdateUrl();
 		}
+
+		monitor.setTaskName(Messages.UpdateConfigJob_CheckNewVersionMessage);
+
 		String content = null;
 		try {
 			content = IOUtils.toString(new URL(updateUrl));
 		} catch (Exception e) {
-			return Status.OK_STATUS;
+			return Status.CANCEL_STATUS;
 		}
 
 		UpdateRoot updateRoot = JSON.parseObject(content, UpdateRoot.class);
@@ -147,6 +162,8 @@ public class UpdateConfigJob extends AbstractCancelableJob {
 			return Status.CANCEL_STATUS;
 		}
 
+		monitor.setTaskName(Messages.UpdateConfigJob_UpdateToNewVersionMessage);
+
 		UpdateConfig updateConfig = new UpdateConfig();
 
 		updateConfig.setCurrentVersion(oldVersionString);
@@ -162,8 +179,6 @@ public class UpdateConfigJob extends AbstractCancelableJob {
 		store.setValue(KeyChangeLog, updateRoot.getChangeLog());
 
 		store.setValue(KeyLastUpdate, new Date().getTime());
-
-		TooltipUtil.showInfoTip(Messages.SuccessDialogTitle, Messages.UpdateConfigJob_UpdateSuccessMessage);
 
 		return Status.OK_STATUS;
 
