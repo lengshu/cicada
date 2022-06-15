@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Help
 Bundle-SymbolicName: org.aquarius.cicada.help;singleton:=true
-Bundle-Version: 0.12
+Bundle-Version: 0.10
 Bundle-Vendor: aquarius.github@gmail.com
 Automatic-Module-Name: org.aquarius.cicada.help
 Bundle-ClassPath: bin/

@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Aquarius Log
 Bundle-SymbolicName: org.aquarius.log;singleton:=true
-Bundle-Version: 0.12
+Bundle-Version: 0.10
 Bundle-Vendor: aquarius.github@gmail.com
 Require-Bundle: org.aquarius.library,
  org.eclipse.core.runtime
