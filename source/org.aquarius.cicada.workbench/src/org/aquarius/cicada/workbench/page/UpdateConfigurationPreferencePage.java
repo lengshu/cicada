@@ -7,6 +7,7 @@ import java.text.MessageFormat;
 
 import org.apache.commons.lang.StringUtils;
 import org.aquarius.cicada.workbench.Messages;
+import org.aquarius.cicada.workbench.ResourceVersionConstant;
 import org.aquarius.cicada.workbench.WorkbenchActivator;
 import org.aquarius.cicada.workbench.job.UpdateConfigJob;
 import org.eclipse.jface.preference.ComboFieldEditor;
@@ -20,7 +21,6 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
-import org.osgi.framework.Version;
 
 /**
  * Preference page for update configuration.<BR>
@@ -97,8 +97,7 @@ public class UpdateConfigurationPreferencePage extends FieldEditorPreferencePage
 		String versionString = store.getString(UpdateConfigJob.KeyLastVersion);
 
 		if (StringUtils.isEmpty(versionString)) {
-			Version bundleVersion = WorkbenchActivator.getDefault().getBundle().getVersion();
-			versionString = bundleVersion.toString();
+			versionString = ResourceVersionConstant.CurrentVersion;
 		}
 
 		title = MessageFormat.format(Messages.UpdateConfigurationPreferencePage_UpdateConfigTitleSeparator, versionString);

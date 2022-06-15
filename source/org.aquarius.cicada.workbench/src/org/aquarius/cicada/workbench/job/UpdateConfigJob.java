@@ -11,6 +11,7 @@ import java.util.Date;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.aquarius.cicada.workbench.Messages;
+import org.aquarius.cicada.workbench.ResourceVersionConstant;
 import org.aquarius.cicada.workbench.Starter;
 import org.aquarius.cicada.workbench.WorkbenchActivator;
 import org.aquarius.ui.job.AbstractCancelableJob;
@@ -153,7 +154,7 @@ public class UpdateConfigJob extends AbstractCancelableJob {
 		}
 
 		if (null == oldVersion) {
-			oldVersion = WorkbenchActivator.getDefault().getBundle().getVersion();
+			oldVersion = new Version(ResourceVersionConstant.CurrentVersion);
 		}
 
 		Version newVersion = new Version(updateRoot.getVersion());
@@ -189,9 +190,7 @@ public class UpdateConfigJob extends AbstractCancelableJob {
 	 * @return
 	 */
 	public static final String getDefaultUpdateUrl() {
-		Version bundleVersion = WorkbenchActivator.getDefault().getBundle().getVersion();
-
-		return MessageFormat.format(DefaultUpdateUrlTemplate, bundleVersion.toString());
+		return MessageFormat.format(DefaultUpdateUrlTemplate, ResourceVersionConstant.CurrentVersion);
 
 	}
 

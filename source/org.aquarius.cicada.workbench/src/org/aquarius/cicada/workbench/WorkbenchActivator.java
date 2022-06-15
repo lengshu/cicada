@@ -102,7 +102,7 @@ public class WorkbenchActivator extends AbstractUIPlugin {
 		String oldVersionString = store.getString(RESOURCE_VERSION);
 
 		if (StringUtils.isEmpty(oldVersionString)) {
-			oldVersionString = ResourceVersionConstant.Version_0_10;
+			return false;
 		}
 
 		Version currentVersion = Version.parseVersion(ResourceVersionConstant.CurrentVersion);
