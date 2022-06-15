@@ -68,9 +68,10 @@ public class WorkbenchActivator extends AbstractUIPlugin {
 
 	private static final String CORE_PLUGIN_ID = "org.aquarius.cicada.core"; //$NON-NLS-1$
 
-	private static final String LOG_PLUGIN_ID = "org.eclipse.ui.views.log"; //$NON-NLS-1$
+	// private static final String LOG_PLUGIN_ID = "org.eclipse.ui.views.log";
+	// //$NON-NLS-1$
 
-	private static final String BUNDLE_VERSION = "Bundle.Version"; //$NON-NLS-1$
+	private static final String RESOURCE_VERSION = "Resource.Version"; //$NON-NLS-1$
 
 	// private static final String DeployedMarker = "Deployed.Marker"; //$NON-NLS-1$
 
@@ -89,16 +90,22 @@ public class WorkbenchActivator extends AbstractUIPlugin {
 
 	private boolean compactDatabase = false;
 
-	private boolean validateVersion() {
+	/**
+	 * Check the resource version.<BR>
+	 * 
+	 * @return if the return value is <CODE>false</CODE>, app will check remote
+	 *         update info.<BR>
+	 */
+	private boolean checkResourceVersion() {
 		IPreferenceStore store = this.getPreferenceStore();
 
-		String oldVersionString = store.getString(BUNDLE_VERSION);
+		String oldVersionString = store.getString(RESOURCE_VERSION);
 
 		if (StringUtils.isEmpty(oldVersionString)) {
-			oldVersionString = "0.1";
+			oldVersionString = ResourceVersionConstant.Version_0_10;
 		}
 
-		Version currentVersion = this.getBundle().getVersion();
+		Version currentVersion = Version.parseVersion(ResourceVersionConstant.CurrentVersion);
 		Version oldVersion = Version.parseVersion(oldVersionString);
 
 		return (currentVersion.compareTo(oldVersion) < 0);
@@ -226,7 +233,7 @@ public class WorkbenchActivator extends AbstractUIPlugin {
 			}
 		}
 
-		if (this.validateVersion() && configDir.exists()) {
+		if (this.checkResourceVersion() && configDir.exists()) {
 			return;
 		}
 
@@ -254,7 +261,7 @@ public class WorkbenchActivator extends AbstractUIPlugin {
 				}
 			}
 
-			store.setValue(BUNDLE_VERSION, this.getBundle().getVersion().toString());
+			store.setValue(RESOURCE_VERSION, ResourceVersionConstant.CurrentVersion);
 		}
 	}
 
