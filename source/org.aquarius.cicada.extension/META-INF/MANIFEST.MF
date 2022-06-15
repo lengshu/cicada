@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Cicada Extension
 Bundle-SymbolicName: org.aquarius.cicada.extension;singleton:=true
-Bundle-Version: 0.10
+Bundle-Version: 0.1.0
 Bundle-Vendor: aquarius.github@gmail.com
 Automatic-Module-Name: org.aquarius.cicada.porn
 Require-Bundle: org.aquarius.cicada.core,

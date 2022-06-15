@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Aquarius Service
 Bundle-SymbolicName: org.aquarius.service
-Bundle-Version: 0.10
+Bundle-Version: 0.1.0
 Bundle-Vendor: aquarius.github@gmail.com
 Automatic-Module-Name: org.aquarius.cicada.service
 Export-Package: org.aquarius.service,
