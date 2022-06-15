@@ -58,6 +58,17 @@ function internalParseMovieDetailInfo() {
 
 	var downloadInfo = new Object();
 	downloadInfo.downloadLinks = [];
+	
+	var downloadElement = document.querySelector("div.download-item-btn > a");
+	if (null != downloadElement) {
+		var link = new Object();
+		link.sourceUrl = downloadElement.href;
+		link.selected = true;
+		link.requestHeaders = new Object();
+		link.requestHeaders['Referer'] = document.location.href;
+
+		downloadInfo.downloadLinks.push(link);
+	}
 
 	//const regex = /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/gm;
 	const regex = /\/\/[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]/gm;
@@ -81,17 +92,6 @@ function internalParseMovieDetailInfo() {
 		urlInfo = "https:" + urlInfo;
 
 		link.sourceUrl = urlInfo;
-		link.selected = true;
-		link.requestHeaders = new Object();
-		link.requestHeaders['Referer'] = document.location.href;
-
-		downloadInfo.downloadLinks.push(link);
-	}
-
-	var downloadElement = document.querySelector("div.download-item-btn > a");
-	if (null != downloadElement) {
-		var link = new Object();
-		link.sourceUrl = downloadElement.href;
 		link.selected = true;
 		link.requestHeaders = new Object();
 		link.requestHeaders['Referer'] = document.location.href;
