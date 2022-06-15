@@ -38,7 +38,6 @@ import org.aquarius.ui.util.TooltipUtil;
 import org.aquarius.util.StringUtil;
 import org.aquarius.util.SystemUtil;
 import org.aquarius.util.io.FileUtil;
-import org.aquarius.util.io.SkipExistFileFilter;
 import org.aquarius.util.net.HttpsUrlValidator;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
@@ -245,7 +244,9 @@ public class WorkbenchActivator extends AbstractUIPlugin {
 
 				File sourceFolder = new File(fileUrl.getFile());
 				if (sourceFolder.exists() && sourceFolder.isDirectory()) {
-					FileUtils.copyDirectory(sourceFolder, destDir, new SkipExistFileFilter(sourceFolder, destDir));
+					// FileUtils.copyDirectory(sourceFolder, destDir, new
+					// SkipExistFileFilter(sourceFolder, destDir));
+					FileUtils.copyDirectory(sourceFolder, destDir);
 				}
 			}
 
@@ -257,7 +258,9 @@ public class WorkbenchActivator extends AbstractUIPlugin {
 				File sourceFolder = new File(fileUrl.getFile());
 				if (sourceFolder.exists() && sourceFolder.isDirectory()) {
 					File settingsFolder = location.toFile();
-					FileUtils.copyDirectory(sourceFolder, settingsFolder, new SkipExistFileFilter(sourceFolder, settingsFolder));
+					// FileUtils.copyDirectory(sourceFolder, settingsFolder, new
+					// SkipExistFileFilter(sourceFolder, settingsFolder));
+					FileUtils.copyDirectory(sourceFolder, settingsFolder);
 				}
 			}
 
