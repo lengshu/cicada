@@ -12,6 +12,7 @@ import org.aquarius.cicada.core.helper.MovieDownloadAnalyserHelper;
 import org.aquarius.cicada.core.helper.MovieParserHelper;
 import org.aquarius.cicada.core.model.Movie;
 import org.aquarius.cicada.core.spi.AbstractMovieParser;
+import org.aquarius.cicada.core.spi.AbstractUrlRedirector;
 import org.aquarius.cicada.workbench.Messages;
 import org.aquarius.cicada.workbench.control.FixedMovieDownloadComposite;
 import org.aquarius.cicada.workbench.model.FixedMovieListService;
@@ -40,22 +41,26 @@ public class ParseMovieJob extends AbstractCancelableJob {
 
 	private Logger logger = LogUtil.getLogger(this.getClass());
 
-	private boolean directDownload;
+	private boolean autoDownload;
 
 	private List<String> urlStringList;
+
+	private AbstractUrlRedirector urlRedirector;
 
 	/**
 	 * 
 	 * @param name
-	 * @param directDownload
+	 * @param autoDownload
+	 * @param urlRedirector
 	 * @param urlStringList
 	 */
-	public ParseMovieJob(String name, boolean directDownload, List<String> urlStringList) {
+	public ParseMovieJob(String name, boolean autoDownload, AbstractUrlRedirector urlRedirector, List<String> urlStringList) {
 		super(name);
 		this.urlStringList = urlStringList;
 		this.setRule(new OrderedSchedulingRule(this.getClass().getName()));
 
-		this.directDownload = directDownload;
+		this.autoDownload = autoDownload;
+		this.urlRedirector = urlRedirector;
 	}
 
 	/**
@@ -102,15 +107,29 @@ public class ParseMovieJob extends AbstractCancelableJob {
 				movieList.add(movie);
 				statusList.add(Status.OK_STATUS);
 			} else {
+
+				if (null != this.urlRedirector) {
+					try {
+
+						this.urlRedirector.redirect(urlString);
+
+						continue;
+
+					} catch (Exception e) {
+						// Nothing to do
+					}
+				}
+
 				String host = HttpUtil.getHost(urlString);
 				String errorMessage = MessageFormat.format(Messages.ParseMovieJob_UrlNotSupported, host);
 				TooltipUtil.showErrorTip(Messages.ErrorDialogTitle, errorMessage);
+
 			}
 		}
 
 		if (movieList.size() > 0) {
 
-			if (this.directDownload) {
+			if (this.autoDownload) {
 				DownloadMovieJob downloadMovieJob = new DownloadMovieJob(Messages.DownloadAction_DownloadMovieJobName, movieList, false, false);
 
 				downloadMovieJob.schedule();

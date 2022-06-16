@@ -90,6 +90,8 @@ public class Messages extends NLS {
 
 	public static String DownloadExternalUrlDialog_DirectDownloadLabel;
 
+	public static String DownloadExternalUrlDialog_OpenExternalSite;
+
 	public static String DownloadMovieJob_TitleError;
 
 	public static String DownloadMovieJob_MessageError;

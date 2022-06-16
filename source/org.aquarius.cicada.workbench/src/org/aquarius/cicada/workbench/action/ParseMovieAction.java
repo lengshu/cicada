@@ -65,7 +65,7 @@ public class ParseMovieAction extends Action {
 
 				List<String> urlStringList = CollectionUtil.removeDuplicated(urlStrings);
 
-				ParseMovieJob job = new ParseMovieJob(Messages.ParseMovieAction_ParseMovie, dialog.isDirectDownload(), urlStringList);
+				ParseMovieJob job = new ParseMovieJob(Messages.ParseMovieAction_ParseMovie, dialog.isAutoDownload(), dialog.getUrlRedirector(), urlStringList);
 
 				job.setUser(true);
 				job.schedule();
