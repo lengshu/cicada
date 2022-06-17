@@ -354,6 +354,8 @@ public class Messages extends NLS {
 
 	public static String SaveImageJob_FinishedMessage;
 
+	public static String SearchMovieByKeywordDialog_AutoPaste;
+
 	public static String SearchMovieByKeywordDialog_Title;
 
 	public static String SearchMovieByKeywordDialog_Message;

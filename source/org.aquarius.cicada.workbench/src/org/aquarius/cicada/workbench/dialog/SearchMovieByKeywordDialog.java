@@ -20,11 +20,13 @@ import org.aquarius.cicada.core.model.VirtualSite;
 import org.aquarius.cicada.core.util.MovieUtil;
 import org.aquarius.cicada.workbench.Messages;
 import org.aquarius.cicada.workbench.SearchKeywordModel;
+import org.aquarius.cicada.workbench.WorkbenchActivator;
 import org.aquarius.cicada.workbench.editor.SiteEditorInput;
 import org.aquarius.cicada.workbench.editor.SiteMultiPageEditor;
 import org.aquarius.cicada.workbench.helper.MovieHelper;
 import org.aquarius.cicada.workbench.manager.HistoryManager;
 import org.aquarius.ui.table.CheckedTableControlFactory;
+import org.aquarius.ui.util.ClipboardUtil;
 import org.aquarius.ui.util.SwtUtil;
 import org.aquarius.ui.util.TooltipUtil;
 import org.aquarius.util.StringUtil;
@@ -32,7 +34,10 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -50,6 +55,8 @@ import org.eclipse.ui.PartInitException;
  */
 public class SearchMovieByKeywordDialog extends TitleAreaDialog implements IRunnableWithProgress {
 
+	private Button autoPasteButton;
+
 	private Button searchInTitleButton;
 
 	private Button searchInAllButton;
@@ -61,6 +68,8 @@ public class SearchMovieByKeywordDialog extends TitleAreaDialog implements IRunn
 	private SearchKeywordModel searchKeywordModel;
 
 	private CheckedTableControlFactory<String> checkedTableControlFactory;
+
+	private static final String AutoPaste = SearchMovieByKeywordDialog.class.getName() + ".AutoPaste"; //$NON-NLS-1$
 
 	/**
 	 * @param parent
@@ -123,6 +132,33 @@ public class SearchMovieByKeywordDialog extends TitleAreaDialog implements IRunn
 		this.keywordText.setLayoutData(new GridData(GridData.FILL_BOTH));
 
 		{
+			this.autoPasteButton = new Button(pane, SWT.CHECK);
+			this.autoPasteButton.setText(Messages.SearchMovieByKeywordDialog_AutoPaste);
+
+			IPreferenceStore store = WorkbenchActivator.getDefault().getPreferenceStore();
+			boolean autoPaste = store.getBoolean(AutoPaste);
+
+			this.autoPasteButton.setSelection(autoPaste);
+
+			this.autoPasteButton.addSelectionListener(new SelectionAdapter() {
+
+				/**
+				 * {@inheritDoc}
+				 */
+				@Override
+				public void widgetSelected(SelectionEvent e) {
+					doAutoPaste();
+				}
+
+			});
+
+			if (StringUtils.isBlank(this.searchKeywordModel.getKeyword())) {
+				this.doAutoPaste();
+			}
+
+		}
+
+		{
 
 			this.searchInAllButton = new Button(pane, SWT.RADIO);
 			this.searchInAllButton.setText(Messages.SearchMovieByKeywordDialog_SearchInAll);
@@ -169,6 +205,16 @@ public class SearchMovieByKeywordDialog extends TitleAreaDialog implements IRunn
 	/**
 	 * 
 	 */
+	private void doAutoPaste() {
+
+		if (this.autoPasteButton.getSelection()) {
+			this.keywordText.setText(ClipboardUtil.getStringFromClipboard());
+		}
+	}
+
+	/**
+	 * 
+	 */
 	private boolean validateKeyword() {
 		String keyword = this.keywordText.getText();
 		if (StringUtils.isBlank(keyword)) {
@@ -208,6 +254,9 @@ public class SearchMovieByKeywordDialog extends TitleAreaDialog implements IRunn
 		this.searchKeywordModel.setSites(selectedElements);
 
 		HistoryManager.getInstance().addSearchKeywordModelHistory(this.searchKeywordModel);
+
+		IPreferenceStore store = WorkbenchActivator.getDefault().getPreferenceStore();
+		store.setValue(AutoPaste, this.autoPasteButton.getSelection());
 
 		super.okPressed();
 
