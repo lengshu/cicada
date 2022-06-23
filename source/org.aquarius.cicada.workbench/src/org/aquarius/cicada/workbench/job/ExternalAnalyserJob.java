@@ -11,8 +11,10 @@ import org.aquarius.cicada.core.helper.MovieParserHelper;
 import org.aquarius.cicada.core.model.DownloadInfo;
 import org.aquarius.cicada.core.model.Link;
 import org.aquarius.cicada.core.model.Movie;
+import org.aquarius.cicada.core.model.SiteConfig;
 import org.aquarius.cicada.core.spi.AbstractUrlRedirector;
 import org.aquarius.cicada.core.spi.IProcessMonitor;
+import org.aquarius.cicada.workbench.manager.SiteConfigManager;
 import org.aquarius.cicada.workbench.monitor.ProcessMonitorProxy;
 import org.aquarius.ui.job.AbstractCancelableJob;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -68,6 +70,15 @@ public class ExternalAnalyserJob extends AbstractCancelableJob {
 	 */
 	private IStatus openAnalysedUrls(IProgressMonitor monitor, IProcessMonitor processMonitor) {
 		for (Movie movie : this.selectedMovieList) {
+
+			String pageUrl = movie.getPageUrl();
+			SiteConfig siteConfig = SiteConfigManager.getInstance().findSiteConfigByUrl(pageUrl);
+
+			if ((null != siteConfig) && (siteConfig.isUseSourceUrl())) {
+				this.urlRedirector.redirect(pageUrl);
+				continue;
+			}
+
 			MovieParserHelper.parseMovieDetailInfo(true, movie, processMonitor);
 
 			if (monitor.isCanceled()) {

@@ -25,6 +25,8 @@ public final class SiteConfig {
 
 	private boolean supportMultiDownloadSource;
 
+	private boolean useSourceUrl;
+
 	/**
 	 * the duration unit is second.
 	 */
@@ -312,6 +314,20 @@ public final class SiteConfig {
 	 */
 	public void setCookie(String cookie) {
 		this.cookie = cookie;
+	}
+
+	/**
+	 * @return the useSourceUrl
+	 */
+	public boolean isUseSourceUrl() {
+		return this.useSourceUrl;
+	}
+
+	/**
+	 * @param useSourceUrl the useSourceUrl to set
+	 */
+	public void setUseSourceUrl(boolean useSourceUrl) {
+		this.useSourceUrl = useSourceUrl;
 	}
 
 	/**

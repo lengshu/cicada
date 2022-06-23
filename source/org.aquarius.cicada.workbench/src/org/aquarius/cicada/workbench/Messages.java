@@ -426,6 +426,8 @@ public class Messages extends NLS {
 
 	public static String SiteConfigPropertyEditorPage_Enable;
 
+	public static String SiteConfigPropertyEditorPage_UseSourceUrl;
+
 	public static String SiteConfigPropertyEditorPage_ChannelInfo;
 
 	public static String SiteConfigPropertyEditorPage_ChannelName;

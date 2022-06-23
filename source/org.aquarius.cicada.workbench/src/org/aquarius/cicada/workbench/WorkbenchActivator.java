@@ -16,6 +16,7 @@ import org.aquarius.cicada.core.impl.generator.DefaultDownloadListGenerator;
 import org.aquarius.cicada.core.impl.generator.FdmDownloadListGenerator;
 import org.aquarius.cicada.core.impl.generator.FfmpegDownloadListGenerator;
 import org.aquarius.cicada.core.impl.generator.N_M3U8DownloadListGenerator;
+import org.aquarius.cicada.core.impl.generator.YdlDownloadListGenerator;
 import org.aquarius.cicada.core.impl.generator.eagle.EagleDownloadListGenerator;
 import org.aquarius.cicada.core.service.impl.HttpCacheServiceImpl;
 import org.aquarius.cicada.core.spi.web.IWebAccessorService;
@@ -387,6 +388,7 @@ public class WorkbenchActivator extends AbstractUIPlugin {
 		RuntimeManager.getInstance().registerDownloadListGenerator(new N_M3U8DownloadListGenerator());
 		RuntimeManager.getInstance().registerDownloadListGenerator(new EagleDownloadListGenerator());
 		RuntimeManager.getInstance().registerDownloadListGenerator(new FfmpegDownloadListGenerator());
+		RuntimeManager.getInstance().registerDownloadListGenerator(new YdlDownloadListGenerator());
 
 	}
 

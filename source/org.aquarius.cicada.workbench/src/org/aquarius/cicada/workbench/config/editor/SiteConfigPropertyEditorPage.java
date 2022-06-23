@@ -217,6 +217,18 @@ public class SiteConfigPropertyEditorPage extends EditorPart implements IValueCh
 		}
 
 		{
+			doCreateLabel(parent, Messages.SiteConfigPropertyEditorPage_UseSourceUrl);
+			Button useSourceUrlButton = new Button(parent, SWT.CHECK);
+			useSourceUrlButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+
+			IControlBinder<Button, String> controlBinder = (IControlBinder<Button, String>) ControlBinderManager.bind(useSourceUrlButton,
+					PropertyValueAccessor.Instance, this.siteConfig, "useSourceUrl", null); //$NON-NLS-1$
+
+			this.binderGroup.add(controlBinder);
+
+		}
+
+		{
 			doCreateLabel(parent, Messages.SiteConfigPropertyEditorPage_SupportImport);
 			Button supportImportButton = new Button(parent, SWT.CHECK);
 			supportImportButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));

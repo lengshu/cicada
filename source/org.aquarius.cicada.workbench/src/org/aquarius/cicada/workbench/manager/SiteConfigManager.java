@@ -103,6 +103,28 @@ public final class SiteConfigManager {
 	}
 
 	/**
+	 * Find the site config for the specified url;
+	 *
+	 * @param siteName
+	 * @return
+	 */
+	public SiteConfig findSiteConfigByUrl(String urlString) {
+		List<AbstractMovieParser> movieParserList = RuntimeManager.getInstance().getAllMovieParsers();
+
+		for (AbstractMovieParser movieParser : movieParserList) {
+			if (movieParser instanceof ConfigBrowserMovieParser) {
+				SiteConfig siteConfig = ((ConfigBrowserMovieParser) movieParser).getSiteConfig();
+
+				if (movieParser.isAcceptable(urlString)) {
+					return siteConfig;
+				}
+			}
+		}
+
+		return null;
+	}
+
+	/**
 	 * Apply a new site config.<BR>
 	 *
 	 * @param siteConfig
